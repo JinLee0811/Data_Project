@@ -11,7 +11,8 @@ import {
   LoginPage,
   RegisterPage,
   UserPage,
-  UserInfo
+  UserInfo,
+  AboutPage,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -48,10 +49,16 @@ const router = createBrowserRouter([
       {
         path: '/user',
         element: <UserPage />,
+        children: [
+          {
+            path: 'userinfo',
+            element: <UserInfo />,
+          },
+        ]
       },
-      {
-        path: '/userinfo',
-        element: <UserInfo />,
+        {
+        path: '/about',
+        element: <AboutPage />,
       },
     ],
   },

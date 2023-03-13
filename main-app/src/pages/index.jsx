@@ -6,6 +6,7 @@ import LoginPage from './loginPage';
 import RegisterPage from './registerPage';
 import UserPage from './userPage/myPage';
 import UserInfo from './userPage/userInfo';
+import AboutPage from './aboutPage';
 
 export {
   MainPage,
@@ -16,4 +17,5 @@ export {
   RegisterPage,
   UserPage,
   UserInfo,
+  AboutPage,
 };
