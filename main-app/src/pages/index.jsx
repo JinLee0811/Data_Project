@@ -4,6 +4,7 @@ import StationListSide from './mainPage/StationListSide';
 import StationInfoSide from './mainPage/StationInfoSide';
 import LoginPage from './loginPage';
 import RegisterPage from './registerPage';
+import AboutPage from './aboutPage';
 
 export {
   MainPage,
@@ -12,4 +13,5 @@ export {
   StationInfoSide,
   LoginPage,
   RegisterPage,
+  AboutPage,
 };

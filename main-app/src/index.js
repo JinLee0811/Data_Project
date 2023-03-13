@@ -10,6 +10,7 @@ import {
   StationInfoSide,
   LoginPage,
   RegisterPage,
+  AboutPage,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <RegisterPage />,
+      },
+      {
+        path: '/about',
+        element: <AboutPage />,
       },
     ],
   },
