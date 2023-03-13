@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
+    userName: "",
+    nickName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -26,13 +28,13 @@ const RegisterPage = () => {
 
   const validateForm = ({ email, password, confirmPassword }) => {
     if (emailCheck(email) === false) {
-      return '이메일 형식이 올바르지 않습니다.';
+      return "이메일 형식이 올바르지 않습니다.";
     }
     if (password.length < 4) {
-      return '비밀번호는 4글자 이상이어야합니다.';
+      return "비밀번호는 4글자 이상이어야합니다.";
     }
     if (password !== confirmPassword) {
-      return '비밀번호가 일치하지 않습니다.';
+      return "비밀번호가 일치하지 않습니다.";
     }
     return true;
   };
@@ -51,7 +53,7 @@ const RegisterPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validated = validateForm(inputs);
-    if (typeof validated === 'string') {
+    if (typeof validated === "string") {
       alert(validated);
       return;
     }
@@ -60,7 +62,7 @@ const RegisterPage = () => {
     //   registerUser(formdata);
 
     console.log(email, password);
-    alert('회원가입이 완료되었습니다');
+    alert("회원가입이 완료되었습니다");
   };
 
   return (
@@ -68,23 +70,37 @@ const RegisterPage = () => {
       <Form onSubmit={handleSubmit}>
         <Title>회원가입</Title>
         <Input
+          type='text'
+          name='userName'
+          placeholder='이름'
+          value={inputs.userName}
+          onChange={handleChange}
+        />
+        <Input
+          type='text'
+          name='nickName'
+          placeholder='닉네임'
+          value={inputs.nickName}
+          onChange={handleChange}
+        />
+        <Input
           type='email'
           name='email'
-          placeholder='이메일주소 입력'
+          placeholder='이메일'
           value={inputs.email}
           onChange={handleChange}
         />
         <Input
           type='password'
           name='password'
-          placeholder='비밀번호 입력'
+          placeholder='비밀번호'
           value={inputs.password}
           onChange={handleChange}
         />
         <Input
           type='password'
           name='confirmPassword'
-          placeholder='비밀번호 재입력'
+          placeholder='비밀번호 확인'
           value={inputs.confirmPassword}
           onChange={handleChange}
         />
@@ -105,7 +121,8 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 5rem auto;
+  margin: 0 auto;
+  padding-top: 80px;
   width: 300px;
 `;
 

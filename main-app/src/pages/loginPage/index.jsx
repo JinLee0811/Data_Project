@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 function LoginPage() {
   const [inputs, setInputs] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
 
   const validateEmail = (email) => {
     // simple condition to check email format
-    if (!inputs.email.includes('@')) {
-      setEmailError('유효한 이메일을 입력해주세요.');
+    if (!inputs.email.includes("@")) {
+      setEmailError("유효한 이메일을 입력해주세요.");
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
   const validatePassword = (password) => {
     // simple condition to check password length
     if (inputs.password.length <= 3) {
-      setPasswordError('패스워드는 3자리 이상 입력해주세요.');
+      setPasswordError("패스워드는 3자리 이상 입력해주세요.");
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
   };
 
@@ -36,7 +36,7 @@ function LoginPage() {
 
     // submit form if there are no errors
     if (!emailError && !passwordError) {
-      console.log('폼이 정상적으로 제출되었습니다!');
+      console.log("폼이 정상적으로 제출되었습니다!");
       console.log(inputs.email, inputs.password);
     }
   };
@@ -48,14 +48,17 @@ function LoginPage() {
     });
   };
 
+  console.log(process.env.REACT_APP_KAKAO_AUTH_URL);
+
   return (
-    <>
+    <Container>
       <Form onSubmit={handleSubmit}>
         <Title>이메일로 로그인</Title>
         <Input
           type='email'
           name='email'
           value={inputs.email}
+          placeholder='이메일'
           onChange={handleChange}
           onBlur={(event) => validateEmail(event.target.value)}
           required
@@ -66,16 +69,24 @@ function LoginPage() {
           type='password'
           name='password'
           value={inputs.password}
+          placeholder='비밀번호'
           onChange={handleChange}
           onBlur={(event) => validatePassword(event.target.value)}
           required
         />
         {passwordError && <Error>{passwordError}</Error>}
         <Button type='submit'>로그인</Button>
-        <KakaoButton> 카카오 로그인 </KakaoButton>
-        <Link to='/register'>회원가입</Link>
       </Form>
-    </>
+
+      <Break />
+
+      <Link to='https://kauth.kakao.com/oauth/authorize?client_id=4dab466378fe064ea806e2c8eedd72f5&redirect_uri=http://localhost:3000/kakaologin&response_type=code'>
+        <KakaoButton> 카카오 로그인 </KakaoButton>
+      </Link>
+      <Link to='/register'>회원가입</Link>
+
+      {/* <Link to={process.env.REACT_APP_KAKAO_AUTH_URL}>zkzkdh</Link> */}
+    </Container>
   );
 }
 
@@ -84,12 +95,18 @@ const Title = styled.h1`
   margin-bottom: 1rem;
 `;
 
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-top: 80px;
+  width: 300px;
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 5rem auto;
-  width: 300px;
 `;
 
 const Input = styled.input`
@@ -117,21 +134,26 @@ const Button = styled.button`
 `;
 
 const KakaoButton = styled.button`
-  background-color: #FEE500;
+  background-color: #fee500;
   color: #000000 85%;
   font-size: 1rem;
   padding: 0.8rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 1.5rem;
-
-
+  margin-bottom: 1rem;
+  width: 300px;
 `;
 
 const Error = styled.div`
   color: #8b5ad8;
   font-size: 0.875rem;
+`;
+
+const Break = styled.hr`
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 2em 0;
 `;
 
 export default LoginPage;
