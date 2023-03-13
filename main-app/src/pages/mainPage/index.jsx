@@ -1,43 +1,50 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import mapImg from './naver_map.png';
+
+const mapOption = {
+  //모든 지도 컨트롤 숨기기
+  scaleControl: false,
+  logoControl: false,
+  mapDataControl: false,
+  zoomControl: false,
+  mapTypeControl: false,
+};
 
 const MainPage = () => {
+  const mapElement = useRef(null);
+
+  useEffect(() => {
+    const { naver } = window;
+    const map = new naver.maps.Map(mapElement.current, mapOption);
+  }, []);
+
   return (
     <>
-        <DemoNav>navbar</DemoNav>
       <MainContainer>
         <SideBarContainer>
           <Outlet />
         </SideBarContainer>
-        <MapContainer>map</MapContainer>
+        <MapContainer ref={mapElement}>map</MapContainer>
       </MainContainer>
     </>
   );
-}
-
-const DemoNav = styled.div`
-  height: 60px;
-  width: 100%;
-  position: fixed;
-  background-color: #4b2789;
-  z-index: 30;
-`;
+};
 
 const MainContainer = styled.div`
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    height: 100vh;
+  display: grid;
+  width: 100%;
+  grid-template-columns: 320px 1fr;
+  height: calc(100vh - 50px);
+  *:focus {
+    outline: none;
+  }
 `;
 
 const SideBarContainer = styled.div`
-    padding-top: 60px;
+  padding-top: 0px;
 `;
 
-const MapContainer = styled.div`
-padding-top: 50px;
-    background-image: url(${mapImg});
-`;
+const MapContainer = styled.div``;
 
 export default MainPage;
