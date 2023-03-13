@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import App from "./App";
 import {
   MainPage,
   SearchSide,
@@ -11,60 +11,75 @@ import {
   LoginPage,
   RegisterPage,
   UserPage,
+  KakaoLogin,
+  AdminPage,
   UserInfo,
   AboutPage,
-} from './pages';
+} from "./pages";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
-        path: '',
+        path: "",
         element: <MainPage />,
         children: [
           {
-            path: '',
+            path: "",
             element: <SearchSide />,
           },
           {
-            path: 'stationlist',
+            path: "stationlist",
             element: <StationListSide />,
           },
           {
-            path: 'staioninfo',
+            path: "staioninfo",
             element: <StationInfoSide />,
           },
         ],
       },
       {
-        path: '/login',
+        path: "/login",
         element: <LoginPage />,
       },
       {
-        path: '/register',
+        path: "/kakaologin",
+        element: <KakaoLogin />,
+      },
+
+      {
+        path: "/register",
         element: <RegisterPage />,
       },
       {
-        path: '/user',
+        path: "/user",
+        element: <UserPage />,
+      },
+      {
+        path: "/admin",
+        element: <AdminPage />,
+      },
+      {
+        path: "/user",
         element: <UserPage />,
         children: [
           {
-            path: 'userinfo',
+            path: "userinfo",
             element: <UserInfo />,
           },
-        ]
+        ],
       },
-        {
-        path: '/about',
+      {
+        path: "/about",
         element: <AboutPage />,
       },
     ],
   },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />

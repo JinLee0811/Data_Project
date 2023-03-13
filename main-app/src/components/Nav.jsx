@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   return (
@@ -13,7 +13,10 @@ const Nav = () => {
           <Link to='/login'>로그인/회원가입</Link>
         </li>
         <li>
-          <Link to='/main'>역찾기</Link>
+          <Link to='/'>역찾기</Link>
+        </li>
+        <li>
+          <Link to='/admin'>관리자</Link>
         </li>
         <li>
           <Link to='/user'>마이페이지</Link>
@@ -24,8 +27,15 @@ const Nav = () => {
 };
 
 const NavigationBar = styled.nav`
-  background-color: #f0f0f0;
+  background-color: #4b2789;
   padding: 1rem;
+  height: 30px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: fixed;
+  background-color: #4b2789;
+  z-index: 9999;
 
   ul {
     display: flex;
@@ -35,6 +45,10 @@ const NavigationBar = styled.nav`
 
     li {
       margin-right: 1rem;
+
+      a {
+        color: #fff;
+      }
     }
   }
 `;
