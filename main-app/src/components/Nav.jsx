@@ -18,6 +18,9 @@ const Nav = () => {
         <li>
           <Link to='/admin'>관리자</Link>
         </li>
+        <li>
+          <Link to='/user'>마이페이지</Link>
+        </li>
       </ul>
     </NavigationBar>
   );

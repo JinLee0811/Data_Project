@@ -3,10 +3,13 @@ import SearchSide from "./mainPage/SearchSide";
 import StationListSide from "./mainPage/StationListSide";
 import StationInfoSide from "./mainPage/StationInfoSide";
 import LoginPage from "./loginPage";
-import KakaoLogin from "./loginPage/KakaoLogin";
 import RegisterPage from "./registerPage";
-import UserPage from "./userPage/index";
-import AdminPage from "./adminPage/index";
+import UserPage from "./userPage/myPage";
+import UserInfo from "./userPage/userInfo";
+import AboutPage from "./aboutPage";
+import AdminPage from "./adminPage";
+import KakaoLogin from "./loginPage/KakaoLogin";
+import UserEdit from "./userPage/UserEdit";
 
 export {
   MainPage,
@@ -18,4 +21,8 @@ export {
   RegisterPage,
   KakaoLogin,
   AdminPage,
+  UserPage,
+  UserInfo,
+  AboutPage,
+  UserEdit,
 };

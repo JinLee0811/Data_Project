@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const UserPage = () => {
+const UserEdit = () => {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -136,4 +136,4 @@ const Button = styled.button`
   }
 `;
 
-export default UserPage;
+export default UserEdit;

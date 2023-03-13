@@ -13,7 +13,10 @@ import {
   UserPage,
   KakaoLogin,
   AdminPage,
+  UserInfo,
+  AboutPage,
 } from "./pages";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -57,6 +60,20 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPage />,
+      },
+      {
+        path: "/user",
+        element: <UserPage />,
+        children: [
+          {
+            path: "userinfo",
+            element: <UserInfo />,
+          },
+        ],
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
       },
     ],
   },

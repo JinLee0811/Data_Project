@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import MultiRangeSlider from '../../utils/MultiRangeSlider';
 
 const SearchSide = () => {
-  const [minPrice, setMinPrice] = useState(10);
-  const [commuteTime, setCommuteTime] = useState(10);
-  const minPriceRef = useRef(null);
+  const [price, setPrice] = useState({ min: 10, max: 100 });
+  const [commuteTime, setCommuteTime] = useState({ min: 10, max: 120 });
 
   return (
     <SearchSideContainer>
@@ -21,22 +21,20 @@ const SearchSide = () => {
             />
           </Fieldset>
           <Fieldset>
-            <RangeInfo>{commuteTime}분</RangeInfo>
             <legend>희망 소요시간 </legend>
-            <input
-              id='commuteTime'
-              class='input'
-              type='range'
-              name='time'
-              min='10'
-              max='120'
+            <RangeInfo>
+              {commuteTime.min} ~ {commuteTime.max}분
+            </RangeInfo>
+            <MultiRangeSlider
+              min={10}
+              max={120}
+              step={10}
               value={commuteTime}
-              onChange={(e) => {
-                setCommuteTime(e.target.value);
-              }}
-            />
+              onChange={setCommuteTime}
+            ></MultiRangeSlider>
           </Fieldset>
-          <Fieldset>
+
+          <Fieldset className='radioContainer'>
             <legend>거래유형 </legend>
             <label htmlFor='rent'>전세: </label>
             <input id='jeonse' type='radio' name='rent' />
@@ -44,21 +42,17 @@ const SearchSide = () => {
             <input id='monthlyRent' type='radio' name='rent' />
           </Fieldset>
           <Fieldset>
-            <RangeInfo>{minPrice}만원</RangeInfo>
             <legend>단위면적 당 가격 </legend>
-            <input
-              id='pricePerArea'
-              class='input'
-              type='range'
-              name='price'
-              min='10'
-              max='100'
-              value={minPrice}
-              ref={minPriceRef}
-              onChange={(e) => {
-                setMinPrice(e.target.value);
-              }}
-            />
+            <RangeInfo>
+              {price.min} ~ {price.max} 만원
+            </RangeInfo>
+            <MultiRangeSlider
+              min={10}
+              max={100}
+              step={5}
+              value={price}
+              onChange={setPrice}
+            ></MultiRangeSlider>
           </Fieldset>
         </FieldContainer>
       </SearchForm>
@@ -71,27 +65,34 @@ const SearchSide = () => {
 
 const SearchSideContainer = styled.div``;
 
-const SearchForm = styled.form`
-  padding: 15px;
-`;
+const SearchForm = styled.form``;
 
 const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .queryContainer{
+  .queryContainer {
     border: 0px;
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
+  .radioContainer {
+    flex-direction: row;
+    padding-top: 50px;
   }
 `;
 const Fieldset = styled.fieldset`
   display: flex;
+  flex-direction: column;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
   width: 93%;
   border: solid #4b278913;
-  border-width: 1px 0 1px 0;
-  margin: 10px 0;
-  padding: 30px;
-  
+  border-width: 1px 0 0px 0;
+  padding-top: 60px;
+
   legend {
     font-family: 'NanumSquareNeoExtraBold';
   }
@@ -100,19 +101,15 @@ const Fieldset = styled.fieldset`
     outline: none;
   }
   #query {
-    width: 88%;
+    width: 80%;
     height: 45px;
     margin: 10px auto;
     border: 3px solid #4b2789;
     padding: 0px 20px;
     border-radius: 4px;
-    margin-bottom: 50px;
   }
-
-  input[type='range'] {
-    width: 60%;
-    margin: auto;
-    filter: hue-rotate(45deg);
+  #query:focus {
+    border: 3px solid #6e39c9;
   }
 
   input[type='radio'] {
@@ -123,9 +120,13 @@ const Fieldset = styled.fieldset`
     border-radius: 50%;
     width: 1.25em;
     height: 1.25em;
+    cursor: pointer;
   }
-  label{
+  label {
     margin-left: 16px;
+  }
+  input[type='radio']:hover {
+    border: 3px solid #b3b3b3;
   }
 
   input[type='radio']:checked {
@@ -134,16 +135,15 @@ const Fieldset = styled.fieldset`
 `;
 
 const RangeInfo = styled.div`
-  width: 70px;
-  text-align: right;
+  position: absolute;
+  padding-bottom: 50px;
 `;
 
 const SearchButton = styled.div`
   display: flex;
-  position: absolute;
-  bottom: 220px;
-  left: 130px;
-  box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.1);
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
   a {
     border-radius: 3px;
     line-height: 50px;
@@ -153,8 +153,11 @@ const SearchButton = styled.div`
     color: white;
     background-color: #8b5ad8;
     text-decoration: none;
+    box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.1);
+  }
+  a:hover {
+    background-color: #8a5ad8d8;
   }
 `;
-
 
 export default SearchSide;
