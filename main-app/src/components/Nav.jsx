@@ -15,6 +15,9 @@ const Nav = () => {
         <li>
           <Link to='/main'>역찾기</Link>
         </li>
+        <li>
+          <Link to='/user'>마이페이지</Link>
+        </li>
       </ul>
     </NavigationBar>
   );
