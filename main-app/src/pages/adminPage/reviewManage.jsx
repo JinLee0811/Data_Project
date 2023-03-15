@@ -76,7 +76,7 @@ const TableHeader = styled.th`
 `;
 
 const TableData = styled.td`
-  padding: 0.5px;
+  border-bottom: 1px solid #ddd;
 `;
 
 const DeleteButton = styled.button`
@@ -84,10 +84,10 @@ const DeleteButton = styled.button`
   border: none;
   color: #fff;
   padding: 0.5rem;
+  margin: 0.5rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 1rem 0.5rem;
   cursor: pointer;
   border-radius: 0.5rem;
   font-size: 0.7rem;

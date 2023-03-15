@@ -8,36 +8,29 @@ function LoginPage() {
     password: "",
     confirmPassword: "",
   });
-  const [emailError, setEmailError] = useState();
-  const [passwordError, setPasswordError] = useState();
 
-  const validateEmail = (email) => {
-    // simple condition to check email format
-    if (!inputs.email.includes("@")) {
-      setEmailError("유효한 이메일을 입력해주세요.");
-    } else {
-      setEmailError("");
-    }
-  };
+  function emailCheck(email) {
+    const regex =
+      /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
+    return email.match(regex) !== null;
+  }
 
-  const validatePassword = (password) => {
-    // simple condition to check password length
-    if (inputs.password.length <= 3) {
-      setPasswordError("패스워드는 3자리 이상 입력해주세요.");
-    } else {
-      setPasswordError("");
+  const validateForm = ({ email, password }) => {
+    if (emailCheck(email) === false) {
+      return "이메일 형식이 올바르지 않습니다.";
     }
+    if (password.length < 4) {
+      return "비밀번호는 4글자 이상이어야합니다.";
+    }
+    return true;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    validateEmail(inputs.email);
-    validatePassword(inputs.password);
-
-    // submit form if there are no errors
-    if (!emailError && !passwordError) {
-      console.log("폼이 정상적으로 제출되었습니다!");
-      console.log(inputs.email, inputs.password);
+    const validated = validateForm(inputs);
+    if (typeof validated === "string") {
+      alert(validated);
+      return;
     }
   };
   const handleChange = (e) => {
@@ -60,10 +53,8 @@ function LoginPage() {
           value={inputs.email}
           placeholder='이메일'
           onChange={handleChange}
-          onBlur={(event) => validateEmail(event.target.value)}
           required
         />
-        {emailError && <Error>{emailError}</Error>}
 
         <Input
           type='password'
@@ -71,41 +62,40 @@ function LoginPage() {
           value={inputs.password}
           placeholder='비밀번호'
           onChange={handleChange}
-          onBlur={(event) => validatePassword(event.target.value)}
           required
         />
-        {passwordError && <Error>{passwordError}</Error>}
+
         <Button type='submit'>로그인</Button>
+        <Link to='/register'>
+          <RegisterButton> 회원가입 </RegisterButton>
+        </Link>
       </Form>
 
       <Break />
 
-      <Link to='https://kauth.kakao.com/oauth/authorize?client_id=4dab466378fe064ea806e2c8eedd72f5&redirect_uri=http://localhost:3000/kakaologin&response_type=code'>
+      <a href={process.env.REACT_APP_KAKAO_AUTH_URL}>
         <KakaoButton> 카카오 로그인 </KakaoButton>
-      </Link>
-      <Link to='/register'>회원가입</Link>
-
-      {/* <Link to={process.env.REACT_APP_KAKAO_AUTH_URL}>zkzkdh</Link> */}
+      </a>
     </Container>
   );
 }
 
-const Title = styled.h1`
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-`;
-
 const Container = styled.section`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  align-items: center;
   padding-top: 80px;
-  width: 300px;
+`;
+
+const Title = styled.h1`
+  font-size: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
 `;
 
@@ -113,15 +103,39 @@ const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
+  box-sizing: border-box;
+  width: 300px;
 `;
 
 const Button = styled.button`
   background-color: #4b2789;
   color: #fff;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   border: none;
   border-radius: 4px;
+  box-sizing: border-box;
+  width: 300px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #8b5ad8;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const RegisterButton = styled.button`
+  background-color: #fff;
+  color: #4b2789;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: solid 1px #4b2789;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 300px;
   cursor: pointer;
 
   &:hover {
@@ -145,14 +159,9 @@ const KakaoButton = styled.button`
   width: 300px;
 `;
 
-const Error = styled.div`
-  color: #8b5ad8;
-  font-size: 0.875rem;
-`;
-
 const Break = styled.hr`
-  border: none;
   border-top: 1px solid #ccc;
+  /* width: 300px; */
   margin: 2em 0;
 `;
 

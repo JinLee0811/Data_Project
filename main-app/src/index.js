@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import App from "./App";
 import {
   MainPage,
   SearchSide,
@@ -16,95 +16,112 @@ import {
   AdminPage,
   MyPage,
   AboutPage,
+  UserManage,
+  ReviewManage,
+  Calculate,
   Withdrawl,
   NickChange,
   WishList,
   Review,
-} from './pages';
+} from "./pages";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
-        path: '',
+        path: "",
         element: <MainPage />,
         children: [
           {
-            path: '',
+            path: "",
             element: <SearchSide />,
           },
           {
-            path: 'stationlist',
+            path: "stationlist",
             element: <StationListSide />,
           },
           {
-            path: 'staioninfo',
+            path: "staioninfo",
             element: <StationInfoSide />,
           },
         ],
       },
       {
-        path: '/login',
+        path: "/login",
         element: <LoginPage />,
       },
       {
-        path: '/kakaologin',
+        path: "/kakaologin",
         element: <KakaoLogin />,
       },
 
       {
-        path: '/register',
+        path: "/register",
         element: <RegisterPage />,
       },
       {
-        path: '/user',
+        path: "/user",
         element: <UserPage />,
       },
       {
-        path: '/admin',
+        path: "/admin",
         element: <AdminPage />,
+        children: [
+          {
+            path: "user",
+            element: <UserManage />,
+          },
+          {
+            path: "review",
+            element: <ReviewManage />,
+          },
+          {
+            path: "calculate",
+            element: <Calculate />,
+          },
+        ],
       },
       {
-        path: '/user',
+        path: "/user",
         element: <UserPage />,
         children: [
           {
-            path: '',
+            path: "",
             element: <MyPage />,
           },
           {
-            path: 'useredit',
+            path: "useredit",
             element: <UserEdit />,
           },
           {
-            path: 'withdrawl',
+            path: "withdrawl",
             element: <Withdrawl />,
           },
           {
-            path: 'nickchange',
+            path: "nickchange",
             element: <NickChange />,
           },
           {
-            path: 'review',
+            path: "review",
             element: <Review />,
           },
           {
-            path: 'wishlist',
+            path: "wishlist",
             element: <WishList />,
           },
         ],
       },
       {
-        path: '/about',
+        path: "/about",
         element: <AboutPage />,
       },
     ],
   },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
