@@ -19,10 +19,8 @@ export default function KakaoLogin() {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          data: `grant_type=authorization_code&client_id=4dab466378fe064ea806e2c8eedd72f5&redirect_uri=https://kauth.kakao.com/oauth/authorize?client_id=4dab466378fe064ea806e2c8eedd72f5&redirect_uri=http://localhost:3000/kakaologin&response_type=code&code=${KAKAO_CODE}`,
+          data: `grant_type=authorization_code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${KAKAO_CODE}`,
         });
-
-        // data: `grant_type=authorization_code&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&code=${KAKAO_CODE}`,
 
         const data = await res.json();
         console.log(data);

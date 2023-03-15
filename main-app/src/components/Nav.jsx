@@ -7,17 +7,24 @@ const Nav = () => {
     <NavigationBar>
       <ul>
         <li>
-          <Link to='/'>소개</Link>
-        </li>
-        <li>
-          <Link to='/login'>로그인/회원가입</Link>
+          <Link to='/about'>소개</Link>
         </li>
         <li>
           <Link to='/'>역찾기</Link>
         </li>
+      </ul>
+
+      <ul>
         <li>
-          <Link to='/admin'>관리자</Link>
+          <Link to='/admin/user'>관리자</Link>
         </li>
+        <li>
+          <Link to='/register'>회원가입</Link>
+        </li>
+        <li>
+          <Link to='/login'>로그인</Link>
+        </li>
+
         <li>
           <Link to='/user'>마이페이지</Link>
         </li>
@@ -31,12 +38,8 @@ const NavigationBar = styled.nav`
   padding: 1rem;
   height: 30px;
   display: flex;
-  width: 100%;
   align-items: center;
-  position: fixed;
-  background-color: #4b2789;
-  z-index: 9999;
-
+  justify-content: space-between;
   ul {
     display: flex;
     list-style: none;
@@ -44,7 +47,8 @@ const NavigationBar = styled.nav`
     padding: 0;
 
     li {
-      margin-right: 1rem;
+      margin: 0 0.5rem;
+      font-size: 0.8rem;
 
       a {
         color: #fff;

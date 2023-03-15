@@ -15,6 +15,9 @@ import {
   AdminPage,
   UserInfo,
   AboutPage,
+  UserManage,
+  ReviewManage,
+  Calculate,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -60,6 +63,20 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminPage />,
+        children: [
+          {
+            path: "user",
+            element: <UserManage />,
+          },
+          {
+            path: "review",
+            element: <ReviewManage />,
+          },
+          {
+            path: "calculate",
+            element: <Calculate />,
+          },
+        ],
       },
       {
         path: "/user",

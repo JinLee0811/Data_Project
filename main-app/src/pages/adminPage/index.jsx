@@ -1,77 +1,70 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import UserManage from "./userManage";
-import ReviewManage from "./reviewManage";
-import Calculate from "./calculate";
+import UserManage from "./UserManage";
+import ReviewManage from "./ReviewManage";
+import Calculate from "./Calculate";
+import { Outlet, NavLink } from "react-router-dom";
 
 function Sidebar({ onSelect, currentSelection }) {
   const items = ["사용자 관리", "리뷰 관리", "계산식"];
+
   return (
     <Aside>
       <ul>
-        {items.map((item) => (
-          <li
-            key={item}
-            onClick={() => onSelect(item)}
-            className={currentSelection === item ? "selected" : ""}
-          >
-            {item}
-          </li>
-        ))}
+        <li>
+          <NavLink to='/admin/user'>사용자 관리</NavLink>
+        </li>
+        <li>
+          <NavLink to='/admin/review'>리뷰 관리</NavLink>
+        </li>
+        <li>
+          <NavLink to='/admin/calculate'>계산식</NavLink>
+        </li>
       </ul>
     </Aside>
   );
 }
 
-function MainContent({ currentSelection }) {
-  switch (currentSelection) {
-    case "사용자 관리":
-      return <UserManage />;
-    case "리뷰 관리":
-      return <ReviewManage />;
-    case "계산식":
-      return <Calculate />;
-    default:
-      return null;
-  }
-}
-
 function AdminPage() {
-  const [currentSelection, setCurrentSelection] = useState("사용자 관리");
-
   return (
     <Container>
-      <Sidebar onSelect={setCurrentSelection} />
+      <Sidebar />
       <MainContainer>
-        <MainContent currentSelection={currentSelection} />
+        <Outlet />
       </MainContainer>
     </Container>
   );
 }
 
-const MainContainer = styled.section`
-  flex-grow: 3;
-`;
-
 const Container = styled.section`
   display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  padding-top: 120px;
-  width: 100%;
+  flex-direction: row;
+  height: 100vh;
+`;
+
+const MainContainer = styled.section`
+  flex: 1;
+  padding: 40px;
 `;
 
 const Aside = styled.aside`
-  flex-grow: 1;
+  width: 200px; // adjust the width as necessary
+  background-color: #f2f2f2; // sets the background color of the sidebar
+  position: relative; // fixes the sidebar in place
+  top: 0;
+  left: 0;
+  bottom: 0;
+
   ul {
     list-style: none;
+    margin-top: 40px;
     li {
       margin-bottom: 2rem;
       cursor: pointer;
     }
-    .selected {
-      text-decoration: underline;
-      color: red;
+    .active {
+      border-bottom: 2px solid #4b2789;
+      /* padding-bottom: 3px; */
     }
   }
 `;

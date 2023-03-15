@@ -10,6 +10,9 @@ import AboutPage from "./aboutPage";
 import AdminPage from "./adminPage";
 import KakaoLogin from "./loginPage/KakaoLogin";
 import UserEdit from "./userPage/UserEdit";
+import ReviewManage from "./adminPage/ReviewManage";
+import UserManage from "./adminPage/UserManage";
+import Calculate from "./adminPage/Calculate";
 
 export {
   MainPage,
@@ -21,8 +24,10 @@ export {
   RegisterPage,
   KakaoLogin,
   AdminPage,
-  UserPage,
   UserInfo,
   AboutPage,
   UserEdit,
+  ReviewManage,
+  UserManage,
+  Calculate,
 };
