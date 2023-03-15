@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
   return (
     <NavigationBar>
       <ul>
         <li>
-          <Link to='/'>소개</Link>
+          <Link to='/about'>소개</Link>
         </li>
         <li>
           <Link to='/login'>로그인/회원가입</Link>
@@ -31,11 +31,7 @@ const NavigationBar = styled.nav`
   padding: 1rem;
   height: 30px;
   display: flex;
-  width: 100%;
   align-items: center;
-  position: fixed;
-  background-color: #4b2789;
-  z-index: 9999;
 
   ul {
     display: flex;
