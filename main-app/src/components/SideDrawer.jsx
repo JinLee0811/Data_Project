@@ -1,15 +1,19 @@
+import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SideDrawer = (props) => {
+  const nodeRef = useRef(null);
+
   return (
     <CSSTransition
       in={props.show}
-      //   timeout={500}
+      timeout={500}
       classNames='slide-in-left'
       mountOnEnter
       unmountOnExit
+      nodeRef={nodeRef}
     >
       <Aside>
         <ul>

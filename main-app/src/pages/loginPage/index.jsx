@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 function LoginPage() {
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
+
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
   });
 
   function emailCheck(email) {
@@ -25,14 +27,27 @@ function LoginPage() {
     return true;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const validated = validateForm(inputs);
     if (typeof validated === 'string') {
       alert(validated);
       return;
     }
+    try {
+      const response = await fetch(serverUrl + '/login', {
+        method: 'POST',
+        body: JSON.stringify(inputs),
+        headers: { 'Content-type': 'application/json' },
+      });
+      const data = response.json();
+      console.log(data);
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs({
@@ -40,8 +55,6 @@ function LoginPage() {
       [name]: value,
     });
   };
-
-  console.log(process.env.REACT_APP_KAKAO_AUTH_URL);
 
   return (
     <Container>

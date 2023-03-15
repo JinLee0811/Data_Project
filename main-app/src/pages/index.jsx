@@ -14,6 +14,9 @@ import UserEdit from './userPage/UserEdit';
 import AboutPage from './aboutPage';
 import AdminPage from './adminPage';
 import KakaoLogin from './loginPage/KakaoLogin';
+import ReviewManage from './adminPage/ReviewManage';
+import UserManage from './adminPage/UserManage';
+import Calculate from './adminPage/Calculate';
 
 export {
   MainPage,
@@ -32,4 +35,7 @@ export {
   NickChange,
   Review,
   WishList,
+  ReviewManage,
+  UserManage,
+  Calculate,
 };
