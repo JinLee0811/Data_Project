@@ -44,7 +44,31 @@ const datasets = {
   ],
 };
 const options = {
-  plugins: {},
+  plugins: [
+    {
+      afterLayout: (chart) => {
+        let ctx = chart.chart.ctx;
+        ctx.save();
+        let yAxis = chart.scales['y-axis-0'];
+        let yThresholdMax = yAxis.getPixelForValue(data.limits.max);
+        let yThresholdMin = yAxis.getPixelForValue(data.limits.min);
+
+        let offsetMax = (1 / yAxis.bottom) * yThresholdMax;
+        let offsetMin = (1 / yAxis.bottom) * yThresholdMin;
+
+        let gradient = ctx.createLinearGradient(0, yAxis.top, 0, yAxis.bottom);
+
+        gradient.addColorStop(0, 'red');
+        gradient.addColorStop(offsetMax, 'darkred');
+        gradient.addColorStop(offsetMax, 'blue');
+        gradient.addColorStop(offsetMin, 'blue');
+        gradient.addColorStop(offsetMin, 'darkred');
+        gradient.addColorStop(1, 'red');
+        chart.data.datasets[0].borderColor = gradient;
+        ctx.restore();
+      },
+    },
+  ],
   animation: {
     duration: 2000,
   },

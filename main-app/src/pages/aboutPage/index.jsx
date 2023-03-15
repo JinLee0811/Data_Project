@@ -104,11 +104,7 @@ const AboutPage = () => {
         </ChartContainer>
       </InsightContainer1>
 
-      <TrainContainer
-        style={{
-          backgroundColor: `${scrollPosition > 5500 ? ' #B4C9DE' : ''}`,
-        }}
-      >
+      <TrainContainer>
         <TrainImage
           src={scrollPosition < 5515 ? trainImg : trainImgAfter}
           style={{
@@ -400,6 +396,9 @@ const TrainDescribe = styled.div`
   top: 800px;
   p {
     font-size: 50px;
+    color: black;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff,
+      0 0 40px #fff, 0 0 55px #fff, 0 0 75px #fff;
   }
 `;
 const RushHourContainer = styled.div`
@@ -408,6 +407,7 @@ const RushHourContainer = styled.div`
   grid-template-columns: 1fr 450px;
   height: 1900px;
   position: relative;
+
   .rushHourImage {
     background-image: url(${rushHourImg});
     background-size: cover;
@@ -423,6 +423,7 @@ const RushHourContainer = styled.div`
     padding-top: 100px;
     padding-bottom: 150px;
     top: 0px;
+
     span {
       font-size: 40px;
       opacity: 0.3;
