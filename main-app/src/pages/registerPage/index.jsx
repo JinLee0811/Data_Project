@@ -4,9 +4,11 @@ import styled from "styled-components";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const serverUrl = process.env.REACT_APP_API_URL;
+
   const [inputs, setInputs] = useState({
     userName: "",
-    nickName: "",
+    nickname: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -18,6 +20,7 @@ const RegisterPage = () => {
       ...inputs,
       [name]: value,
     });
+    console.log(name, value);
   };
 
   function emailCheck(email) {
@@ -28,7 +31,7 @@ const RegisterPage = () => {
 
   const validateForm = ({
     userName,
-    nickName,
+    nickname,
     email,
     password,
     confirmPassword,
@@ -39,7 +42,7 @@ const RegisterPage = () => {
     if (userName.length < 2) {
       return "두글자 이상의 이름을 설정해주세요.";
     }
-    if (nickName.length < 2) {
+    if (nickname.length < 2) {
       return "두글자 이상의 닉네임을 설정해주세요.";
     }
     if (password.length < 4) {
@@ -51,16 +54,24 @@ const RegisterPage = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validated = validateForm(inputs);
     if (typeof validated === "string") {
       alert(validated);
       return;
     }
-    const { userName, nickName, email, password } = inputs;
-    console.log(userName, nickName, email, password);
-    alert("회원가입이 완료되었습니다");
+
+    try {
+      await fetch(serverUrl + "/register", {
+        method: "POST",
+        body: JSON.stringify(inputs),
+        headers: { "Content-type": "application/json" },
+      });
+      navigate("/login");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -76,9 +87,9 @@ const RegisterPage = () => {
         />
         <Input
           type='text'
-          name='nickName'
+          name='nickname'
           placeholder='닉네임'
-          value={inputs.nickName}
+          value={inputs.nickname}
           onChange={handleChange}
         />
         <Input
