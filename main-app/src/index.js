@@ -11,13 +11,18 @@ import {
   LoginPage,
   RegisterPage,
   UserPage,
+  UserEdit,
   KakaoLogin,
   AdminPage,
-  UserInfo,
+  MyPage,
   AboutPage,
   UserManage,
   ReviewManage,
   Calculate,
+  Withdrawl,
+  NickChange,
+  WishList,
+  Review,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -83,8 +88,28 @@ const router = createBrowserRouter([
         element: <UserPage />,
         children: [
           {
-            path: "userinfo",
-            element: <UserInfo />,
+            path: "",
+            element: <MyPage />,
+          },
+          {
+            path: "useredit",
+            element: <UserEdit />,
+          },
+          {
+            path: "withdrawl",
+            element: <Withdrawl />,
+          },
+          {
+            path: "nickchange",
+            element: <NickChange />,
+          },
+          {
+            path: "review",
+            element: <Review />,
+          },
+          {
+            path: "wishlist",
+            element: <WishList />,
           },
         ],
       },

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
 
 const sampleData = [
   {
@@ -20,7 +19,7 @@ const sampleLikeData = [
   },
 ];
 
-function MyPage(props) {
+function Review(props) {
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
 
@@ -40,17 +39,6 @@ function MyPage(props) {
   const userLikeCount = userLike.length;
 
   return (<>
-      <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
-        <DetailSection>
-          <SectionContent>
-          {likes.map((like) => (
-                <SubwayBox key={like.id}>
-                  <DeleteButton>x</DeleteButton>
-                 {like.station}
-                </SubwayBox>
-              ))}
-            </SectionContent>
-        </DetailSection>
         <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
         <DetailSection>
           <SectionContent>
@@ -71,25 +59,12 @@ const DetailSection = styled.div`
   padding: 50px;
   border-radius: 5px;
   background-color: #E0DAFC;
+  width: 500px;
+  height: 400px;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 20px;
-`;
-const SubwayBox = styled.div`
-  margin: 5px 5px;
-  padding: 20px 20px 20px 20px;
-  background-color: white;
-  border-radius: 100px;
-  display: inline-block;
-  :hover{
-    background-color: #8B5AD8;
-    color: white;
-    button {
-      background-color: #8B5AD8;
-      color: white;
-    }
-  }
 `;
 
 const ReviewBox = styled.div`
@@ -129,4 +104,4 @@ const DeleteButton = styled.button`
 `
 
 
-export default MyPage;
+export default Review;

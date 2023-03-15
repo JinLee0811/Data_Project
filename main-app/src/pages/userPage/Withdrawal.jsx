@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const UserEdit = () => {
+const Withdrawl = () => {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -45,54 +45,19 @@ const UserEdit = () => {
 
   return (
     <>
+     <Greeting>
+        어디 가게?
+      </Greeting>
       <Form onSubmit={handleSubmit}>
-        <Input
-          type='email'
-          name='email'
-          placeholder='UserEmail'
-          value={inputs.email}
-          onChange={handleChange}
-          disabled
-        />
-        <Input
+      <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
+      <Input
           type='text'
-          name='userName'
-          placeholder='UserName'
-          value={inputs.userName}
-          onChange={handleChange}
-          disabled
-        />
-          <Input
-          type='text'
-          name='nickName'
-          placeholder='닉네임'
-          value={inputs.nickName}
-          onChange={handleChange}
-          disabled
-        />
-        <Input
-          type='password'
           name='password'
-          placeholder='현재 비밀번호 입력'
+          placeholder='비밀번호'
           value={inputs.password}
           onChange={handleChange}
         />
-        <Input
-          type='password'
-          name='newPassword'
-          placeholder='변경할 비밀번호 입력'
-          value={inputs.newPassword}
-          onChange={handleChange}
-        />
-        <Input
-          type='password'
-          name='confirmNewPassword'
-          placeholder='변경할 비밀번호 재입력'
-          value={inputs.confirmNewPassword}
-          onChange={handleChange}
-        />
-        <Button type='submit'>정보 수정하기</Button>
-
+        <Button type='submit'>회원 탈퇴</Button>
       </Form>
     </>
   );
@@ -103,6 +68,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 1rem;
   margin: 0 auto;
+  margin-bottom: 50px;
   width: 500px;
 `;
 
@@ -111,6 +77,18 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 0.25rem;
 `;
+
+const Greeting = styled.h2`
+    white-space: pre-wrap;
+    margin: 0px 0px 100px 0px;
+`;
+const ConfirmBox = styled.h4`
+    color: gray;
+    white-space: pre-wrap;
+    margin: 0px;
+    margin-top: 20px;
+    
+`
 
 const Button = styled.button`
   background-color: #8b5ad8;
@@ -131,4 +109,4 @@ const Button = styled.button`
   }
 `;
 
-export default UserEdit;
+export default Withdrawl;

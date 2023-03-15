@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect, useRef } from 'react';
+import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
 const mapOption = {
   //모든 지도 컨트롤 숨기기
@@ -35,7 +35,7 @@ const MainContainer = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: 320px 1fr;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 62px);
   *:focus {
     outline: none;
   }
