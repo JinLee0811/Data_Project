@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import UserManage from "./UserManage";
-import ReviewManage from "./ReviewManage";
-import Calculate from "./Calculate";
 import { Outlet, NavLink } from "react-router-dom";
 
-function Sidebar({ onSelect, currentSelection }) {
-  const items = ["사용자 관리", "리뷰 관리", "계산식"];
-
+function Sidebar() {
   return (
     <Aside>
       <ul>
@@ -40,17 +35,21 @@ const Container = styled.section`
   display: flex;
   flex-direction: row;
   height: 100vh;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const MainContainer = styled.section`
   flex: 1;
   padding: 40px;
+  font-size: 0.8rem;
 `;
 
 const Aside = styled.aside`
-  width: 200px; // adjust the width as necessary
-  background-color: #f2f2f2; // sets the background color of the sidebar
-  position: relative; // fixes the sidebar in place
+  width: 200px;
+  background-color: #f2f2f2;
+  position: relative;
   top: 0;
   left: 0;
   bottom: 0;
@@ -61,11 +60,26 @@ const Aside = styled.aside`
     li {
       margin-bottom: 2rem;
       cursor: pointer;
+      font-size: 0.8rem;
     }
     .active {
       border-bottom: 2px solid #4b2789;
       /* padding-bottom: 3px; */
     }
+    @media (max-width: 768px) {
+      display: flex;
+      padding-inline-start: 0;
+      li {
+        padding-right: 1rem;
+        margin: 0;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #fff;
   }
 `;
 
