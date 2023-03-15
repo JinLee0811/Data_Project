@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
 
 const sampleData = [
   {
@@ -20,7 +19,7 @@ const sampleLikeData = [
   },
 ];
 
-function MyPage(props) {
+function WishList(props) {
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
 
@@ -29,15 +28,11 @@ function MyPage(props) {
     const userId = 2;
     setReviews(sampleData.filter((review) => review.userId === userId));
   }, []);
-  const userOneReviews = reviews.filter((review) => review.userId === 2);
-  const userOneReviewsCount = userOneReviews.length;
 
   useEffect(() => {
     const userId = 2;
     setLike(sampleLikeData.filter((like) => like.userId === userId));
   }, []);
-  const userLike = likes.filter((like) => like.userId === 2);
-  const userLikeCount = userLike.length;
 
   return (<>
       <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
@@ -51,17 +46,6 @@ function MyPage(props) {
               ))}
             </SectionContent>
         </DetailSection>
-        <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
-        <DetailSection>
-          <SectionContent>
-              {reviews.map((review) => (
-                <ReviewBox key={review.id}>
-                  <DeleteButton>x</DeleteButton>
-                 ({review.timeStamp}) {review.title} - {review.content}
-                </ReviewBox>
-              ))}
-            </SectionContent>
-        </DetailSection>
     </>
   );
 }
@@ -70,6 +54,8 @@ const DetailSection = styled.div`
   margin-top: 20px;
   padding: 50px;
   border-radius: 5px;
+  width: 500px;
+  height: 400px;
   background-color: #E0DAFC;
 `;
 
@@ -92,22 +78,6 @@ const SubwayBox = styled.div`
   }
 `;
 
-const ReviewBox = styled.div`
-  margin: 0px 0px 15px 0px;
-  padding: 20px 20px 20px 20px;
-  background-color: white;
-  border-radius: 100px;
-  display: inline-block;
-  font-size: 13px;
-  :hover{
-    background-color: #8B5AD8;
-    color: white;
-    button {
-      background-color: #8B5AD8;
-      color: white;
-    }
-    }
-`;
 
 const SectionContent = styled.div`
   font-size: 16px;
@@ -129,4 +99,4 @@ const DeleteButton = styled.button`
 `
 
 
-export default MyPage;
+export default WishList;
