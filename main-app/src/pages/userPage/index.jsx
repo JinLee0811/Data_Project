@@ -260,5 +260,4 @@ p span {
 }
 `;
 
-
 export default UserPage;

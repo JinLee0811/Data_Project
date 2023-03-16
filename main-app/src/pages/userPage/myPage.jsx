@@ -35,6 +35,12 @@ function MyPage(props) {
           {likes.map((like) => (
                 <SubwayBox key={like.id}>
                   <DeleteButton>x</DeleteButton>
+
+
+
+
+
+                  
                  {like.station}
                 </SubwayBox>
               ))}
