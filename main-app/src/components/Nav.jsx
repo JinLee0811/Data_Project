@@ -1,11 +1,13 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SideDrawer from "./SideDrawer";
+import { AuthContext } from "../utils/AuthContext";
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   const handleOpenDrawer = () => {
     setDrawerIsOpen(true);
@@ -38,16 +40,23 @@ const Nav = () => {
           <li>
             <Link to='/admin/user'>관리자</Link>
           </li>
-          <li>
-            <Link to='/register'>회원가입</Link>
-          </li>
-          <li>
-            <Link to='/login'>로그인</Link>
-          </li>
-
-          <li>
-            <Link to='/user'>마이페이지</Link>
-          </li>
+          {isLoggedIn ? (
+            <>
+              <li>
+                <Link to='/user'>마이페이지</Link>
+              </li>
+              <li onClick={logout}>로그아웃</li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to='/register'>회원가입</Link>
+              </li>
+              <li>
+                <Link to='/login'>로그인</Link>
+              </li>
+            </>
+          )}
         </ul>
       </NavigationBar>
     </>
@@ -106,6 +115,8 @@ const NavigationBar = styled.nav`
     li {
       margin: 0 0.5rem;
       font-size: 0.9rem;
+      color: #fff;
+      cursor: pointer;
       a {
         color: #fff;
       }

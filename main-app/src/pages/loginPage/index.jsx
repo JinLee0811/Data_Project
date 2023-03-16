@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import { AuthContext } from "../../utils/AuthContext";
 
 function LoginPage() {
   const serverUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useContext(AuthContext);
 
   const [inputs, setInputs] = useState({
     email: "",
@@ -35,18 +38,8 @@ function LoginPage() {
       alert(validated);
       return;
     }
-    try {
-      const response = await axios.post(serverUrl + "/login", inputs, {
-        withCredentials: true,
-      });
-      console.log(response);
-      console.log(response.headers);
-
-      // console.log(token);
-      navigate("/");
-    } catch (e) {
-      console.log(e);
-    }
+    login(inputs.email, inputs.password);
+    navigate("/");
   };
 
   const handleChange = (e) => {
