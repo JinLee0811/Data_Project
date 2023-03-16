@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const sampleData = [
-  
-];
+const sampleData = [];
 
-const sampleLikeData = [
-  
-];
+const sampleLikeData = [];
 
 function MyPage(props) {
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
-
 
   useEffect(() => {
     const userId = 2;
@@ -28,35 +23,30 @@ function MyPage(props) {
   const userLike = likes.filter((like) => like.userId === 2);
   const userLikeCount = userLike.length;
 
-  return (<>
+  return (
+    <>
       <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
-        <DetailSection>
-          <SectionContent>
+      <DetailSection>
+        <SectionContent>
           {likes.map((like) => (
-                <SubwayBox key={like.id}>
-                  <DeleteButton>x</DeleteButton>
-
-
-
-
-
-                  
-                 {like.station}
-                </SubwayBox>
-              ))}
-            </SectionContent>
-        </DetailSection>
-        <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
-        <DetailSection>
-          <SectionContent>
-              {reviews.map((review) => (
-                <ReviewBox key={review.id}>
-                  <DeleteButton>x</DeleteButton>
-                 ({review.timeStamp}) {review.title} - {review.content}
-                </ReviewBox>
-              ))}
-            </SectionContent>
-        </DetailSection>
+            <SubwayBox key={like.id}>
+              <DeleteButton>x</DeleteButton>
+              {like.station}
+            </SubwayBox>
+          ))}
+        </SectionContent>
+      </DetailSection>
+      <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
+      <DetailSection>
+        <SectionContent>
+          {reviews.map((review) => (
+            <ReviewBox key={review.id}>
+              <DeleteButton>x</DeleteButton>({review.timeStamp}) {review.title}{" "}
+              - {review.content}
+            </ReviewBox>
+          ))}
+        </SectionContent>
+      </DetailSection>
     </>
   );
 }
@@ -67,7 +57,7 @@ const DetailSection = styled.div`
   margin-top: 20px;
   padding: 50px;
   border-radius: 5px;
-  background-color: #E0DAFC;
+  background-color: #e0dafc;
 `;
 
 const SectionTitle = styled.h2`
@@ -79,11 +69,11 @@ const SubwayBox = styled.div`
   background-color: white;
   border-radius: 100px;
   display: inline-block;
-  :hover{
-    background-color: #8B5AD8;
+  :hover {
+    background-color: #8b5ad8;
     color: white;
     button {
-      background-color: #8B5AD8;
+      background-color: #8b5ad8;
       color: white;
     }
   }
@@ -96,14 +86,14 @@ const ReviewBox = styled.div`
   border-radius: 100px;
   display: inline-block;
   font-size: 13px;
-  :hover{
-    background-color: #8B5AD8;
+  :hover {
+    background-color: #8b5ad8;
     color: white;
     button {
-      background-color: #8B5AD8;
+      background-color: #8b5ad8;
       color: white;
     }
-    }
+  }
 `;
 
 const SectionContent = styled.div`
@@ -119,11 +109,10 @@ const DeleteButton = styled.button`
   border-radius: 10px;
   padding: 0px;
   margin: 0px 0px 0px 5px;
-  :hover{
+  :hover {
     background-color: white;
     color: white;
   }
-`
-
+`;
 
 export default MyPage;

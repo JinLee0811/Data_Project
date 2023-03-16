@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserEdit = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState('')
+  const [userInfo, setUserInfo] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
@@ -14,9 +14,11 @@ const UserEdit = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(serverUrl + "/account", { withCredentials: true });
+      const response = await axios.get(serverUrl + "/account", {
+        withCredentials: true,
+      });
       setUserInfo(response.data);
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -80,13 +82,8 @@ const UserEdit = () => {
           placeholder={userInfo.email}
           disabled
         />
+        <Input type='text' name='name' placeholder={userInfo.name} disabled />
         <Input
-          type='text'
-          name='name'
-          placeholder={userInfo.name}
-          disabled
-        />
-          <Input
           type='text'
           name='nickName'
           placeholder={userInfo.nickname}
@@ -115,7 +112,6 @@ const UserEdit = () => {
         />
         <Button type='submit'>정보 수정하기</Button>
         {message && <p>{message}</p>}
-
       </Form>
     </>
   );
@@ -143,7 +139,6 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
 
   &:hover {
     background-color: #4b2789;
@@ -153,6 +148,5 @@ const Button = styled.button`
     outline: none;
   }
 `;
-
 
 export default UserEdit;

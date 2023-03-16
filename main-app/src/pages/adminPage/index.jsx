@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Outlet, NavLink } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Outlet, NavLink } from 'react-router-dom';
 
 function Sidebar() {
   return (
@@ -62,6 +62,7 @@ const Aside = styled.aside`
       cursor: pointer;
       font-size: 0.8rem;
     }
+
     .active {
       border-bottom: 2px solid #4b2789;
       /* padding-bottom: 3px; */
