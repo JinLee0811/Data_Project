@@ -230,6 +230,7 @@ const AboutPage = () => {
           </span>
         </div>
       </RushHourContainer>
+
       <InsightContainer3>
         <ChartContainer className='barChart'>
           <ChartDescription>
@@ -247,13 +248,22 @@ const AboutPage = () => {
           <CongestionByLine ref={congestionByLineRef}></CongestionByLine>
         </ChartContainer>
       </InsightContainer3>
+
+      <RealEstateContainer>
+        <CartoonGrid>
+          <CartoonCut>1</CartoonCut>
+          <CartoonCut>2</CartoonCut>
+          <CartoonCut>3</CartoonCut>
+        </CartoonGrid>
+      </RealEstateContainer>
+      <InsightContainer4></InsightContainer4>
     </AboutContainer>
   );
 };
 
 const AboutContainer = styled.div`
   width: 100%;
-  height: 3000px;
+
   font-family: 'NanumSquareNeoExtraBold';
 
   * {
@@ -355,6 +365,10 @@ const InsightContainer3 = styled.div`
   }
 `;
 
+const InsightContainer4 = styled.div`
+  height: 2000px;
+`;
+
 const ChartContainer = styled.div`
   width: 100%;
   justify-content: center;
@@ -434,6 +448,28 @@ const RushHourContainer = styled.div`
         color: #4b2789;
       }
     }
+  }
+`;
+
+const RealEstateContainer = styled.div`
+  height: 2000px;
+`;
+const CartoonGrid = styled.div`
+  display: grid !important;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: 1fr 1.1fr;
+  position: sticky;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background-color: yellowgreen;
+`;
+const CartoonCut = styled.div`
+  margin: 20px;
+  background-color: white;
+  div:nth-child(3) {
+    grid-row: 2/3;
+    grid-column: 1/3;
   }
 `;
 

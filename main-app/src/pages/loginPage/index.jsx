@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 function LoginPage() {
   const serverUrl = process.env.REACT_APP_API_URL;
@@ -35,13 +36,13 @@ function LoginPage() {
       return;
     }
     try {
-      const response = await fetch(serverUrl + '/login', {
-        method: 'POST',
-        body: JSON.stringify(inputs),
-        headers: { 'Content-type': 'application/json' },
+      const response = await axios.post(serverUrl + '/login', inputs, {
+        withCredentials: true,
       });
-      const data = response.json();
-      console.log(data);
+      console.log(response);
+      console.log(response.headers);
+
+      // console.log(token);
       navigate('/');
     } catch (e) {
       console.log(e);
