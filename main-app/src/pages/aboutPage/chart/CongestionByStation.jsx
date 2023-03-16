@@ -44,7 +44,7 @@ const datasets = {
   ],
 };
 const options = {
-  plugins: {},
+  plugins: [{}],
   animation: {
     duration: 2000,
   },
@@ -71,8 +71,19 @@ const data = {
     {
       label: '출근 시간대 지하철 역별 혼잡도',
       data: datasets.congestion,
-      borderColor: '#4b2789',
-      backgroundColor: '#4b2789',
+      backgroundColor: [
+        '#4b2789',
+        '#4b2789',
+        '#4b2789',
+        '#4b2789',
+        '#4b2789',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+      ],
       yAxisID: 'y',
     },
   ],
