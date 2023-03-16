@@ -7,11 +7,15 @@ import trainBgImg from './image/trainBg2.jpg';
 import trainImg from './image/train2.png';
 import trainImgAfter from './image/train3.png';
 import rushHourImg from './image/rushhour.jpg';
+import cut1 from './image/cut1.jpg';
+import cut2 from './image/cut2.jpg';
+import cut3 from './image/cut3.jpg';
 //chart
 import SelectionFactor from './chart/SelectionFactor';
 import SelectionFactor2 from './chart/SelectionFactor2';
 import CongestionByStation from './chart/CongestionByStation';
 import CongestionByLine from './chart/CongestionByLine';
+import RealEstatePrice from './chart/RealEstatePrice';
 
 const AboutPage = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -251,12 +255,37 @@ const AboutPage = () => {
 
       <RealEstateContainer>
         <CartoonGrid>
-          <CartoonCut>1</CartoonCut>
-          <CartoonCut>2</CartoonCut>
-          <CartoonCut>3</CartoonCut>
+          <CartoonCut
+            className={`cut1 ${
+              scrollPosition > 12550 + 0 && scrollPosition < 12550 + 100
+                ? 'focus'
+                : ''
+            }`}
+          ></CartoonCut>
+          <CartoonCut
+            className={`cut2 ${
+              scrollPosition > 12550 + 100 && scrollPosition < 12550 + 200
+                ? 'focus'
+                : ''
+            }`}
+          ></CartoonCut>
+          <CartoonCut
+            className={`cut3 ${
+              scrollPosition > 12550 + 200 && scrollPosition < 12550 + 300
+                ? 'focus'
+                : ''
+            }`}
+          ></CartoonCut>
         </CartoonGrid>
       </RealEstateContainer>
-      <InsightContainer4></InsightContainer4>
+      <InsightContainer4>
+        <ChartContainer>
+          <ChartDescription>
+            지하철 역세권의 가격차이가 이렇게 큽니다요
+          </ChartDescription>
+          <RealEstatePrice></RealEstatePrice>
+        </ChartContainer>
+      </InsightContainer4>
     </AboutContainer>
   );
 };
@@ -452,25 +481,44 @@ const RushHourContainer = styled.div`
 `;
 
 const RealEstateContainer = styled.div`
-  height: 2000px;
+  background-color: black;
+  height: 1600px;
 `;
 const CartoonGrid = styled.div`
   display: grid !important;
   grid-template-columns: 1.3fr 1fr;
   grid-template-rows: 1fr 1.1fr;
   position: sticky;
-  top: 0px;
-  width: 100%;
-  height: 100vh;
-  background-color: yellowgreen;
+  top: 20px;
+  margin: 20px;
+  width: 80%;
+  height: calc(100vh - 60px);
+  background-color: white;
+  padding: 10px;
+  align-items: stretch !important;
+  div:nth-child(3) {
+    grid-column: auto / span 3;
+  }
+  .cut1 {
+    background-image: url(${cut1});
+  }
+  .cut2 {
+    background-image: url(${cut2});
+  }
+  .cut3 {
+    background-image: url(${cut3});
+    background-position: center;
+  }
+  .focus {
+    filter: grayscale(0%);
+  }
 `;
 const CartoonCut = styled.div`
-  margin: 20px;
+  margin: 10px;
   background-color: white;
-  div:nth-child(3) {
-    grid-row: 2/3;
-    grid-column: 1/3;
-  }
+  background-size: cover;
+  filter: grayscale(100%);
+  transition: filter 0.3s;
 `;
 
 export default AboutPage;

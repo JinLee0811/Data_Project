@@ -44,31 +44,7 @@ const datasets = {
   ],
 };
 const options = {
-  plugins: [
-    {
-      afterLayout: (chart) => {
-        let ctx = chart.chart.ctx;
-        ctx.save();
-        let yAxis = chart.scales['y-axis-0'];
-        let yThresholdMax = yAxis.getPixelForValue(data.limits.max);
-        let yThresholdMin = yAxis.getPixelForValue(data.limits.min);
-
-        let offsetMax = (1 / yAxis.bottom) * yThresholdMax;
-        let offsetMin = (1 / yAxis.bottom) * yThresholdMin;
-
-        let gradient = ctx.createLinearGradient(0, yAxis.top, 0, yAxis.bottom);
-
-        gradient.addColorStop(0, 'red');
-        gradient.addColorStop(offsetMax, 'darkred');
-        gradient.addColorStop(offsetMax, 'blue');
-        gradient.addColorStop(offsetMin, 'blue');
-        gradient.addColorStop(offsetMin, 'darkred');
-        gradient.addColorStop(1, 'red');
-        chart.data.datasets[0].borderColor = gradient;
-        ctx.restore();
-      },
-    },
-  ],
+  plugins: [{}],
   animation: {
     duration: 2000,
   },
@@ -95,8 +71,19 @@ const data = {
     {
       label: '출근 시간대 지하철 역별 혼잡도',
       data: datasets.congestion,
-      borderColor: '#4b2789',
-      backgroundColor: '#4b2789',
+      backgroundColor: [
+        '#4b2789',
+        '#4b2789',
+        '#4b2789',
+        '#4b2789',
+        '#4b2789',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+        '#b6b6b6',
+      ],
       yAxisID: 'y',
     },
   ],
