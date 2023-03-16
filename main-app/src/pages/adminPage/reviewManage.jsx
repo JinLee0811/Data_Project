@@ -1,64 +1,96 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 function ReviewManage() {
-  const reviewsList = [
-    {
-      user_id: 1,
-      subway_id: "성수역",
-      subway_line: 2,
-      nickName: "여리",
-      review: "앨리스에서 너무 멀어요",
-      createdAt: "2022-01-01",
-    },
-    {
-      user_id: 2,
-      subway_id: "서울역",
-      subway_line: 4,
-      nickName: "JIN",
-      review: "조용히 해주세요",
-      createdAt: "2023-01-01",
-    },
-    {
-      user_id: 3,
-      subway_id: "왕십리역",
-      subway_line: 2,
-      nickName: "ana",
-      review: "늦어서 죄송합니다",
-      createdAt: "2022-06-01",
-    },
-  ];
+  // const reviewsList = [
+  //   {
+  //     user_id: 1,
+  //     subway_id: "성수역",
+  //     subway_line: 2,
+  //     nickName: "여리",
+  //     review: "앨리스에서 너무 멀어요",
+  //     createdAt: "2022-01-01",
+  //   },
+  //   {
+  //     user_id: 2,
+  //     subway_id: "서울역",
+  //     subway_line: 4,
+  //     nickName: "JIN",
+  //     review: "조용히 해주세요",
+  //     createdAt: "2023-01-01",
+  //   },
+  //   {
+  //     user_id: 3,
+  //     subway_id: "왕십리역",
+  //     subway_line: 2,
+  //     nickName: "ana",
+  //     review: "늦어서 죄송합니다",
+  //     createdAt: "2022-06-01",
+  //   },
+  // ];
 
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [reviewsList, setReviewsList] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/admin/review", {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+        console.log(response.data);
+        setReviewsList(() => response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleDelete = (e) => {
+    console.log(e.target);
+  };
   return (
-    <Table>
-      <thead>
-        <tr>
-          <TableHeader>Created Date</TableHeader>
-          <TableHeader>ID</TableHeader>
-          <TableHeader>닉네임</TableHeader>
-          <TableHeader>지하철역</TableHeader>
-          <TableHeader>호선</TableHeader>
-          <TableHeader>리뷰</TableHeader>
-          <TableHeader>관리</TableHeader>
-        </tr>
-      </thead>
-      <tbody>
-        {reviewsList.map((review) => (
-          <tr key={review.user_id}>
-            <TableData>{review.createdAt}</TableData>
-            <TableData>{review.user_id}</TableData>
-            <TableData>{review.nickName}</TableData>
-            <TableData>{review.subway_id}</TableData>
-            <TableData>{review.subway_line}</TableData>
-            <TableData>{review.review}</TableData>
-
-            <TableData>
-              <DeleteButton>Delete</DeleteButton>
-            </TableData>
+    reviewsList && (
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>Created Date</TableHeader>
+            <TableHeader>이름</TableHeader>
+            <TableHeader>닉네임</TableHeader>
+            <TableHeader>호선</TableHeader>
+            <TableHeader>지하철역</TableHeader>
+            <TableHeader>리뷰</TableHeader>
+            <TableHeader>관리</TableHeader>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {reviewsList.map((review) => (
+            <tr key={review.user.email}>
+              <TableData>{review.createdAt.split("T")[0]}</TableData>
+              <TableData>{review.user.name}</TableData>
+              <TableData>{review.user.nickname}</TableData>
+              <TableData>{review.station.station_line}</TableData>
+              <TableData>{review.station.station_name}</TableData>
+              <TableData>{review.body}</TableData>
+
+              <TableData>
+                <DeleteButton
+                  id={review.user.email}
+                  onClick={(e) => {
+                    handleDelete(e);
+                  }}
+                >
+                  Delete
+                </DeleteButton>
+              </TableData>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    )
   );
 }
 

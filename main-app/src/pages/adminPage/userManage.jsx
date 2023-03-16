@@ -1,65 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 function UserManage() {
-  const usersList = [
-    {
-      id: 1,
-      name: "최호열",
-      email: "yeol@example.com",
-      createdAt: "2022-01-01",
-      role: "admin",
-    },
-    {
-      id: 2,
-      name: "이정진",
-      email: "jin@example.com",
-      createdAt: "2023-01-01",
-      role: "admin",
-    },
-    {
-      id: 3,
-      name: "안나연",
-      email: "ana@example.com",
-      createdAt: "2022-06-01",
-      role: "user",
-    },
-  ];
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [usersList, setUsersList] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/admin/users", {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+        console.log(response.data);
+        console.log(response.data[0].isAdmin);
+        setUsersList(() => response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleDelete = (e) => {
+    console.log(e.target);
+  };
 
   return (
-    <Table>
-      <thead>
-        <tr>
-          <TableHeader>Created Date</TableHeader>
-          <TableHeader>ID</TableHeader>
-          <TableHeader>Name</TableHeader>
-          <TableHeader>Email</TableHeader>
-          <TableHeader>Role</TableHeader>
-
-          <TableHeader>관리</TableHeader>
-        </tr>
-      </thead>
-      <tbody>
-        {usersList.map((user) => (
-          <tr key={user.id}>
-            <TableData>{user.createdAt}</TableData>
-            <TableData>{user.id}</TableData>
-            <TableData>{user.name}</TableData>
-            <TableData>{user.email}</TableData>
-            <TableData>
-              <select value={user.role} name={user.id}>
-                <option value='user'>user</option>
-                <option value='admin'>admin</option>
-              </select>
-            </TableData>
-
-            <TableData>
-              <DeleteButton>Delete</DeleteButton>
-            </TableData>
+    usersList && (
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>Created At</TableHeader>
+            <TableHeader>이메일</TableHeader>
+            <TableHeader>이름</TableHeader>
+            <TableHeader>닉네임</TableHeader>
+            <TableHeader>유형</TableHeader>
+            <TableHeader>관리</TableHeader>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {usersList.map((user) => (
+            <tr key={user.email}>
+              <TableData>{user.createdAt.split("T")[0]}</TableData>
+              <TableData>{user.email}</TableData>
+              <TableData>{user.name}</TableData>
+              <TableData>{user.nickname}</TableData>
+              <TableData>
+                <select value={user.isAdmin ? "admin" : "user"}>
+                  <option value='user'>user</option>
+                  <option value='admin'>admin</option>
+                </select>
+              </TableData>
+
+              <TableData>
+                <DeleteButton
+                  id={user.email}
+                  onClick={(e) => {
+                    handleDelete(e);
+                  }}
+                >
+                  Delete
+                </DeleteButton>
+              </TableData>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    )
   );
 }
 
