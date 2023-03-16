@@ -27,6 +27,7 @@ const NickChange = () => {
     try {
       await axios.patch(serverUrl + "/account", { nickname }, { withCredentials: true });
       console.log("Nickname updated successfully");
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }

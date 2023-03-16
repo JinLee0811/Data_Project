@@ -1,97 +1,120 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const UserEdit = () => {
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-    newPassword: "",
-    confirmNewPassword: "",
-    name: "",
-    nickName: "",
-  });
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState('')
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
+  const getUserInfo = async () => {
+    try {
+      const response = await axios.get(serverUrl + "/account", { withCredentials: true });
+      setUserInfo(response.data);
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const handleOldPasswordChange = (event) => {
+    setOldPassword(event.target.value);
   };
 
-  const validateForm = ({ password, newPassword, confirmNewPassword }) => {
-    if (newPassword.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
-    }
-    if (newPassword !== confirmNewPassword) {
-      return "비밀번호가 일치하지 않습니다.";
-    }
-    return true;
+  const handleNewPasswordChange = (event) => {
+    setNewPassword(event.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validated = validateForm(inputs);
-    if (typeof validated === "string") {
-      alert(validated);
+  const handleNewPasswordConfirmChange = (event) => {
+    setNewPasswordConfirm(event.target.value);
+  };
+
+  const handleResetPasswordSubmit = async (event) => {
+    event.preventDefault();
+
+    if (newPassword !== newPasswordConfirm) {
+      setMessage("새로운 비밀번호가 일치하지 않습니다.");
       return;
     }
-    const { userName, nickName, password, newPassword, confirmNewPassword } =
-      inputs;
-    console.log(userName, nickName, password, newPassword);
-    alert("수정이 완료되었습니다");
+
+    try {
+      const response = await axios.patch(
+        serverUrl + "/account",
+        {
+          oldPassword,
+          newPassword,
+        },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setMessage("비밀번호가 변경되었습니다.");
+        setOldPassword("");
+        setNewPassword("");
+        setNewPasswordConfirm("");
+        navigate("/user");
+      } else {
+        setMessage("비밀번호 변경에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("비밀번호 변경에 실패했습니다.");
+      navigate("/user");
+    }
   };
 
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleResetPasswordSubmit}>
         <Input
           type='email'
           name='email'
-          placeholder='UserEmail'
-          value={inputs.email}
-          onChange={handleChange}
+          placeholder={userInfo.email}
           disabled
         />
         <Input
           type='text'
-          name='userName'
-          placeholder='UserName'
-          value={inputs.userName}
-          onChange={handleChange}
+          name='name'
+          placeholder={userInfo.name}
           disabled
         />
           <Input
           type='text'
           name='nickName'
-          placeholder='닉네임'
-          value={inputs.nickName}
-          onChange={handleChange}
+          placeholder={userInfo.nickname}
           disabled
         />
         <Input
           type='password'
           name='password'
           placeholder='현재 비밀번호 입력'
-          value={inputs.password}
-          onChange={handleChange}
+          value={oldPassword}
+          onChange={handleOldPasswordChange}
         />
         <Input
           type='password'
           name='newPassword'
           placeholder='변경할 비밀번호 입력'
-          value={inputs.newPassword}
-          onChange={handleChange}
+          value={newPassword}
+          onChange={handleNewPasswordChange}
         />
         <Input
           type='password'
           name='confirmNewPassword'
           placeholder='변경할 비밀번호 재입력'
-          value={inputs.confirmNewPassword}
-          onChange={handleChange}
+          value={newPasswordConfirm}
+          onChange={handleNewPasswordConfirmChange}
         />
         <Button type='submit'>정보 수정하기</Button>
+        {message && <p>{message}</p>}
 
       </Form>
     </>
@@ -130,5 +153,6 @@ const Button = styled.button`
     outline: none;
   }
 `;
+
 
 export default UserEdit;

@@ -1,45 +1,35 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Withdrawl = (props) => {
   const serverUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate()
   const [password, setPassword] = useState("");
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
-  const handleDeleteUser = async () => {
-    try {
-      // 쿠키에서 유저 정보 가져오기
-      const response = await axios.get(serverUrl + "/account", { withCredentials: true });
-      const user = response.data;
-
-      // 비밀번호 일치 여부 확인
-      const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
-      if (confirmDelete) {
-        const passwordCorrect = await axios.post(serverUrl + "/auth/checkPassword", {
-          email: user.email,
-          password: password
-        }, { withCredentials: true });
-
-        if (passwordCorrect.data === "correct") {
-          // 회원정보 삭제
-          await axios.delete(serverUrl + "/account", { withCredentials: true });
-          alert("회원탈퇴가 완료되었습니다.");
-          props.history.push("/login");
-        } else {
-          alert("비밀번호가 일치하지 않습니다.");
+  const handleDeleteUser = async (e) => {
+      e.preventDefault()
+      try {
+        const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
+        if (confirmDelete) {
+          const response = await axios.delete(serverUrl + "/account", {
+            data: {
+              password: password
+            },
+            withCredentials: true
+          });
+          console.log(response.data);
+          navigate("/login");
         }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
-  
+    };
   return (
     <>
      <Greeting>
