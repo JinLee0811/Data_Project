@@ -1,43 +1,30 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, Outlet } from 'react-router-dom';
-const sampleData = [
-  {
-    id: 4,
-    timeStamp : 2303121122,
-    userId: 2,
-    title: "건대입구역",
-    content: "사람 많고 붐빔, 근데 먹을 곳 많아요.",
-  },
-];
+import axios from 'axios'
 
-const sampleLikeData = [
-  {
-    id: 1,
-    userId: 2,
-    station: "서울역",
-  },
-];
-
+// 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수 
 
 function UserPage(props) {
+  const serverUrl = process.env.REACT_APP_API_URL
   const [imageUrl, setImageUrl] = useState('');
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
+  const [userInfo, setUserInfo] = useState("");
 
+  const getUserInfo = async () => {
+    try {
+      const response = await axios.get(serverUrl + "/account", { withCredentials: true });
+      setUserInfo(response.data);
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log(userInfo)
   useEffect(() => {
-    const userId = 2;
-    setReviews(sampleData.filter((review) => review.userId === userId));
+    getUserInfo();
   }, []);
-  const userOneReviews = reviews.filter((review) => review.userId === 2);
-  const userOneReviewsCount = userOneReviews.length;
-
-  useEffect(() => {
-    const userId = 2;
-    setLike(sampleLikeData.filter((like) => like.userId === userId));
-  }, []);
-  const userLike = likes.filter((like) => like.userId === 2);
-  const userLikeCount = userLike.length;
 
   useEffect(() => {
     // 랜덤 고양이 이미지 가져오기
@@ -57,18 +44,18 @@ function UserPage(props) {
             alt="Profile Image"
           />
           <UserBrief>
-            <UserName>닉네임</UserName>
+            <UserName>{userInfo ? (<>{userInfo.nickname}</>) : (<>닉네임</>)}</UserName>
             <Link to ="/user/nickchange">
             <NickChange>✏️</NickChange>
             </Link>
             </UserBrief>
-            <UserEmail>aasdassdf@naver.com</UserEmail>
+            <UserEmail>{userInfo ? (<>{userInfo.email}</>) : (<>email@email.com</>)}</UserEmail>
             <UserInfo>나의 찜:</UserInfo>
             <Link to = "/user/wishlist">
-            <StationCount>{userLikeCount}</StationCount>
+            <StationCount>0</StationCount>
             </Link>
             <UserInfo>나의 리뷰:</UserInfo>
-            <Link to = "/user/review"><StationCount>{userOneReviewsCount}</StationCount></Link>
+            <Link to = "/user/review"><StationCount>0</StationCount></Link>
             <UserBrief>
             <Link to="/">
               <UserButton>역 찾으러 가기</UserButton>
