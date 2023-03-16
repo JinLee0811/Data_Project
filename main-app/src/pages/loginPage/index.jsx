@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
-import { AuthContext } from "../../utils/AuthContext";
+import React, { useState, useContext } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
+import { AuthContext } from '../../utils/AuthContext';
 
 function LoginPage() {
   const serverUrl = process.env.REACT_APP_API_URL;
@@ -11,8 +11,8 @@ function LoginPage() {
   const { login } = useContext(AuthContext);
 
   const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   function emailCheck(email) {
@@ -23,10 +23,10 @@ function LoginPage() {
 
   const validateForm = ({ email, password }) => {
     if (emailCheck(email) === false) {
-      return "이메일 형식이 올바르지 않습니다.";
+      return '이메일 형식이 올바르지 않습니다.';
     }
     if (password.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
+      return '비밀번호는 4글자 이상이어야합니다.';
     }
     return true;
   };
@@ -34,12 +34,12 @@ function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validated = validateForm(inputs);
-    if (typeof validated === "string") {
+    if (typeof validated === 'string') {
       alert(validated);
       return;
     }
     login(inputs.email, inputs.password);
-    navigate("/");
+    navigate('/');
   };
 
   const handleChange = (e) => {

@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
 
 const sampleData = [
-  {
-    id: 4,
-    timeStamp : 2303121122,
-    userId: 2,
-    title: "건대입구역",
-    content: "사람 많고 붐빔, 근데 먹을 곳 많아요.",
-  },
+  
 ];
 
 const sampleLikeData = [
-  {
-    id: 1,
-    userId: 2,
-    station: "서울역",
-  },
+  
 ];
 
 function MyPage(props) {
@@ -66,6 +55,8 @@ function MyPage(props) {
   );
 }
 const DetailSection = styled.div`
+  width: 500px;
+  height: 100px;
   margin-bottom: 30px;
   margin-top: 20px;
   padding: 50px;

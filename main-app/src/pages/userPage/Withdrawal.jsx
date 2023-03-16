@@ -1,63 +1,50 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const Withdrawl = () => {
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-    newPassword: "",
-    confirmNewPassword: "",
-    userName: "",
-    nickName: "",
-  });
+const Withdrawl = (props) => {
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate()
+  const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
 
-  const validateForm = ({ password, newPassword, confirmNewPassword }) => {
-    if (newPassword.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
-    }
-    if (newPassword !== confirmNewPassword) {
-      return "비밀번호가 일치하지 않습니다.";
-    }
-    return true;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validated = validateForm(inputs);
-    if (typeof validated === "string") {
-      alert(validated);
-      return;
-    }
-    const { userName, nickName, password, newPassword, confirmNewPassword } =
-      inputs;
-    console.log(userName, nickName, password, newPassword);
-    alert("수정이 완료되었습니다");
-  };
-
+  const handleDeleteUser = async (e) => {
+      e.preventDefault()
+      try {
+        const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
+        if (confirmDelete) {
+          const response = await axios.delete(serverUrl + "/account", {
+            data: {
+              password: password
+            },
+            withCredentials: true
+          });
+          console.log(response.data);
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
   return (
     <>
      <Greeting>
         어디 가게?
       </Greeting>
-      <Form onSubmit={handleSubmit}>
+      <Form>
       <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
       <Input
-          type='text'
+          type='password'
           name='password'
           placeholder='비밀번호'
-          value={inputs.password}
-          onChange={handleChange}
+          value={password}
+          onChange={handlePasswordChange}
         />
-        <Button type='submit'>회원 탈퇴</Button>
+        <Button onClick={handleDeleteUser}>회원 탈퇴</Button>
       </Form>
     </>
   );
