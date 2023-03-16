@@ -1,63 +1,60 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from 'axios';
 
-const Withdrawl = () => {
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-    newPassword: "",
-    confirmNewPassword: "",
-    userName: "",
-    nickName: "",
-  });
+const Withdrawl = (props) => {
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
 
-  const validateForm = ({ password, newPassword, confirmNewPassword }) => {
-    if (newPassword.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
+  const handleDeleteUser = async () => {
+    try {
+      // 쿠키에서 유저 정보 가져오기
+      const response = await axios.get(serverUrl + "/account", { withCredentials: true });
+      const user = response.data;
+
+      // 비밀번호 일치 여부 확인
+      const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
+      if (confirmDelete) {
+        const passwordCorrect = await axios.post(serverUrl + "/auth/checkPassword", {
+          email: user.email,
+          password: password
+        }, { withCredentials: true });
+
+        if (passwordCorrect.data === "correct") {
+          // 회원정보 삭제
+          await axios.delete(serverUrl + "/account", { withCredentials: true });
+          alert("회원탈퇴가 완료되었습니다.");
+          props.history.push("/login");
+        } else {
+          alert("비밀번호가 일치하지 않습니다.");
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
-    if (newPassword !== confirmNewPassword) {
-      return "비밀번호가 일치하지 않습니다.";
-    }
-    return true;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validated = validateForm(inputs);
-    if (typeof validated === "string") {
-      alert(validated);
-      return;
-    }
-    const { userName, nickName, password, newPassword, confirmNewPassword } =
-      inputs;
-    console.log(userName, nickName, password, newPassword);
-    alert("수정이 완료되었습니다");
-  };
 
+  
   return (
     <>
      <Greeting>
         어디 가게?
       </Greeting>
-      <Form onSubmit={handleSubmit}>
+      <Form>
       <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
       <Input
-          type='text'
+          type='password'
           name='password'
           placeholder='비밀번호'
-          value={inputs.password}
-          onChange={handleChange}
+          value={password}
+          onChange={handlePasswordChange}
         />
-        <Button type='submit'>회원 탈퇴</Button>
+        <Button onClick={handleDeleteUser}>회원 탈퇴</Button>
       </Form>
     </>
   );

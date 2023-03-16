@@ -8,7 +8,7 @@ const UserEdit = () => {
     password: "",
     newPassword: "",
     confirmNewPassword: "",
-    userName: "",
+    name: "",
     nickName: "",
   });
 

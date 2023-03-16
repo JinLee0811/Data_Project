@@ -1,46 +1,35 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from 'axios';
 
 const NickChange = () => {
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-    newPassword: "",
-    confirmNewPassword: "",
-    userName: "",
-    nickName: "",
-  });
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [nickname, setNickname] = useState("");
+  
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/account", { withCredentials: true });
+        setNickname(response.data.nickname);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserInfo();
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
+  const handleNicknameChange = (event) => {
+    setNickname(event.target.value);
   };
 
-  const validateForm = ({ password, newPassword, confirmNewPassword }) => {
-    if (newPassword.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
+  const handleNicknameSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.patch(serverUrl + "/account", { nickname }, { withCredentials: true });
+      console.log("Nickname updated successfully");
+    } catch (error) {
+      console.error(error);
     }
-    if (newPassword !== confirmNewPassword) {
-      return "비밀번호가 일치하지 않습니다.";
-    }
-    return true;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validated = validateForm(inputs);
-    if (typeof validated === "string") {
-      alert(validated);
-      return;
-    }
-    const { nickName } =
-      inputs;
-    console.log(nickName);
-    alert("수정이 완료되었습니다");
   };
 
   return (
@@ -48,14 +37,14 @@ const NickChange = () => {
      <Greeting>
         변경하고자 하는 닉네임을 입력해 주세요.
       </Greeting>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleNicknameSubmit}>
       <ConfirmBox>중복되지 않는 본인만의 닉네임으로 변경해보세요.</ConfirmBox>
       <Input
           type='text'
-          name='nickname'
+          name='닉네임'
           placeholder='닉네임'
-          value={inputs.nickName}
-          onChange={handleChange}
+          value={nickname}
+          onChange={handleNicknameChange}
         />
         <Button type='submit'>닉네임 변경하기</Button>
       </Form>

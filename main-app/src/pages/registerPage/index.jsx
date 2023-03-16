@@ -7,7 +7,7 @@ const RegisterPage = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
 
   const [inputs, setInputs] = useState({
-    userName: "",
+    name: "",
     nickname: "",
     email: "",
     password: "",
@@ -30,7 +30,7 @@ const RegisterPage = () => {
   }
 
   const validateForm = ({
-    userName,
+    name,
     nickname,
     email,
     password,
@@ -39,7 +39,7 @@ const RegisterPage = () => {
     if (emailCheck(email) === false) {
       return "이메일 형식이 올바르지 않습니다.";
     }
-    if (userName.length < 2) {
+    if (name.length < 2) {
       return "두글자 이상의 이름을 설정해주세요.";
     }
     if (nickname.length < 2) {
@@ -80,9 +80,9 @@ const RegisterPage = () => {
         <Title>회원가입</Title>
         <Input
           type='text'
-          name='userName'
+          name='name'
           placeholder='이름'
-          value={inputs.userName}
+          value={inputs.name}
           onChange={handleChange}
         />
         <Input
