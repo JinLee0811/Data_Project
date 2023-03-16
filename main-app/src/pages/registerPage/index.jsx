@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -62,11 +63,8 @@ const RegisterPage = () => {
     }
 
     try {
-      await fetch(serverUrl + "/register", {
-        method: "POST",
-        body: JSON.stringify(inputs),
-        headers: { "Content-type": "application/json" },
-      });
+      const res = await axios.post(serverUrl + "/register", { inputs });
+      console.log(res);
       navigate("/login");
     } catch (e) {
       console.log(e);

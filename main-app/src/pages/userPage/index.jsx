@@ -1,43 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, Outlet } from 'react-router-dom';
-const sampleData = [
-  {
-    id: 4,
-    timeStamp: 2303121122,
-    userId: 2,
-    title: '건대입구역',
-    content: '사람 많고 붐빔, 근데 먹을 곳 많아요.',
-  },
-];
-
-const sampleLikeData = [
-  {
-    id: 1,
-    userId: 2,
-    station: '서울역',
-  },
-];
-
+import axios from 'axios';
+// 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수
 function UserPage(props) {
+  const serverUrl = process.env.REACT_APP_API_URL;
   const [imageUrl, setImageUrl] = useState('');
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
-
+  const [userInfo, setUserInfo] = useState('');
+  const getUserInfo = async () => {
+    try {
+      const response = await axios.get(serverUrl + '/account', {
+        withCredentials: true,
+      });
+      setUserInfo(response.data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log(userInfo);
   useEffect(() => {
-    const userId = 2;
-    setReviews(sampleData.filter((review) => review.userId === userId));
+    getUserInfo();
   }, []);
-  const userOneReviews = reviews.filter((review) => review.userId === 2);
-  const userOneReviewsCount = userOneReviews.length;
-
-  useEffect(() => {
-    const userId = 2;
-    setLike(sampleLikeData.filter((like) => like.userId === userId));
-  }, []);
-  const userLike = likes.filter((like) => like.userId === 2);
-  const userLikeCount = userLike.length;
-
   useEffect(() => {
     // 랜덤 고양이 이미지 가져오기
     fetch('https://api.thecatapi.com/v1/images/search')
@@ -45,7 +31,6 @@ function UserPage(props) {
       .then((data) => setImageUrl(data[0].url))
       .catch((error) => console.error(error));
   }, []);
-
   return (
     <>
       <UserPageContainer>
@@ -54,19 +39,23 @@ function UserPage(props) {
             <UserBrief>
               <ProfileImage src={imageUrl} alt='Profile Image' />
               <UserBrief>
-                <UserName>닉네임</UserName>
+                <UserName>
+                  {userInfo ? <>{userInfo.nickname}</> : <>닉네임</>}
+                </UserName>
                 <Link to='/user/nickchange'>
-                  <NickChange>✏️</NickChange>
+                  <NickChange>:연필2:</NickChange>
                 </Link>
               </UserBrief>
-              <UserEmail>aasdassdf@naver.com</UserEmail>
+              <UserEmail>
+                {userInfo ? <>{userInfo.email}</> : <>email@email.com</>}
+              </UserEmail>
               <UserInfo>나의 찜:</UserInfo>
               <Link to='/user/wishlist'>
-                <StationCount>{userLikeCount}</StationCount>
+                <StationCount>0</StationCount>
               </Link>
               <UserInfo>나의 리뷰:</UserInfo>
               <Link to='/user/review'>
-                <StationCount>{userOneReviewsCount}</StationCount>
+                <StationCount>0</StationCount>
               </Link>
               <UserBrief>
                 <Link to='/'>
@@ -128,7 +117,6 @@ function UserPage(props) {
     </>
   );
 }
-
 const UserPageContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -138,7 +126,6 @@ const UserPageContainer = styled.div`
   padding: 0px 0px;
   margin: 30px auto;
 `;
-
 const LeftContainer = styled.div`
   display: flex;
   height: 500px;
@@ -150,7 +137,6 @@ const LeftContainer = styled.div`
   border: 1px solid rgb(218, 220, 224);
   box-shadow: 30 30 100px rgba(0, 0, 0, 0.1);
 `;
-
 const InsideLeftContainer = styled.div`
   padding: 0px;
   min-height: 100px;
@@ -159,7 +145,6 @@ const InsideLeftContainer = styled.div`
   margin: 70px 50px 0px 50px;
   font-size: 15px;
 `;
-
 const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
@@ -168,13 +153,11 @@ const ProfileImage = styled.img`
   margin: 0px;
   margin-bottom: 10px;
 `;
-
 const UserBrief = styled.div`
   text-align: center;
   margin: 0;
   padding: 0;
 `;
-
 const UserName = styled.h2`
   background-color: #f4f4f4;
   border: 0px;
@@ -183,18 +166,15 @@ const UserName = styled.h2`
   margin-bottom: 10px;
   margin-left: 20px;
 `;
-
 const NickChange = styled.button`
   display: inline;
   border: 0px;
   background-color: #f4f4f4;
   cursor: pointer;
 `;
-
 const UserEmail = styled.p`
   font-size: 16px;
 `;
-
 const UserInfo = styled.p`
   font-size: 16px;
   margin-bottom: 50px;
@@ -209,11 +189,9 @@ const UserButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-
   &:hover {
     background-color: #4b2789;
   }
-
   &:focus {
     outline: none;
   }
@@ -224,7 +202,6 @@ const StationCount = styled.h4`
   display: inline-block;
   margin-right: 10px;
 `;
-
 const MarginDiv = styled.p`
   padding-left: 30px;
   padding-right: 30px;
@@ -251,7 +228,6 @@ const MenuBar = styled.div`
     list-style: none;
     margin: 0;
     padding: 0;
-
     li {
       margin-right: 1rem;
     }
@@ -263,7 +239,6 @@ const MenuBar = styled.div`
 const RightSection = styled.div`
   margin: auto;
 `;
-
 const Footer = styled.div`
   width: 100%;
   height: 90px;
@@ -294,5 +269,4 @@ const Footer = styled.div`
     margin-left: 20px;
   }
 `;
-
 export default UserPage;
