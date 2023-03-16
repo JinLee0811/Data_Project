@@ -20,7 +20,6 @@ const RegisterPage = () => {
       ...inputs,
       [name]: value,
     });
-    console.log(name, value);
   };
 
   function emailCheck(email) {
