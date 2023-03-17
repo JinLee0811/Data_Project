@@ -63,7 +63,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await axios.post(serverUrl + "/register", { inputs });
+      const res = await axios.post(serverUrl + "/register", inputs);
       console.log(res);
       navigate("/login");
     } catch (e) {

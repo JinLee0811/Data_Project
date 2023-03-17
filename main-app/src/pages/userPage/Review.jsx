@@ -4,7 +4,7 @@ import styled from "styled-components";
 const sampleData = [
   {
     id: 4,
-    timeStamp : 2303121122,
+    timeStamp: 2303121122,
     userId: 2,
     title: "건대입구역",
     content: "사람 많고 붐빔, 근데 먹을 곳 많아요.",
@@ -23,7 +23,6 @@ function Review(props) {
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
 
-
   useEffect(() => {
     const userId = 2;
     setReviews(sampleData.filter((review) => review.userId === userId));
@@ -38,18 +37,19 @@ function Review(props) {
   const userLike = likes.filter((like) => like.userId === 2);
   const userLikeCount = userLike.length;
 
-  return (<>
-        <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
-        <DetailSection>
-          <SectionContent>
-              {reviews.map((review) => (
-                <ReviewBox key={review.id}>
-                  <DeleteButton>x</DeleteButton>
-                 ({review.timeStamp}) {review.title} - {review.content}
-                </ReviewBox>
-              ))}
-            </SectionContent>
-        </DetailSection>
+  return (
+    <>
+      <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
+      <DetailSection>
+        <SectionContent>
+          {reviews.map((review) => (
+            <ReviewBox key={review.id}>
+              <DeleteButton>x</DeleteButton>({review.timeStamp}) {review.title}{" "}
+              - {review.content}
+            </ReviewBox>
+          ))}
+        </SectionContent>
+      </DetailSection>
     </>
   );
 }
@@ -58,7 +58,7 @@ const DetailSection = styled.div`
   margin-top: 20px;
   padding: 50px;
   border-radius: 5px;
-  background-color: #E0DAFC;
+  background-color: #e0dafc;
   width: 500px;
   height: 400px;
 `;
@@ -74,14 +74,14 @@ const ReviewBox = styled.div`
   border-radius: 100px;
   display: inline-block;
   font-size: 13px;
-  :hover{
-    background-color: #8B5AD8;
+  :hover {
+    background-color: #8b5ad8;
     color: white;
     button {
-      background-color: #8B5AD8;
+      background-color: #8b5ad8;
       color: white;
     }
-    }
+  }
 `;
 
 const SectionContent = styled.div`
@@ -97,11 +97,10 @@ const DeleteButton = styled.button`
   border-radius: 10px;
   padding: 0px;
   margin: 0px 0px 0px 5px;
-  :hover{
+  :hover {
     background-color: white;
     color: white;
   }
-`
-
+`;
 
 export default Review;

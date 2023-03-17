@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Link, Outlet } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Link, Outlet } from "react-router-dom";
+import axios from "axios";
 // 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수
 function UserPage(props) {
   const serverUrl = process.env.REACT_APP_API_URL;
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
-  const [userInfo, setUserInfo] = useState('');
+  const [userInfo, setUserInfo] = useState("");
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(serverUrl + '/account', {
+      const response = await axios.get(serverUrl + "/account", {
         withCredentials: true,
       });
       setUserInfo(response.data);
@@ -26,7 +26,7 @@ function UserPage(props) {
   }, []);
   useEffect(() => {
     // 랜덤 고양이 이미지 가져오기
-    fetch('https://api.thecatapi.com/v1/images/search')
+    fetch("https://api.thecatapi.com/v1/images/search")
       .then((response) => response.json())
       .then((data) => setImageUrl(data[0].url))
       .catch((error) => console.error(error));
@@ -43,7 +43,7 @@ function UserPage(props) {
                   {userInfo ? <>{userInfo.nickname}</> : <>닉네임</>}
                 </UserName>
                 <Link to='/user/nickchange'>
-                  <NickChange>:연필2:</NickChange>
+                  <NickChange>✏️</NickChange>
                 </Link>
               </UserBrief>
               <UserEmail>
@@ -86,30 +86,31 @@ function UserPage(props) {
         </RightContainer>
       </UserPageContainer>
       <Footer>
-        <nav>
+        <p>
           <a
             href='https://www.notion.so/elice/3087fb6533044f71916c420d86213a6e?p=0d06a8c5921d4817b428bd9fac47ac87&pm=s'
             target='_blank'
-            rel='noreferrer'
-          >
+            rel='noreferrer'>
             Notion
-          </a>{' '}
+          </a>{" "}
           |
           <a
             href='https://kdt-gitlab.elice.io/ai_track/class_06/data_project/team02/frontend-real'
             target='_blank'
-            rel='noreferrer'
-          >
+            rel='noreferrer'>
             GitLab
           </a>
-        </nav>
+          <br />
+          <br />
+          <br />
+          <span>Copyright © 2023</span>
+        </p>
         <p>
           <span>팀명 : 이사가게? 어디가게?</span>
           <br />
           <span>팀장 : 이정진</span>
           <br />
           <span>F E : 최호열 안나연 이정진</span>
-          <br />
           <span>B E : 정종열 강성훈 이승은</span>
           <br />
         </p>
@@ -241,16 +242,13 @@ const RightSection = styled.div`
 `;
 const Footer = styled.div`
   width: 100%;
-  height: 90px;
+  height: 50px;
   bottom: 0px;
-  position: absolute;
   border-top: 1px solid #c4c4c4;
   padding-top: 15px;
   color: #808080;
   font-size: 11px;
-  section {
-    padding-bottom: 105px;
-  }
+  display: flex;
   a {
     display: inline-block;
     margin: 0 20px 10px 20px;
@@ -263,10 +261,12 @@ const Footer = styled.div`
   p {
     margin-top: 0;
     margin-bottom: 0;
+    display: inline-block;
   }
   p span {
     display: inline-block;
     margin-left: 20px;
+    margin-bottom: 10px;
   }
 `;
 export default UserPage;
