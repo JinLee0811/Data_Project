@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import Nav from "./components/Nav";
-import { AuthProvider } from "./utils/AuthContext";
+import { Outlet } from 'react-router-dom';
+import Nav from './components/Nav';
+import { AuthProvider } from './utils/AuthContext';
 
 function App() {
   return (

@@ -257,21 +257,21 @@ const AboutPage = () => {
         <CartoonGrid>
           <CartoonCut
             className={`cut1 ${
-              scrollPosition > 12550 + 0 && scrollPosition < 12550 + 100
+              scrollPosition > 12550 + 0 && scrollPosition < 12550 + 200
                 ? 'focus'
                 : ''
             }`}
           ></CartoonCut>
           <CartoonCut
             className={`cut2 ${
-              scrollPosition > 12550 + 100 && scrollPosition < 12550 + 200
+              scrollPosition > 12550 + 200 && scrollPosition < 12550 + 400
                 ? 'focus'
                 : ''
             }`}
           ></CartoonCut>
           <CartoonCut
             className={`cut3 ${
-              scrollPosition > 12550 + 200 && scrollPosition < 12550 + 300
+              scrollPosition > 12550 + 400 && scrollPosition < 12550 + 600
                 ? 'focus'
                 : ''
             }`}
@@ -286,13 +286,19 @@ const AboutPage = () => {
           <RealEstatePrice></RealEstatePrice>
         </ChartContainer>
       </InsightContainer4>
+      <PleaseTakeMeUp
+        onClick={() => {
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        }}
+      >
+        네, 잘알겠습니다.
+      </PleaseTakeMeUp>
     </AboutContainer>
   );
 };
 
 const AboutContainer = styled.div`
   width: 100%;
-
   font-family: 'NanumSquareNeoExtraBold';
 
   * {
@@ -482,7 +488,7 @@ const RushHourContainer = styled.div`
 
 const RealEstateContainer = styled.div`
   background-color: black;
-  height: 1600px;
+  height: 1800px;
 `;
 const CartoonGrid = styled.div`
   display: grid !important;
@@ -517,8 +523,19 @@ const CartoonCut = styled.div`
   margin: 10px;
   background-color: white;
   background-size: cover;
-  filter: grayscale(100%);
+  filter: grayscale(100%) blur(1px);
   transition: filter 0.3s;
+`;
+
+const PleaseTakeMeUp = styled.div`
+  background-color: yellowgreen;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  left: 30px;
+  bottom: 200px;
+  z-index: 100;
+  cursor: pointer;
 `;
 
 export default AboutPage;

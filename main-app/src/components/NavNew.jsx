@@ -1,13 +1,13 @@
-import React from "react";
-import { useState, useContext } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import SideDrawer from "./SideDrawer";
-import { AuthContext } from "../utils/AuthContext";
+import React from 'react';
+import { useState, useContext } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import SideDrawer from './SideDrawer';
+import { AuthContext } from '../utils/AuthContext';
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  const { isLoggedIn, isAdmin, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
 
   const handleOpenDrawer = () => {
     setDrawerIsOpen(true);
@@ -28,56 +28,35 @@ const Nav = () => {
           <span />
         </SideDrawerButton>
 
-        <Link to='/'>
-          <LogoBox>
-            <div>2</div>
-            <span>사가게?</span>
-          </LogoBox>
-        </Link>
-
+        <LogoBox>
+          <div>2</div>
+          <span>사가게?</span>
+        </LogoBox>
+        <Arrow>&rarr;</Arrow>
         <ul>
           <li>
-            <Link to='/about'>
-              <div className='station'></div>
-              <p>소개</p>
-            </Link>
+            <Link to='/about'>소개</Link>
           </li>
-          {isAdmin && (
-            <li>
-              <Link to='/admin/user'>
-                <div className='station'></div>
-                <p>관리자</p>
-              </Link>
-            </li>
-          )}
+          <li>
+            <Link to='/'>역찾기</Link>
+          </li>
+          <li>
+            <Link to='/admin/user'>관리자</Link>
+          </li>
           {isLoggedIn ? (
             <>
               <li>
-                <Link to='/user'>
-                  <div className='station'></div>
-                  <p>마이페이지</p>
-                </Link>
+                <Link to='/user'>마이페이지</Link>
               </li>
-              <li onClick={logout}>
-                <Link>
-                  <div className='station'></div>
-                  <p>로그아웃</p>
-                </Link>
-              </li>
+              <li onClick={logout}>로그아웃</li>
             </>
           ) : (
             <>
               <li>
-                <Link to='/register'>
-                  <div className='station'></div>
-                  <p>회원가입</p>
-                </Link>
+                <Link to='/register'>회원가입</Link>
               </li>
               <li>
-                <Link to='/login'>
-                  <div className='station'></div>
-                  <p>로그인</p>
-                </Link>
+                <Link to='/login'>로그인</Link>
               </li>
             </>
           )}
@@ -128,7 +107,7 @@ const LogoBox = styled.div`
   position: relative;
   color: #4b2789;
   flex-direction: row;
-  font-family: "NanumSquareNeoExtraBold";
+  font-family: 'NanumSquareNeoExtraBold';
   font-size: 28px;
   margin-top: 5px;
   height: 60px;
@@ -140,7 +119,7 @@ const LogoBox = styled.div`
   box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
   div {
     color: white;
-    font-family: "NanumSquareNeoHeavy";
+    font-family: 'NanumSquareNeoHeavy';
     position: absolute;
     left: 6px;
     background-color: #4b2789;
@@ -156,52 +135,40 @@ const LogoBox = styled.div`
   }
 `;
 
+const Arrow = styled.div`
+  color: white;
+  position: absolute;
+  left: 240px;
+  font-size: 30px;
+  font-family: 'NanumSquareNeoBold';
+`;
+
 const NavigationBar = styled.nav`
   position: relative;
   background-color: #4b2789;
-  padding: 0rem 2rem;
-  height: 14px;
+  padding: 1rem 3rem;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 30px solid white;
-  border-bottom: 30px solid white;
-
+  border-top: 15px solid white;
   ul {
     position: absolute;
     right: 50px;
     display: flex;
     align-items: center;
     list-style: none;
-    height: 10px;
+    height: 30px;
     margin: 0;
     padding: 0;
 
     li {
-      margin: 0 3rem;
+      margin: 0 0.5rem;
       font-size: 0.9rem;
-      position: relative;
+      color: white;
       cursor: pointer;
       a {
-        display: flex;
-        justify-content: center;
-        position: relative;
-        .station {
-          background-color: white;
-          width: 10px;
-          height: 10px;
-          border: 6px solid #4b2789;
-          border-radius: 50%;
-        }
-        p {
-          position: absolute;
-          top: 12px;
-          color: #4b2789;
-          width: 70px;
-          text-align: center;
-          font-family: "NanumSquareNeoBold";
-          letter-spacing: 1px;
-        }
+        color: white;
       }
     }
     @media (max-width: 768px) {

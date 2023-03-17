@@ -28,23 +28,31 @@ function MyPage(props) {
       <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
       <DetailSection>
         <SectionContent>
-          {likes.map((like) => (
-            <SubwayBox key={like.id}>
-              <DeleteButton>x</DeleteButton>
-              {like.station}
-            </SubwayBox>
-          ))}
+          {likes && likes.length > 0 ? (
+            likes.map((like) => (
+              <SubwayBox key={like.id}>
+                <DeleteButton>x</DeleteButton>
+                {like.station}
+              </SubwayBox>
+            ))
+          ) : (
+            <SubwayBox>찜한 역세권이 없습니다.</SubwayBox>
+          )}
         </SectionContent>
       </DetailSection>
       <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
       <DetailSection>
         <SectionContent>
-          {reviews.map((review) => (
-            <ReviewBox key={review.id}>
-              <DeleteButton>x</DeleteButton>({review.timeStamp}) {review.title}{" "}
-              - {review.content}
-            </ReviewBox>
-          ))}
+          {reviews && reviews.length > 0 ? (
+            reviews.map((review) => (
+              <ReviewBox key={review.id}>
+                <DeleteButton>x</DeleteButton>({review.timeStamp}){" "}
+                {review.title} - {review.content}
+              </ReviewBox>
+            ))
+          ) : (
+            <ReviewBox>남긴 리뷰가 없습니다</ReviewBox>
+          )}
         </SectionContent>
       </DetailSection>
     </>

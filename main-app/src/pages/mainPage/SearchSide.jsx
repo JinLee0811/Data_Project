@@ -26,7 +26,7 @@ const SearchSide = () => {
               {commuteTime.min} ~ {commuteTime.max}분
             </RangeInfo>
             <MultiRangeSlider
-              min={10}
+              min={0}
               max={120}
               step={10}
               value={commuteTime}
