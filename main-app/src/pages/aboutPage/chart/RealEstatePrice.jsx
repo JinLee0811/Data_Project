@@ -84,9 +84,9 @@ const data = {
   labels: datasets.station,
   datasets: [
     {
-      label: '지하철 역별 전용면적당 전세 가격',
+      label: '지하철 역별 단위면적당 전세 가격',
       data: datasets.price,
-      backgroundColor: ['#4b2789'],
+      backgroundColor: ['#33a23d'],
       yAxisID: 'y',
     },
   ],
@@ -99,8 +99,8 @@ const RealEstatePrice = forwardRef((props, ref) => {
         data={data}
         ref={ref}
         redraw={props.redraw}
-        width={1400}
-        height={500}
+        width={1200}
+        height={600}
       />
     </div>
   );

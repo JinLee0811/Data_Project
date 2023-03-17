@@ -10,6 +10,12 @@ import rushHourImg from './image/rushhour.jpg';
 import cut1 from './image/cut1.jpg';
 import cut2 from './image/cut2.jpg';
 import cut3 from './image/cut3.jpg';
+import cut4 from './image/cut4.jpg';
+import article1 from './image/article1.png';
+import article2 from './image/article2.png';
+import article3 from './image/article3.png';
+import article4 from './image/article4.png';
+
 //chart
 import SelectionFactor from './chart/SelectionFactor';
 import SelectionFactor2 from './chart/SelectionFactor2';
@@ -70,7 +76,7 @@ const AboutPage = () => {
               scrollPosition > 650 && scrollPosition < 750 ? 'focus' : ''
             }
           >
-            출근시간에 사람 좀 많이 없는 쾌적한 지하철을 타고싶은데...
+            출퇴근시간에 사람 좀 많이 없는 쾌적한 지하철을 타고싶은데...
           </p>
           <p
             className={
@@ -87,9 +93,7 @@ const AboutPage = () => {
           }
           alt='searchingImg'
         ></img>
-        <LogoBox className={scrollPosition < 900 ? 'hidden' : ''}>
-          * 대충 로고 자리
-        </LogoBox>
+        <LogoBox className={scrollPosition < 900 ? 'hidden' : ''}></LogoBox>
       </IntroContainer>
       <InsightContainer1>
         <ChartContainer className='pieChart'>
@@ -97,10 +101,18 @@ const AboutPage = () => {
             ref={selectionFactorRef}
             redraw={scrollPosition > 1200}
           ></SelectionFactor>
-          <ChartDescription>통근 주거 중요하죵?</ChartDescription>
+          <ChartDescription>
+            <p>서울에서 현재 거처 선택시 가장 중요하게 생각하는</p>
+            <h1>"통근, 통학에 좋은 위치와 저렴한 주거비!"</h1>
+          </ChartDescription>
         </ChartContainer>
         <ChartContainer className='pieChart'>
-          <ChartDescription>다른 데이터도 중요하죵?</ChartDescription>
+          <ChartDescription>
+            <h1 className='left'>또 다른 데이터 역시</h1>
+            <h1 className='right'>
+              <strong>경제적 여건</strong>과 <strong>교통 여건</strong> 이네요
+            </h1>
+          </ChartDescription>
           <SelectionFactor2
             ref={selectionFactor2Ref}
             redraw={scrollPosition > 1800}
@@ -156,19 +168,31 @@ const AboutPage = () => {
           }
         ></TrainBackground>
         <TrainDescribe>
-          <p>내가 힘들 때</p>
-          <p>울 것 같을 때</p>
-          <p>기운도 이젠</p>
-          <p>나지 않을 때</p>
-          <p>It's you</p>
-          <p>날 걱정하네</p>
-          <p>It's you</p>
-          <p>날 웃게하네</p>
-          <p>말 안 해도 돼</p>
+          <p>여러분들의 소중한 시간...</p>
+          <p>기나긴 출퇴근의 향연..</p>
+          <p>하루의 큰 부분을 </p>
+          <p>차지하는 출퇴근길 지겹지 않으세요?</p>
+          <p>조금 줄여볼 생각 없으세요?</p>
+          <p>매일 반복되는 일상 속에서</p>
+          <p>이젠 좀 더 알차게 보내봐요</p>
+          <p>내가 가지고 있는 소중한 시간을 허투로 보내는 게</p>
+          <p>얼마나 아까운 일인지를 아는 당신!</p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p className={scrollPosition > 5550 ? 'bold' : 'small'}>이사가게!</p>
         </TrainDescribe>
       </TrainContainer>
       <InsightContainer2>
         <h1>소요시간과 만족도</h1>
+        <img
+          src={article1}
+          style={{ transform: 'translate(-30px,-30px)' }}
+          alt='article'
+        ></img>
+        <img src={article2} alt='article'></img>
+        <img src={article3} alt='article'></img>
+        <img src={article4} alt='article'></img>
       </InsightContainer2>
 
       <RushHourContainer>
@@ -238,7 +262,8 @@ const AboutPage = () => {
       <InsightContainer3>
         <ChartContainer className='barChart'>
           <ChartDescription>
-            역마다 혼잡도 차이가 이렇게나 큽니다요
+            <h1>같은 출근 시간</h1>
+            <h1>꽉 찬 지하철과 텅빈 지하철의 차이가 보이시나요?</h1>
           </ChartDescription>
           <CongestionByStation
             ref={congestionByStationRef}
@@ -247,7 +272,8 @@ const AboutPage = () => {
         </ChartContainer>
         <ChartContainer className='barChart'>
           <ChartDescription>
-            상선/하선 혼잡도 차이가 이렇게나 큽니다요
+            <h1>같은 지하철도</h1>
+            <h1>상선, 하선에 따라 큰 혼잡도 차이를 보입니다!</h1>
           </ChartDescription>
           <CongestionByLine ref={congestionByLineRef}></CongestionByLine>
         </ChartContainer>
@@ -271,8 +297,10 @@ const AboutPage = () => {
           ></CartoonCut>
           <CartoonCut
             className={`cut3 ${
-              scrollPosition > 12550 + 400 && scrollPosition < 12550 + 600
-                ? 'focus'
+              scrollPosition > 12550 + 400
+                ? scrollPosition > 12550 + 600
+                  ? 'focus cut4'
+                  : 'focus'
                 : ''
             }`}
           ></CartoonCut>
@@ -281,7 +309,12 @@ const AboutPage = () => {
       <InsightContainer4>
         <ChartContainer>
           <ChartDescription>
-            지하철 역세권의 가격차이가 이렇게 큽니다요
+            <h1>역마다 다른 가격차이에</h1>
+            <h1>예산에 맞는 역세권을 선택하기 힘드시죠?</h1>
+            <p>
+              부동산 실거래 데이터를 바탕으로 단위 면적 당 가격을 계산하였고,
+              사용자가 원하는 예산에 맞춰서 더욱 똑똑하게 역세권을 추천해줍니다
+            </p>
           </ChartDescription>
           <RealEstatePrice></RealEstatePrice>
         </ChartContainer>
@@ -329,7 +362,7 @@ const IntroContainer = styled.div`
   h2 {
     position: absolute;
     top: 450px;
-    color: #4b2789;
+    color: #33a23d;
   }
   .arrow {
     position: sticky;
@@ -340,7 +373,7 @@ const IntroContainer = styled.div`
     top: 40px;
     position: sticky;
     span {
-      color: #4b2789;
+      color: #33a23d;
     }
   }
   img {
@@ -370,7 +403,7 @@ const LogoBox = styled.div`
   position: sticky;
   top: 200px;
 
-  color: #4b2789;
+  color: #33a23d;
   font-size: 40px;
 `;
 
@@ -388,12 +421,17 @@ const InsightContainer1 = styled.div`
 
 const InsightContainer2 = styled.div`
   height: 1400px;
-  background-color: #4b2789;
+  img {
+    position: absolute;
+    transform: skew(5deg, 5deg);
+    width: 800px;
+  }
 `;
 
 const InsightContainer3 = styled.div`
   height: 2200px;
   padding: 30px;
+  padding-top: 100px;
   .barChart {
     margin-bottom: 200px;
     flex-direction: column;
@@ -402,19 +440,37 @@ const InsightContainer3 = styled.div`
 
 const InsightContainer4 = styled.div`
   height: 2000px;
+  padding-top: 140px;
+  div {
+    p {
+      font-size: 18px;
+      color: #7f917d;
+    }
+  }
 `;
 
 const ChartContainer = styled.div`
   width: 100%;
   justify-content: center;
   canvas {
-    margin: 50px;
+    margin: 20px;
   }
 `;
 
 const ChartDescription = styled.div`
-  margin: 100px;
+  margin: 30px;
   font-size: 40px;
+  p {
+    font-size: 30px;
+    margin: 20px;
+  }
+  h1 {
+    margin: 10px;
+    font-size: 46px;
+    strong {
+      color: #33a23d;
+    }
+  }
 `;
 
 const TrainContainer = styled.div`
@@ -448,6 +504,16 @@ const TrainDescribe = styled.div`
     color: black;
     text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff,
       0 0 40px #fff, 0 0 55px #fff, 0 0 75px #fff;
+    transition: transform 0.3s;
+  }
+  .small {
+    color: #33a23d;
+    transform: scale(0);
+  }
+  .bold {
+    font-size: 100px;
+    transform: scale(1);
+    color: #33a23d;
   }
 `;
 const RushHourContainer = styled.div`
@@ -456,6 +522,7 @@ const RushHourContainer = styled.div`
   grid-template-columns: 1fr 450px;
   height: 1900px;
   position: relative;
+  background-color: black;
 
   .rushHourImage {
     background-image: url(${rushHourImg});
@@ -472,7 +539,7 @@ const RushHourContainer = styled.div`
     padding-top: 100px;
     padding-bottom: 150px;
     top: 0px;
-
+    color: white;
     span {
       font-size: 40px;
       opacity: 0.3;
@@ -480,7 +547,7 @@ const RushHourContainer = styled.div`
     .focus {
       opacity: 1;
       strong {
-        color: #4b2789;
+        color: #33a23d;
       }
     }
   }
@@ -513,6 +580,10 @@ const CartoonGrid = styled.div`
   }
   .cut3 {
     background-image: url(${cut3});
+    background-position: center;
+  }
+  .cut4 {
+    background-image: url(${cut4});
     background-position: center;
   }
   .focus {
