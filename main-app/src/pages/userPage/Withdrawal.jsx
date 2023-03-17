@@ -23,11 +23,12 @@ const Withdrawl = (props) => {
           },
           withCredentials: true,
         });
-        console.log(response.data);
+        alert("이용해주셔서 감사합니다.");
         navigate("/login");
       }
     } catch (error) {
       console.error(error);
+      alert("비밀번호를 다시 확인하세요!");
     }
   };
   return (

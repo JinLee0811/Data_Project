@@ -86,7 +86,7 @@ function UserPage(props) {
         </RightContainer>
       </UserPageContainer>
       <Footer>
-        <nav>
+        <p>
           <a
             href='https://www.notion.so/elice/3087fb6533044f71916c420d86213a6e?p=0d06a8c5921d4817b428bd9fac47ac87&pm=s'
             target='_blank'
@@ -100,14 +100,17 @@ function UserPage(props) {
             rel='noreferrer'>
             GitLab
           </a>
-        </nav>
+          <br />
+          <br />
+          <br />
+          <span>Copyright © 2023</span>
+        </p>
         <p>
           <span>팀명 : 이사가게? 어디가게?</span>
           <br />
           <span>팀장 : 이정진</span>
           <br />
           <span>F E : 최호열 안나연 이정진</span>
-          <br />
           <span>B E : 정종열 강성훈 이승은</span>
           <br />
         </p>
@@ -239,16 +242,13 @@ const RightSection = styled.div`
 `;
 const Footer = styled.div`
   width: 100%;
-  height: 90px;
+  height: 50px;
   bottom: 0px;
-  position: absolute;
   border-top: 1px solid #c4c4c4;
   padding-top: 15px;
   color: #808080;
   font-size: 11px;
-  section {
-    padding-bottom: 105px;
-  }
+  display: flex;
   a {
     display: inline-block;
     margin: 0 20px 10px 20px;
@@ -261,10 +261,12 @@ const Footer = styled.div`
   p {
     margin-top: 0;
     margin-bottom: 0;
+    display: inline-block;
   }
   p span {
     display: inline-block;
     margin-left: 20px;
+    margin-bottom: 10px;
   }
 `;
 export default UserPage;

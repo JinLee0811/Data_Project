@@ -56,20 +56,19 @@ const UserEdit = () => {
         },
         { withCredentials: true }
       );
-
-      if (response.data.success) {
-        setMessage("비밀번호가 변경되었습니다.");
+      if (response) {
+        alert("비밀번호가 변경되었습니다.");
         setOldPassword("");
         setNewPassword("");
         setNewPasswordConfirm("");
         navigate("/user");
+        console.log(response.data);
       } else {
         setMessage("비밀번호 변경에 실패했습니다.");
       }
     } catch (error) {
       console.error(error);
-      setMessage("비밀번호 변경에 실패했습니다.");
-      navigate("/user");
+      setMessage("비밀번호를 다시 확인해주세요.");
     }
   };
 
@@ -124,7 +123,6 @@ const Form = styled.form`
   margin: 0 auto;
   width: 500px;
 `;
-
 const Input = styled.input`
   padding: 1rem;
   border: 1px solid #ccc;
@@ -132,7 +130,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  background-color: #8b5ad8;
+  background-color: #8b5ad8; //#33a23d
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;

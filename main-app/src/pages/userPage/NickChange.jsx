@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import Modal from "../../components/Modal";
 
 const NickChange = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const [nickname, setNickname] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = (e) => {
+    e.preventDefault();
+    setIsOpen(true);
+  };
+
+  const closeModal = (e) => {
+    e.preventDefault();
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -51,6 +63,11 @@ const NickChange = () => {
           value={nickname}
           onChange={handleNicknameChange}
         />
+        <Button onClick={openModal}>닉네임 변경하기</Button>
+        <Modal isOpen={isOpen} onClose={closeModal}>
+          <h2>모달 내용</h2>
+          <p>이곳에 모달 내용을 작성할 수 있습니다.</p>
+        </Modal>
         <Button type='submit'>닉네임 변경하기</Button>
       </Form>
     </>
