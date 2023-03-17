@@ -28,18 +28,22 @@ const Nav = () => {
           <span />
         </SideDrawerButton>
 
-        <Link to='/'>
-          <LogoBox>
-            <div>2</div>
-            <span>사가게?</span>
-          </LogoBox>
-        </Link>
+        <LogoBox>
+          <div>2</div>
+          <span>사가게?</span>
+        </LogoBox>
 
         <ul>
           <li>
             <Link to='/about'>
               <div className='station'></div>
               <p>소개</p>
+            </Link>
+          </li>
+          <li>
+            <Link to='/'>
+              <div className='station'></div>
+              <p>역찾기</p>
             </Link>
           </li>
           <li>
@@ -51,17 +55,9 @@ const Nav = () => {
           {isLoggedIn ? (
             <>
               <li>
-                <Link to='/user'>
-                  <div className='station'></div>
-                  <p>마이페이지</p>
-                </Link>
+                <Link to='/user'></Link>
               </li>
-              <li onClick={logout}>
-                <Link>
-                  <div className='station'></div>
-                  <p>로그아웃</p>
-                </Link>
-              </li>
+              <li onClick={logout}>로그아웃</li>
             </>
           ) : (
             <>
@@ -124,24 +120,24 @@ const Backdrop = styled.div`
 const LogoBox = styled.div`
   display: flex;
   position: relative;
-  color: #4b2789;
+  color: white;
   flex-direction: row;
   font-family: 'NanumSquareNeoExtraBold';
   font-size: 28px;
   margin-top: 5px;
   height: 60px;
   width: 157px;
-  border: 10px solid #4b2789;
+  border: 10px solid white;
   border-radius: 40px;
   align-items: center;
-  background-color: white;
+  background-color: #4b2789;
   box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
   div {
-    color: white;
+    color: #4b2789;
     font-family: 'NanumSquareNeoHeavy';
     position: absolute;
     left: 6px;
-    background-color: #4b2789;
+    background-color: white;
     border-radius: 100%;
     width: 40px;
     height: 40px;
@@ -156,14 +152,14 @@ const LogoBox = styled.div`
 
 const NavigationBar = styled.nav`
   position: relative;
-  background-color: #4b2789;
+  background-color: white;
   padding: 0rem 2rem;
   height: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 30px solid white;
-  border-bottom: 30px solid white;
+  border-top: 30px solid #4b2789;
+  border-bottom: 30px solid #4b2789;
 
   ul {
     position: absolute;
@@ -185,20 +181,18 @@ const NavigationBar = styled.nav`
         justify-content: center;
         position: relative;
         .station {
-          background-color: white;
+          background-color: #4b2789;
           width: 10px;
           height: 10px;
-          border: 6px solid #4b2789;
+          border: 6px solid white;
           border-radius: 50%;
         }
         p {
           position: absolute;
           top: 12px;
-          color: #4b2789;
-          width: 70px;
+          color: white;
+          width: 60px;
           text-align: center;
-          font-family: 'NanumSquareNeoBold';
-          letter-spacing: 1px;
         }
       }
     }

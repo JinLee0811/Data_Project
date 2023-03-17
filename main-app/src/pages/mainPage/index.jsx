@@ -35,7 +35,7 @@ const MainContainer = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: 320px 1fr;
-  height: calc(100vh - 62px);
+  height: calc(100vh - 74px);
   *:focus {
     outline: none;
   }

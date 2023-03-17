@@ -162,8 +162,8 @@ const NavigationBar = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 30px solid white;
-  border-bottom: 30px solid white;
+  border-top: 30px solid #f5f5f5;
+  border-bottom: 30px solid #f5f5f5;
 
   ul {
     position: absolute;
