@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Withdrawl = (props) => {
   const serverUrl = process.env.REACT_APP_API_URL;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
 
   const handlePasswordChange = (event) => {
@@ -13,31 +13,30 @@ const Withdrawl = (props) => {
   };
 
   const handleDeleteUser = async (e) => {
-      e.preventDefault()
-      try {
-        const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
-        if (confirmDelete) {
-          const response = await axios.delete(serverUrl + "/account", {
-            data: {
-              password: password
-            },
-            withCredentials: true
-          });
-          console.log(response.data);
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error(error);
+    e.preventDefault();
+    try {
+      const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
+      if (confirmDelete) {
+        const response = await axios.delete(serverUrl + "/account", {
+          data: {
+            password: password,
+          },
+          withCredentials: true,
+        });
+        alert("이용해주셔서 감사합니다.");
+        navigate("/login");
       }
-    };
+    } catch (error) {
+      console.error(error);
+      alert("비밀번호를 다시 확인하세요!");
+    }
+  };
   return (
     <>
-     <Greeting>
-        어디 가게?
-      </Greeting>
+      <Greeting>어디 가게?</Greeting>
       <Form>
-      <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
-      <Input
+        <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
+        <Input
           type='password'
           name='password'
           placeholder='비밀번호'
@@ -66,16 +65,15 @@ const Input = styled.input`
 `;
 
 const Greeting = styled.h2`
-    white-space: pre-wrap;
-    margin: 0px 0px 100px 0px;
+  white-space: pre-wrap;
+  margin: 0px 0px 100px 0px;
 `;
 const ConfirmBox = styled.h4`
-    color: gray;
-    white-space: pre-wrap;
-    margin: 0px;
-    margin-top: 20px;
-    
-`
+  color: gray;
+  white-space: pre-wrap;
+  margin: 0px;
+  margin-top: 20px;
+`;
 
 const Button = styled.button`
   background-color: #8b5ad8;
@@ -85,7 +83,6 @@ const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
 
   &:hover {
     background-color: #4b2789;

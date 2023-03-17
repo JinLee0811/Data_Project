@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserEdit = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState('')
+  const [userInfo, setUserInfo] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
@@ -14,9 +14,11 @@ const UserEdit = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(serverUrl + "/account", { withCredentials: true });
+      const response = await axios.get(serverUrl + "/account", {
+        withCredentials: true,
+      });
       setUserInfo(response.data);
-      console.log(response)
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -54,20 +56,19 @@ const UserEdit = () => {
         },
         { withCredentials: true }
       );
-
-      if (response.data.success) {
-        setMessage("비밀번호가 변경되었습니다.");
+      if (response) {
+        alert("비밀번호가 변경되었습니다.");
         setOldPassword("");
         setNewPassword("");
         setNewPasswordConfirm("");
         navigate("/user");
+        console.log(response.data);
       } else {
         setMessage("비밀번호 변경에 실패했습니다.");
       }
     } catch (error) {
       console.error(error);
-      setMessage("비밀번호 변경에 실패했습니다.");
-      navigate("/user");
+      setMessage("비밀번호를 다시 확인해주세요.");
     }
   };
 
@@ -80,13 +81,8 @@ const UserEdit = () => {
           placeholder={userInfo.email}
           disabled
         />
+        <Input type='text' name='name' placeholder={userInfo.name} disabled />
         <Input
-          type='text'
-          name='name'
-          placeholder={userInfo.name}
-          disabled
-        />
-          <Input
           type='text'
           name='nickName'
           placeholder={userInfo.nickname}
@@ -115,7 +111,6 @@ const UserEdit = () => {
         />
         <Button type='submit'>정보 수정하기</Button>
         {message && <p>{message}</p>}
-
       </Form>
     </>
   );
@@ -128,7 +123,6 @@ const Form = styled.form`
   margin: 0 auto;
   width: 500px;
 `;
-
 const Input = styled.input`
   padding: 1rem;
   border: 1px solid #ccc;
@@ -136,14 +130,13 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  background-color: #8b5ad8;
+  background-color: #8b5ad8; //#33a23d
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  
 
   &:hover {
     background-color: #4b2789;
@@ -153,6 +146,5 @@ const Button = styled.button`
     outline: none;
   }
 `;
-
 
 export default UserEdit;

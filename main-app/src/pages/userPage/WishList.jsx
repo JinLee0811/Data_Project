@@ -4,7 +4,7 @@ import styled from "styled-components";
 const sampleData = [
   {
     id: 4,
-    timeStamp : 2303121122,
+    timeStamp: 2303121122,
     userId: 2,
     title: "건대입구역",
     content: "사람 많고 붐빔, 근데 먹을 곳 많아요.",
@@ -23,7 +23,6 @@ function WishList(props) {
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
 
-
   useEffect(() => {
     const userId = 2;
     setReviews(sampleData.filter((review) => review.userId === userId));
@@ -34,18 +33,19 @@ function WishList(props) {
     setLike(sampleLikeData.filter((like) => like.userId === userId));
   }, []);
 
-  return (<>
+  return (
+    <>
       <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
-        <DetailSection>
-          <SectionContent>
+      <DetailSection>
+        <SectionContent>
           {likes.map((like) => (
-                <SubwayBox key={like.id}>
-                  <DeleteButton>x</DeleteButton>
-                 {like.station}
-                </SubwayBox>
-              ))}
-            </SectionContent>
-        </DetailSection>
+            <SubwayBox key={like.id}>
+              <DeleteButton>x</DeleteButton>
+              {like.station}
+            </SubwayBox>
+          ))}
+        </SectionContent>
+      </DetailSection>
     </>
   );
 }
@@ -56,7 +56,7 @@ const DetailSection = styled.div`
   border-radius: 5px;
   width: 500px;
   height: 400px;
-  background-color: #E0DAFC;
+  background-color: #e0dafc;
 `;
 
 const SectionTitle = styled.h2`
@@ -68,16 +68,15 @@ const SubwayBox = styled.div`
   background-color: white;
   border-radius: 100px;
   display: inline-block;
-  :hover{
-    background-color: #8B5AD8;
+  :hover {
+    background-color: #8b5ad8;
     color: white;
     button {
-      background-color: #8B5AD8;
+      background-color: #8b5ad8;
       color: white;
     }
   }
 `;
-
 
 const SectionContent = styled.div`
   font-size: 16px;
@@ -92,11 +91,10 @@ const DeleteButton = styled.button`
   border-radius: 10px;
   padding: 0px;
   margin: 0px 0px 0px 5px;
-  :hover{
+  :hover {
     background-color: white;
     color: white;
   }
-`
-
+`;
 
 export default WishList;
