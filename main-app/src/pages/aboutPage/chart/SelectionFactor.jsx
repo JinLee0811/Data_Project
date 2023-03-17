@@ -19,8 +19,8 @@ const data = {
       label: '현재 거처 선택 이유',
       data: [67.8, 46.7, 23.1, 12.7, 8.5, 5.0, 1.6],
       backgroundColor: [
-        '#4B2789',
-        '#8B5AD8',
+        '#33a23d',
+        '#7bc745',
         '#c9c9c9',
         '#c9c9c9ae',
         '#c9c9c97b',
@@ -44,7 +44,11 @@ const option = {
     },
     title: {
       display: true,
-      text: '현재 거처 선택 이유',
+      text: [
+        '현재 거처 선택 이유 <출처: 「주택거처주거실태조사」, 국토교통부>',
+      ],
+      position: 'bottom',
+      align: 'start',
     },
   },
   animation: {
