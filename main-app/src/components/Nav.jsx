@@ -1,9 +1,9 @@
-import React from "react";
-import { useState, useContext } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import SideDrawer from "./SideDrawer";
-import { AuthContext } from "../utils/AuthContext";
+import React from 'react';
+import { useState, useContext } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import SideDrawer from './SideDrawer';
+import { AuthContext } from '../utils/AuthContext';
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
@@ -126,24 +126,24 @@ const Backdrop = styled.div`
 const LogoBox = styled.div`
   display: flex;
   position: relative;
-  color: #4b2789;
+  color: #33a23d;
   flex-direction: row;
-  font-family: "NanumSquareNeoExtraBold";
+  font-family: 'NanumSquareNeoExtraBold';
   font-size: 28px;
-  margin-top: 5px;
+  margin-top: 12px;
   height: 60px;
   width: 157px;
-  border: 10px solid #4b2789;
+  border: 10px solid #33a23d;
   border-radius: 40px;
   align-items: center;
   background-color: white;
   box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
   div {
     color: white;
-    font-family: "NanumSquareNeoHeavy";
+    font-family: 'NanumSquareNeoHeavy';
     position: absolute;
     left: 6px;
-    background-color: #4b2789;
+    background-color: #33a23d;
     border-radius: 100%;
     width: 40px;
     height: 40px;
@@ -158,7 +158,7 @@ const LogoBox = styled.div`
 
 const NavigationBar = styled.nav`
   position: relative;
-  background-color: #4b2789;
+  background-color: #33a23d;
   padding: 0rem 2rem;
   height: 14px;
   display: flex;
@@ -190,16 +190,16 @@ const NavigationBar = styled.nav`
           background-color: white;
           width: 10px;
           height: 10px;
-          border: 6px solid #4b2789;
+          border: 6px solid #33a23d;
           border-radius: 50%;
         }
         p {
           position: absolute;
           top: 12px;
-          color: #4b2789;
-          width: 70px;
+          color: #33a23d;
+          width: 80px;
           text-align: center;
-          font-family: "NanumSquareNeoBold";
+          font-family: 'NanumSquareNeoBold';
           letter-spacing: 1px;
         }
       }

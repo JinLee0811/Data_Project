@@ -21,8 +21,8 @@ const data = {
       label: '거주지 선택시 고려사항',
       data: [50.4, 20.6, 6.6, 4.8, 4.7, 3.6, 3.9, 3.1, 2.3],
       backgroundColor: [
-        '#4B2789',
-        '#8B5AD8',
+        '#33a23d',
+        '#7BC745',
         '#c9c9c9',
         '#c9c9c9c0',
         '#c9c9c9ae',
@@ -39,7 +39,7 @@ const data = {
 const option = {
   plugins: {
     legend: {
-      position: 'left',
+      position: 'right',
       onClick: (e) => e.stopPropagation(),
       labels: {
         boxWidth: 20,
@@ -47,8 +47,10 @@ const option = {
       },
     },
     title: {
+      position: 'bottom',
+      align: 'end',
       display: true,
-      text: '서울시 거주지 선택시 고려요인',
+      text: '서울시 거주지 선택시 고려요인 <출처: 서울특별시, 서울시도시정책지표조사>',
     },
   },
   animation: {
