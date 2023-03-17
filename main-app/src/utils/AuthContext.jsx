@@ -7,17 +7,27 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    //   // js-cookie 사용하여 쿠키에 token이 있는지 체크
-    //   console.log(Cookies);   //httpOnly라서 못가져 오는 듯..? 그럼 refresh 하면 로그인 어케 유지함?
-    //   const token = Cookies.get("token");
-    //   console.log(token);
-    //   if (token) {
-    //     setIsLoggedIn(true);
-    //   }
-  }, []);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/account", {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+        console.log(response.data);
+        if (response?.data) {
+          setIsLoggedIn(true);
+          setIsAdmin(response.data.isAdmin);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUserData();
+  }, [isLoggedIn]);
 
   const login = async (email, password) => {
     try {
@@ -41,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.delete(serverUrl + "/logout", { withCredentials: true });
       setIsLoggedIn(false);
+      setIsAdmin(false);
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -48,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, isAdmin, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

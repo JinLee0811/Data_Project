@@ -7,7 +7,7 @@ import { AuthContext } from "../utils/AuthContext";
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, isAdmin, logout } = useContext(AuthContext);
 
   const handleOpenDrawer = () => {
     setDrawerIsOpen(true);
@@ -37,9 +37,11 @@ const Nav = () => {
         </ul>
 
         <ul>
-          <li>
-            <Link to='/admin/user'>관리자</Link>
-          </li>
+          {isAdmin && (
+            <li>
+              <Link to='/admin/user'>관리자</Link>
+            </li>
+          )}
           {isLoggedIn ? (
             <>
               <li>
