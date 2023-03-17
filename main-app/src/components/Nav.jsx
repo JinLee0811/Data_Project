@@ -1,13 +1,13 @@
-import React from 'react';
-import { useState, useContext } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import SideDrawer from './SideDrawer';
-import { AuthContext } from '../utils/AuthContext';
+import React from "react";
+import { useState, useContext } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import SideDrawer from "./SideDrawer";
+import { AuthContext } from "../utils/AuthContext";
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, isAdmin, logout } = useContext(AuthContext);
 
   const handleOpenDrawer = () => {
     setDrawerIsOpen(true);
@@ -42,12 +42,14 @@ const Nav = () => {
               <p>소개</p>
             </Link>
           </li>
-          <li>
-            <Link to='/admin/user'>
-              <div className='station'></div>
-              <p>관리자</p>
-            </Link>
-          </li>
+          {isAdmin && (
+            <li>
+              <Link to='/admin/user'>
+                <div className='station'></div>
+                <p>관리자</p>
+              </Link>
+            </li>
+          )}
           {isLoggedIn ? (
             <>
               <li>
@@ -126,7 +128,7 @@ const LogoBox = styled.div`
   position: relative;
   color: #4b2789;
   flex-direction: row;
-  font-family: 'NanumSquareNeoExtraBold';
+  font-family: "NanumSquareNeoExtraBold";
   font-size: 28px;
   margin-top: 5px;
   height: 60px;
@@ -138,7 +140,7 @@ const LogoBox = styled.div`
   box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
   div {
     color: white;
-    font-family: 'NanumSquareNeoHeavy';
+    font-family: "NanumSquareNeoHeavy";
     position: absolute;
     left: 6px;
     background-color: #4b2789;
@@ -197,7 +199,7 @@ const NavigationBar = styled.nav`
           color: #4b2789;
           width: 70px;
           text-align: center;
-          font-family: 'NanumSquareNeoBold';
+          font-family: "NanumSquareNeoBold";
           letter-spacing: 1px;
         }
       }

@@ -3,33 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 
 function ReviewManage() {
-  // const reviewsList = [
-  //   {
-  //     user_id: 1,
-  //     subway_id: "성수역",
-  //     subway_line: 2,
-  //     nickName: "여리",
-  //     review: "앨리스에서 너무 멀어요",
-  //     createdAt: "2022-01-01",
-  //   },
-  //   {
-  //     user_id: 2,
-  //     subway_id: "서울역",
-  //     subway_line: 4,
-  //     nickName: "JIN",
-  //     review: "조용히 해주세요",
-  //     createdAt: "2023-01-01",
-  //   },
-  //   {
-  //     user_id: 3,
-  //     subway_id: "왕십리역",
-  //     subway_line: 2,
-  //     nickName: "ana",
-  //     review: "늦어서 죄송합니다",
-  //     createdAt: "2022-06-01",
-  //   },
-  // ];
-
   const serverUrl = process.env.REACT_APP_API_URL;
   const [reviewsList, setReviewsList] = useState();
 
@@ -41,7 +14,7 @@ function ReviewManage() {
           withCredentials: true,
         });
         console.log(response.data);
-        setReviewsList(() => response.data);
+        setReviewsList(response.data);
       } catch (err) {
         console.log(err);
       }
