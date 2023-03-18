@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Outlet, NavLink } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { Outlet, NavLink } from "react-router-dom";
 
 function Sidebar() {
   return (
@@ -48,11 +48,10 @@ const MainContainer = styled.section`
 
 const Aside = styled.aside`
   width: 200px;
-  background-color: #f2f2f2;
+
   position: relative;
   top: 0;
   left: 0;
-  bottom: 0;
 
   ul {
     list-style: none;

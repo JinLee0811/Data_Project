@@ -197,7 +197,7 @@ const NavigationBar = styled.nav`
           position: absolute;
           top: 12px;
           color: #4b2789;
-          width: 70px;
+          width: 80px;
           text-align: center;
           font-family: "NanumSquareNeoBold";
           letter-spacing: 1px;

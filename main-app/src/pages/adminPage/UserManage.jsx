@@ -84,7 +84,7 @@ function UserManage() {
                       handleDelete(e);
                     }}
                   >
-                    비활성화
+                    삭제
                   </DeleteButton>
                 </TableData>
               </tr>
@@ -117,11 +117,11 @@ const TableData = styled.td`
 `;
 
 const DeleteButton = styled.button`
-  background-color: #8b5ad8;
+  background-color: #33a23d;
   border: none;
   color: #fff;
   padding: 0.5rem;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
   text-align: center;
   text-decoration: none;
   display: inline-block;

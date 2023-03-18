@@ -41,9 +41,11 @@ export const AuthProvider = ({ children }) => {
       );
       console.log(response);
       setIsLoggedIn(true);
+      navigate("/");
     } catch (err) {
       //backend error handling 추가해야함.
-      console.log(err);
+      console.log(err.message);
+      alert(err);
     }
   };
 

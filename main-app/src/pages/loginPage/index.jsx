@@ -39,7 +39,6 @@ function LoginPage() {
       return;
     }
     login(inputs.email, inputs.password);
-    navigate("/");
   };
 
   const handleChange = (e) => {
@@ -115,7 +114,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  background-color: #4b2789;
+  background-color: #33a23d;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem;
@@ -126,7 +125,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #8b5ad8;
+    background-color: #33a23d;
   }
 
   &:focus {
@@ -136,17 +135,17 @@ const Button = styled.button`
 
 const RegisterButton = styled.button`
   background-color: #fff;
-  color: #4b2789;
+  color: #33a23d;
   font-size: 1rem;
   padding: 0.5rem;
-  border: solid 1px #4b2789;
+  border: solid 1px #33a23d;
   border-radius: 4px;
   box-sizing: border-box;
   width: 300px;
   cursor: pointer;
 
   &:hover {
-    background-color: #8b5ad8;
+    background-color: #33a23d;
   }
 
   &:focus {
