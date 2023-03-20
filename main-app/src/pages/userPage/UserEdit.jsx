@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
+import { useUserInfo } from '../../hooks/user.hook'
+
 const UserEdit = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState("");
+  const userInfo = useUserInfo()
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [message, setMessage] = useState("");
-
-  const getUserInfo = async () => {
-    try {
-      const response = await axios.get(serverUrl + "/account", {
-        withCredentials: true,
-      });
-      setUserInfo(response.data);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    getUserInfo();
-  }, []);
 
   const handleOldPasswordChange = (event) => {
     setOldPassword(event.target.value);

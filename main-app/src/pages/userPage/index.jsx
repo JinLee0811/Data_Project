@@ -1,29 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, Outlet } from "react-router-dom";
-import axios from "axios";
 // 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수
+
+import { useUserInfo } from '../../hooks/user.hook'
+
 function UserPage(props) {
-  const serverUrl = process.env.REACT_APP_API_URL;
   const [imageUrl, setImageUrl] = useState("");
   const [reviews, setReviews] = useState([]);
   const [likes, setLike] = useState([]);
-  const [userInfo, setUserInfo] = useState("");
-  const getUserInfo = async () => {
-    try {
-      const response = await axios.get(serverUrl + "/account", {
-        withCredentials: true,
-      });
-      setUserInfo(response.data);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  console.log(userInfo);
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+  const {userInfo} = useUserInfo
   useEffect(() => {
     // 랜덤 고양이 이미지 가져오기
     fetch("https://api.thecatapi.com/v1/images/search")

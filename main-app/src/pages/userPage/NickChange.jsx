@@ -3,10 +3,21 @@ import styled from "styled-components";
 import axios from "axios";
 import Modal from "../../components/Modal";
 
+
+import { useUserInfo } from '../../hooks/user.hook'
+
 const NickChange = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
+
+  const { userInfo } = useUserInfo()
   const [nickname, setNickname] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (userInfo) {
+      setNickname(userInfo.nickname)
+    }
+  }, [userInfo])
 
   const openModal = (e) => {
     e.preventDefault();
@@ -17,20 +28,6 @@ const NickChange = () => {
     e.preventDefault();
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const response = await axios.get(serverUrl + "/account", {
-          withCredentials: true,
-        });
-        setNickname(response.data.nickname);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getUserInfo();
-  }, []);
 
   const handleNicknameChange = (event) => {
     setNickname(event.target.value);

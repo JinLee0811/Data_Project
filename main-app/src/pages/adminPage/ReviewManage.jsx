@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import api from "../../commons/api";
 
 function ReviewManage() {
-  const serverUrl = process.env.REACT_APP_API_URL;
   const [reviewsList, setReviewsList] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(serverUrl + "/admin/review", {
-          headers: { "Content-Type": "application/json" },
+        const response = await api.get("/admin/review", {
           withCredentials: true,
         });
         console.log(response.data);
