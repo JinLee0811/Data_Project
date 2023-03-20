@@ -183,7 +183,7 @@ const UserInfo = styled.p`
   margin-right: 5px;
 `;
 const UserButton = styled.button`
-  background-color: #8b5ad8;
+  background-color: #33a23d;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -191,7 +191,7 @@ const UserButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   &:hover {
-    background-color: #4b2789;
+    background-color: #7bc745;
   }
   &:focus {
     outline: none;
@@ -232,9 +232,12 @@ const MenuBar = styled.div`
     li {
       margin-right: 1rem;
     }
+    li a {
+      color: #33a23d;
+    }
   }
   li a:hover {
-    color: #8b5ad8;
+    color: #008f62;
   }
 `;
 const RightSection = styled.div`

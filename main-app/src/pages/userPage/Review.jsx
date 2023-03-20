@@ -58,7 +58,7 @@ const DetailSection = styled.div`
   margin-top: 20px;
   padding: 50px;
   border-radius: 5px;
-  background-color: #e0dafc;
+  background-color: #a0dda5;
   width: 500px;
   height: 400px;
 `;
@@ -75,10 +75,10 @@ const ReviewBox = styled.div`
   display: inline-block;
   font-size: 13px;
   :hover {
-    background-color: #8b5ad8;
+    background-color: #7bc745;
     color: white;
     button {
-      background-color: #8b5ad8;
+      background-color: #7bc745;
       color: white;
     }
   }

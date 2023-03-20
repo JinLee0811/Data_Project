@@ -3,32 +3,44 @@ import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../utils/AuthContext";
+import Modal from "../../components/Modal";
 
 const Withdrawl = (props) => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const { setIsLoggedIn } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = (e) => {
+    e.preventDefault();
+    if (!password) {
+      alert("비밀번호를 입력해주세요.");
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  const closeModal = (e) => {
+    e.preventDefault();
+    setIsOpen(false);
+  };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
 
-  const handleDeleteUser = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const confirmDelete = window.confirm("정말로 탈퇴하시겠습니까?");
-      if (confirmDelete) {
-        const response = await axios.delete(serverUrl + "/account", {
-          data: {
-            password: password,
-          },
-          withCredentials: true,
-        });
-        alert("이용해주셔서 감사합니다.");
-        navigate("/login");
-        setIsLoggedIn(false);
-      }
+      const response = await axios.delete(serverUrl + "/account", {
+        data: {
+          password: password,
+        },
+        withCredentials: true,
+      });
+      navigate("/login");
+      setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
       alert("비밀번호를 다시 확인하세요!");
@@ -37,7 +49,7 @@ const Withdrawl = (props) => {
   return (
     <>
       <Greeting>어디 가게?</Greeting>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
         <Input
           type='password'
@@ -46,7 +58,11 @@ const Withdrawl = (props) => {
           value={password}
           onChange={handlePasswordChange}
         />
-        <Button onClick={handleDeleteUser}>회원 탈퇴</Button>
+        <Button onClick={openModal}>회원 탈퇴</Button>
+        <Modal isOpen={isOpen} onClose={closeModal} type='submit'>
+          <h2>회원 탈퇴</h2>
+          <p>정말로 회원을 탈퇴하시겠습니까?</p>
+        </Modal>
       </Form>
     </>
   );
@@ -79,7 +95,7 @@ const ConfirmBox = styled.h4`
 `;
 
 const Button = styled.button`
-  background-color: #8b5ad8;
+  background-color: #33a23d;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -88,7 +104,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #4b2789;
+    background-color: #7bc745;
   }
 
   &:focus {

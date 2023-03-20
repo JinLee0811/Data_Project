@@ -56,7 +56,7 @@ const DetailSection = styled.div`
   border-radius: 5px;
   width: 500px;
   height: 400px;
-  background-color: #e0dafc;
+  background-color: #a0dda5;
 `;
 
 const SectionTitle = styled.h2`
@@ -69,7 +69,7 @@ const SubwayBox = styled.div`
   border-radius: 100px;
   display: inline-block;
   :hover {
-    background-color: #8b5ad8;
+    background-color: #7bc745;
     color: white;
     button {
       background-color: #8b5ad8;
