@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 
-import api from '../commons/api'
+import { fetchUserInfo } from '../networks/user'
 
 export const useUserInfo = () => {
   const [userInfo, setUserInfo] = useState("");
 
   const getUserInfo = async () => {
     try {
-      const response = await api.get("/account");
+      const response = await fetchUserInfo()
       setUserInfo(response.data);
       console.log(response);
     } catch (error) {
