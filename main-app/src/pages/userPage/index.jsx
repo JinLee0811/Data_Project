@@ -6,30 +6,55 @@ import axios from "axios";
 function UserPage(props) {
   const serverUrl = process.env.REACT_APP_API_URL;
   const [imageUrl, setImageUrl] = useState("");
-  const [reviews, setReviews] = useState([]);
-  const [likes, setLike] = useState([]);
+  const [wish, setWish] = useState("");
+  const [review, setReview] = useState("");
   const [userInfo, setUserInfo] = useState("");
+
   const getUserInfo = async () => {
     try {
       const response = await axios.get(serverUrl + "/account", {
         withCredentials: true,
       });
       setUserInfo(response.data);
-      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
-  console.log(userInfo);
   useEffect(() => {
     getUserInfo();
-  }, []);
-  useEffect(() => {
     // 랜덤 고양이 이미지 가져오기
-    fetch("https://api.thecatapi.com/v1/images/search")
-      .then((response) => response.json())
-      .then((data) => setImageUrl(data[0].url))
-      .catch((error) => console.error(error));
+    // fetch("https://api.thecatapi.com/v1/images/search")
+    //   .then((response) => response.json())
+    //   .then((data) => setImageUrl(data[0].url))
+    //   .catch((error) => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    const getUserWish = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/wish", {
+          withCredentials: true,
+        });
+        setWish(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserWish();
+  }, []);
+
+  useEffect(() => {
+    const getUserReview = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/review", {
+          withCredentials: true,
+        });
+        setReview(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserReview();
   }, []);
   return (
     <>
@@ -37,25 +62,26 @@ function UserPage(props) {
         <LeftContainer>
           <InsideLeftContainer>
             <UserBrief>
-              <ProfileImage src={imageUrl} alt='Profile Image' />
+              <ProfileImage
+                src={
+                  "https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000"
+                }
+                alt='Profile Image'
+              />
               <UserBrief>
-                <UserName>
-                  {userInfo ? <>{userInfo.nickname}</> : <>닉네임</>}
-                </UserName>
+                <UserName>{userInfo.nickname}</UserName>
                 <Link to='/user/nickchange'>
                   <NickChange>✏️</NickChange>
                 </Link>
               </UserBrief>
-              <UserEmail>
-                {userInfo ? <>{userInfo.email}</> : <>email@email.com</>}
-              </UserEmail>
+              <UserEmail>{userInfo.email}</UserEmail>
               <UserInfo>나의 찜:</UserInfo>
               <Link to='/user/wishlist'>
-                <StationCount>0</StationCount>
+                <StationCount>{wish.length}</StationCount>
               </Link>
               <UserInfo>나의 리뷰:</UserInfo>
               <Link to='/user/review'>
-                <StationCount>0</StationCount>
+                <StationCount>{review.length}</StationCount>
               </Link>
               <UserBrief>
                 <Link to='/'>

@@ -1,53 +1,40 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
-const sampleData = [
-  {
-    id: 4,
-    timeStamp: 2303121122,
-    userId: 2,
-    title: "건대입구역",
-    content: "사람 많고 붐빔, 근데 먹을 곳 많아요.",
-  },
-];
-
-const sampleLikeData = [
-  {
-    id: 1,
-    userId: 2,
-    station: "서울역",
-  },
-];
+import axios from "axios";
 
 function Review(props) {
-  const [reviews, setReviews] = useState([]);
-  const [likes, setLike] = useState([]);
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [review, setReview] = useState("");
 
   useEffect(() => {
-    const userId = 2;
-    setReviews(sampleData.filter((review) => review.userId === userId));
+    const getUserReview = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/review", {
+          withCredentials: true,
+        });
+        setReview(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserReview();
   }, []);
-  const userOneReviews = reviews.filter((review) => review.userId === 2);
-  const userOneReviewsCount = userOneReviews.length;
-
-  useEffect(() => {
-    const userId = 2;
-    setLike(sampleLikeData.filter((like) => like.userId === userId));
-  }, []);
-  const userLike = likes.filter((like) => like.userId === 2);
-  const userLikeCount = userLike.length;
 
   return (
     <>
       <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
       <DetailSection>
         <SectionContent>
-          {reviews.map((review) => (
-            <ReviewBox key={review.id}>
-              <DeleteButton>x</DeleteButton>({review.timeStamp}) {review.title}{" "}
-              - {review.content}
-            </ReviewBox>
-          ))}
+          {review && review.length > 0 ? (
+            review.map((review) => (
+              <ReviewBox key={review.id}>
+                <DeleteButton>x</DeleteButton>({review.createdAt}){" "}
+                {review.station_id} - {review.body}
+              </ReviewBox>
+            ))
+          ) : (
+            <ReviewBox>남긴 리뷰가 없습니다</ReviewBox>
+          )}
         </SectionContent>
       </DetailSection>
     </>
@@ -65,6 +52,7 @@ const DetailSection = styled.div`
 
 const SectionTitle = styled.h2`
   font-size: 20px;
+  font-family: "NanumSquareNeoExtraBold";
 `;
 
 const ReviewBox = styled.div`

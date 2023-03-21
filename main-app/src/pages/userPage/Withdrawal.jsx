@@ -12,7 +12,7 @@ const Withdrawl = (props) => {
   const { setIsLoggedIn } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
-  const openModal = (e) => {
+  const hadleopenModal = (e) => {
     e.preventDefault();
     if (!password) {
       alert("비밀번호를 입력해주세요.");
@@ -21,7 +21,7 @@ const Withdrawl = (props) => {
     }
   };
 
-  const closeModal = (e) => {
+  const hadlecloseModal = (e) => {
     e.preventDefault();
     setIsOpen(false);
   };
@@ -30,7 +30,7 @@ const Withdrawl = (props) => {
     setPassword(event.target.value);
   };
 
-  const onSubmit = async (e) => {
+  const hadleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.delete(serverUrl + "/account", {
@@ -49,7 +49,7 @@ const Withdrawl = (props) => {
   return (
     <>
       <Greeting>어디 가게?</Greeting>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={hadleSubmit}>
         <ConfirmBox>탈퇴 하시려면 비밀번호를 입력해 주세요.</ConfirmBox>
         <Input
           type='password'
@@ -58,8 +58,8 @@ const Withdrawl = (props) => {
           value={password}
           onChange={handlePasswordChange}
         />
-        <Button onClick={openModal}>회원 탈퇴</Button>
-        <Modal isOpen={isOpen} onClose={closeModal} type='submit'>
+        <Button onClick={hadleopenModal}>회원 탈퇴</Button>
+        <Modal isOpen={isOpen} onClose={hadlecloseModal} type='submit'>
           <h2>회원 탈퇴</h2>
           <p>정말로 회원을 탈퇴하시겠습니까?</p>
         </Modal>

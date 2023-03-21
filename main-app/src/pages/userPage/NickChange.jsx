@@ -36,7 +36,7 @@ const NickChange = () => {
     setNickname(event.target.value);
   };
 
-  const onSubmit = async (event) => {
+  const hadleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.patch(
@@ -55,7 +55,7 @@ const NickChange = () => {
   return (
     <>
       <Greeting>변경하고자 하는 닉네임을 입력해 주세요.</Greeting>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={hadleSubmit}>
         <ConfirmBox>중복되지 않는 본인만의 닉네임으로 변경해보세요.</ConfirmBox>
         <Input
           type='text'

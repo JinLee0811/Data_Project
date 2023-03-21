@@ -11,7 +11,6 @@ const UserEdit = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
-  const [message, setMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = (e) => {
@@ -90,6 +89,10 @@ const UserEdit = () => {
       alert("비밀번호를 다시 확인해주세요.");
     }
   };
+
+  if (!userInfo) {
+    return <></>;
+  }
 
   return (
     <>
