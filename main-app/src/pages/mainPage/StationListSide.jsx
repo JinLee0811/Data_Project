@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import FeelTimeMethod from './FeelTimeMethod';
 
 const StationListSide = () => {
+  const location = useLocation();
+
   const [stationList, setStationList] = useState();
   const [feelTimeMethod, setFeelTimeMethod] = useState('feel_time_weekday_m');
   const { setMapOption, setMarkers } = useOutletContext();
@@ -43,6 +45,12 @@ const StationListSide = () => {
           lng: station.pos_x,
           rank: index + 1,
           station_name: station.station_name,
+          station_line: station.station_line,
+          area: station.area,
+          rent_price: station.rent_price,
+          lease_price: station.lease_price,
+          travel_time: station.travel_time,
+          feel_time: station.feel_time,
         },
       ]);
     });

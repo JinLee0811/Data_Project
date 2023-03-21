@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect, useRef } from 'react';
+import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
 const MainPage = () => {
   const mapElement = useRef(null);
@@ -10,12 +10,10 @@ const MainPage = () => {
     scaleControl: false,
   });
   const [markers, setMarkers] = useState([]);
-  const [infoWindos, setInfoWindows] = useState([]);
 
   useEffect(() => {
     const { naver } = window;
     const map = new naver.maps.Map(mapElement.current, mapOption);
-
     const getClickHandler = (myMarker, myInfoWindow) => {
       return () => {
         myInfoWindow.getMap()
@@ -46,18 +44,39 @@ const MainPage = () => {
         content: `
           <div class='iw'>
             <div class='iw-inner'>
-                    ${marker.station_name}
+              <div class='station'>
+                <h2>${marker.station_name}</h2>
+                <p>${marker.station_line}</p>
+              </div>
+              <div class='station-info'>
+                <div class='time'>
+                  <p>소요시간: ${marker.travel_time}</p>
+                  <p>체감시간: ${marker.feel_time}</p>
+                </div>
+                <hr>
+                <div class='price'>
+                 <p>월세: ${marker.rent_price}</p>
+                 <p>전세: ${marker.lease_price}</p>
+                </div>                    
+              </div>
+            </div>
+            <div class='wish'>
+              <div></div>
             </div>
           </div>
         `,
         anchorSize: { width: 10, height: 10 },
         borderWidth: 0,
+        backgroundColor: 'transparent',
       });
       naver.maps.Event.addListener(
         myMarker,
-        "click",
+        'click',
         getClickHandler(myMarker, myInfoWindow)
       );
+      if (marker.rank === 1) {
+        myInfoWindow.open(map, myMarker);
+      }
     });
   }, [mapOption, markers]);
 
@@ -108,7 +127,7 @@ const MapContainer = styled.div`
     border: 1px solid #a8a8a8;
     width: 8px;
     height: 8px;
-    content: "";
+    content: '';
   }
   .rank {
     display: flex;
@@ -124,7 +143,7 @@ const MapContainer = styled.div`
     height: 30px;
     span {
       color: white;
-      font-family: "NanumSquareNeoHeavy";
+      font-family: 'NanumSquareNeoHeavy';
     }
   }
 
@@ -132,8 +151,48 @@ const MapContainer = styled.div`
   .iw {
     width: 298px;
     height: 116px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
+    background-color: white;
+    border-radius: 5px;
+    p {
+      margin: 5px 8px;
+    }
     .iw-inner {
-      border-radius: 50px;
+      padding: 14px;
+      div {
+        display: flex;
+      }
+      .station {
+        border-bottom: 1px solid #bdbdbd;
+        padding-bottom: 5px;
+        h2 {
+          margin: 0;
+          color: #33a23d;
+        }
+        p {
+          margin-bottom: 0px;
+          font-weight: bold;
+          color: #696969;
+        }
+      }
+      .station-info {
+        padding: 5px;
+        justify-content: space-between;
+        .time,
+        .price {
+          justify-content: center;
+          width: 120px;
+          flex-direction: column;
+        }
+      }
+    }
+    .wish {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 30px;
+      height: 30px;
+      background-color: yellowgreen;
     }
   }
 `;

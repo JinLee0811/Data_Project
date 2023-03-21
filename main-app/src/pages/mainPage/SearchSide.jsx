@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import MultiRangeSlider from '../../utils/MultiRangeSlider';
+import useHttpRequest from '../../utils/useHttp';
 
 const SearchSide = () => {
-  const [price, setPrice] = useState({ min: 10, max: 100 });
-  const [commuteTime, setCommuteTime] = useState({ min: 10, max: 120 });
+  const navigate = useNavigate();
+  const [price, setPrice] = useState({ min: 1, max: 13 });
+  const [commuteTime, setCommuteTime] = useState({ min: 0, max: 120 });
+  const [type, setType] = useState('lease');
+
   const { setMapOption, setMarkers } = useOutletContext();
+  const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
     setMapOption((cur) => ({
@@ -20,6 +25,19 @@ const SearchSide = () => {
     }));
     setMarkers([]);
   }, []);
+
+  const handleSubmit = async () => {
+    const inputs = {
+      stationId: '37231533-2d1c-4210-9db6-e7165a018026',
+      time_min: commuteTime.min * 60,
+      time_max: commuteTime.max * 60,
+      type,
+      price_min: price.min,
+      price_max: price.max,
+    };
+
+    navigate('/stationlist', { state: inputs });
+  };
 
   return (
     <SearchSideContainer>
@@ -50,10 +68,24 @@ const SearchSide = () => {
 
           <Fieldset className='radioContainer'>
             <legend>거래유형 </legend>
-            <label htmlFor='rent'>전세: </label>
-            <input id='jeonse' type='radio' name='rent' />
-            <label htmlFor='rent'>월세: </label>
-            <input id='monthlyRent' type='radio' name='rent' />
+            <label htmlFor='type'>전세: </label>
+            <input
+              id='lease'
+              value='lease'
+              type='radio'
+              name='type'
+              checked={type === 'lease'}
+              onChange={(e) => setType(e.target.value)}
+            />
+            <label htmlFor='type'>월세: </label>
+            <input
+              id='rent'
+              value='rent'
+              type='radio'
+              name='type'
+              checked={type === 'rent'}
+              onChange={(e) => setType(e.target.value)}
+            />
           </Fieldset>
           <Fieldset>
             <legend>단위면적 당 가격 </legend>
@@ -61,17 +93,17 @@ const SearchSide = () => {
               {price.min} ~ {price.max} 만원
             </RangeInfo>
             <MultiRangeSlider
-              min={10}
-              max={100}
-              step={5}
+              min={1}
+              max={13}
+              step={1}
               value={price}
               onChange={setPrice}
             ></MultiRangeSlider>
           </Fieldset>
         </FieldContainer>
       </SearchForm>
-      <SearchButton>
-        <Link to={'stationlist'}>찾아보자!</Link>
+      <SearchButton onClick={() => handleSubmit()}>
+        <div>찾아보자!</div>
       </SearchButton>
     </SearchSideContainer>
   );
@@ -158,7 +190,7 @@ const SearchButton = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 60px;
-  a {
+  div {
     border-radius: 3px;
     line-height: 50px;
     text-align: center;
@@ -168,8 +200,9 @@ const SearchButton = styled.div`
     background-color: #33a23d;
     text-decoration: none;
     box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.1);
+    cursor: pointer;
   }
-  a:hover {
+  div:hover {
     background-color: #83d189;
   }
 `;
