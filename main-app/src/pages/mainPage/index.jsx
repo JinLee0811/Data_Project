@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState, useEffect, useRef } from "react";
+import { Outlet } from "react-router-dom";
+import styled from "styled-components";
 
 const MainPage = () => {
   const mapElement = useRef(null);
@@ -55,7 +55,7 @@ const MainPage = () => {
       });
       naver.maps.Event.addListener(
         myMarker,
-        'click',
+        "click",
         getClickHandler(myMarker, myInfoWindow)
       );
     });
@@ -108,7 +108,7 @@ const MapContainer = styled.div`
     border: 1px solid #a8a8a8;
     width: 8px;
     height: 8px;
-    content: '';
+    content: "";
   }
   .rank {
     display: flex;
@@ -124,7 +124,7 @@ const MapContainer = styled.div`
     height: 30px;
     span {
       color: white;
-      font-family: 'NanumSquareNeoHeavy';
+      font-family: "NanumSquareNeoHeavy";
     }
   }
 

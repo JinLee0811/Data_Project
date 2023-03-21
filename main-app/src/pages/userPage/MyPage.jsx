@@ -1,38 +1,73 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
-const sampleData = [];
-
-const sampleLikeData = [];
+import axios from "axios";
 
 function MyPage(props) {
-  const [reviews, setReviews] = useState([]);
-  const [likes, setLike] = useState([]);
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [wish, setWish] = useState([]);
+  const [review, setReview] = useState([]);
 
   useEffect(() => {
-    const userId = 2;
-    setReviews(sampleData.filter((review) => review.userId === userId));
+    getUserWish();
+    getUserReview();
   }, []);
-  const userOneReviews = reviews.filter((review) => review.userId === 2);
-  const userOneReviewsCount = userOneReviews.length;
 
-  useEffect(() => {
-    const userId = 2;
-    setLike(sampleLikeData.filter((like) => like.userId === userId));
-  }, []);
-  const userLike = likes.filter((like) => like.userId === 2);
-  const userLikeCount = userLike.length;
+  const getUserWish = async () => {
+    try {
+      const response = await axios.get(serverUrl + "/wish", {
+        withCredentials: true,
+      });
+      setWish(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getUserReview = async () => {
+    try {
+      const response = await axios.get(serverUrl + "/review", {
+        withCredentials: true,
+      });
+      setReview(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteReview = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${serverUrl}/review/${id}`, {
+        withCredentials: true,
+      });
+      getUserReview();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleDeleteWish = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${serverUrl}/wish/user/${id}`, {
+        withCredentials: true,
+      });
+      getUserWish();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
-      <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
+      <SectionTitle href='/user/wishlist'>내가 찜한 역세권❤️</SectionTitle>
       <DetailSection>
         <SectionContent>
-          {likes && likes.length > 0 ? (
-            likes.map((like) => (
-              <SubwayBox key={like.id}>
-                <DeleteButton>x</DeleteButton>
-                {like.station}
+          {wish && wish.length > 0 ? (
+            wish.map((wish) => (
+              <SubwayBox key={wish.user_id}>
+                <DeleteButton onClick={(e) => handleDeleteWish(e, wish.id)}>
+                  x
+                </DeleteButton>
+                {wish.station_id}
               </SubwayBox>
             ))
           ) : (
@@ -40,14 +75,16 @@ function MyPage(props) {
           )}
         </SectionContent>
       </DetailSection>
-      <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
+      <SectionTitle href='/user/review'> 내가 쓴 리뷰📝</SectionTitle>
       <DetailSection>
         <SectionContent>
-          {reviews && reviews.length > 0 ? (
-            reviews.map((review) => (
+          {review && review.length > 0 ? (
+            review.map((review) => (
               <ReviewBox key={review.id}>
-                <DeleteButton>x</DeleteButton>({review.timeStamp}){" "}
-                {review.title} - {review.content}
+                <DeleteButton onClick={(e) => handleDeleteReview(e, review.id)}>
+                  x
+                </DeleteButton>
+                ({review.createdAt}) {review.station_id} - {review.body}
               </ReviewBox>
             ))
           ) : (
@@ -60,16 +97,21 @@ function MyPage(props) {
 }
 const DetailSection = styled.div`
   width: 500px;
-  height: 100px;
+  min-height: 100px;
   margin-bottom: 30px;
   margin-top: 20px;
   padding: 50px;
   border-radius: 5px;
-  background-color: #e0dafc;
+  background-color: #a0dda5;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled.a`
+  font-family: "NanumSquareNeoExtraBold";
+  display: inline-block;
   font-size: 20px;
+  color: black;
+  text-decoration: none;
+  margin-top: 20px;
 `;
 const SubwayBox = styled.div`
   margin: 5px 5px;
@@ -77,11 +119,12 @@ const SubwayBox = styled.div`
   background-color: white;
   border-radius: 100px;
   display: inline-block;
+  font-size: 13px;
   :hover {
-    background-color: #8b5ad8;
+    background-color: #7bc745;
     color: white;
     button {
-      background-color: #8b5ad8;
+      background-color: #7bc745;
       color: white;
     }
   }
@@ -95,10 +138,10 @@ const ReviewBox = styled.div`
   display: inline-block;
   font-size: 13px;
   :hover {
-    background-color: #8b5ad8;
+    background-color: #7bc745;
     color: white;
     button {
-      background-color: #8b5ad8;
+      background-color: #7bc745;
       color: white;
     }
   }

@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-function Modal({ isOpen, onClose, children }) {
+function Modal({ isOpen, onClose, children, onSubmit }) {
   if (!isOpen) return null;
   return (
     <ModalOverlay>
       <ModalContent>
         {children}
         <div>
-          <ConfirmButton onClick={onClose}>확인</ConfirmButton>
+          <ConfirmButton onClick={onSubmit}>확인</ConfirmButton>
           <CancelButton onClick={onClose}>취소</CancelButton>
         </div>
       </ModalContent>
@@ -32,7 +32,9 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   position: relative;
   background-color: white;
-  padding: 1rem;
+  padding: 2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -42,8 +44,8 @@ const ModalContent = styled.div`
 
 const ConfirmButton = styled.button`
   margin: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: blue;
+  padding: 0.5rem 2rem;
+  background-color: #33a23d;
   color: white;
   border: none;
   border-radius: 5px;
@@ -53,7 +55,7 @@ const ConfirmButton = styled.button`
 
 const CancelButton = styled.button`
   margin: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   background-color: gray;
   color: white;
   border: none;
