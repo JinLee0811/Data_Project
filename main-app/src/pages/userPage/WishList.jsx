@@ -20,6 +20,19 @@ function WishList(props) {
     getUserWish();
   }, []);
 
+  const handleDeleteWish = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${serverUrl}/wish/user/${id}`, {
+        withCredentials: true,
+      });
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
@@ -28,7 +41,9 @@ function WishList(props) {
           {wish && wish.length > 0 ? (
             wish.map((wish) => (
               <SubwayBox key={wish.user_id}>
-                <DeleteButton>x</DeleteButton>
+                <DeleteButton onClick={(e) => handleDeleteWish(e, wish.id)}>
+                  x
+                </DeleteButton>
                 {wish.station_id}
               </SubwayBox>
             ))
@@ -59,6 +74,7 @@ const SubwayBox = styled.div`
   padding: 20px 20px 20px 20px;
   background-color: white;
   border-radius: 100px;
+
   display: inline-block;
   :hover {
     background-color: #7bc745;
