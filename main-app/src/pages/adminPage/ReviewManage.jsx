@@ -1,32 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import useHttpRequest from "../../utils/useHttp";
 
 function ReviewManage() {
-  const serverUrl = process.env.REACT_APP_API_URL;
-  const [reviewsList, setReviewsList] = useState();
+  const [reviews, setReviews] = useState();
+  const { sendRequest } = useHttpRequest();
+
+  const fetchData = async () => {
+    try {
+      const response = await sendRequest("/admin/review", "get");
+      console.log(response.data);
+      setReviews(() => response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(serverUrl + "/admin/review", {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
-        console.log(response.data);
-        setReviewsList(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchData();
   }, []);
 
-  const handleDelete = (e) => {
-    console.log(e.target);
-  };
+  const handleDelete = useCallback(async (review_id) => {
+    try {
+      const response = await sendRequest(
+        `/admin/review/${review_id}`,
+        "delete",
+        {}
+      );
+      console.log(response);
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
-    reviewsList && (
+    reviews && (
       <Table>
         <thead>
           <tr>
@@ -40,20 +49,18 @@ function ReviewManage() {
           </tr>
         </thead>
         <tbody>
-          {reviewsList.map((review) => (
-            <tr key={review.user.email}>
+          {reviews.map((review) => (
+            <tr key={review.id}>
               <TableData>{review.createdAt.split("T")[0]}</TableData>
               <TableData>{review.user.name}</TableData>
               <TableData>{review.user.nickname}</TableData>
               <TableData>{review.station.station_line}</TableData>
               <TableData>{review.station.station_name}</TableData>
               <TableData>{review.body}</TableData>
-
               <TableData>
                 <DeleteButton
-                  id={review.user.email}
-                  onClick={(e) => {
-                    handleDelete(e);
+                  onClick={() => {
+                    handleDelete(review.id);
                   }}
                 >
                   Delete
@@ -85,7 +92,7 @@ const TableData = styled.td`
 `;
 
 const DeleteButton = styled.button`
-  background-color: #8b5ad8;
+  background-color: #33a23d;
   border: none;
   color: #fff;
   padding: 0.5rem;

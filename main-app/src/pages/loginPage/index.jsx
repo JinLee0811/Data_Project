@@ -1,13 +1,9 @@
 import React, { useState, useContext } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import { AuthContext } from "../../utils/AuthContext";
 
 function LoginPage() {
-  const serverUrl = process.env.REACT_APP_API_URL;
-  const navigate = useNavigate();
-  const location = useLocation();
   const { login } = useContext(AuthContext);
 
   const [inputs, setInputs] = useState({
@@ -39,7 +35,6 @@ function LoginPage() {
       return;
     }
     login(inputs.email, inputs.password);
-    navigate("/");
   };
 
   const handleChange = (e) => {
@@ -52,37 +47,39 @@ function LoginPage() {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <Card>
         <Title>이메일로 로그인</Title>
-        <Input
-          type='email'
-          name='email'
-          value={inputs.email}
-          placeholder='이메일'
-          onChange={handleChange}
-          required
-        />
+        <Form onSubmit={handleSubmit}>
+          <Input
+            type='email'
+            name='email'
+            value={inputs.email}
+            placeholder='이메일'
+            onChange={handleChange}
+            required
+          />
 
-        <Input
-          type='password'
-          name='password'
-          value={inputs.password}
-          placeholder='비밀번호'
-          onChange={handleChange}
-          required
-        />
+          <Input
+            type='password'
+            name='password'
+            value={inputs.password}
+            placeholder='비밀번호'
+            onChange={handleChange}
+            required
+          />
 
-        <Button type='submit'>로그인</Button>
-        <Link to='/register'>
-          <RegisterButton> 회원가입 </RegisterButton>
-        </Link>
-      </Form>
+          <Button type='submit'>로그인</Button>
+          <Link to='/register'>
+            <RegisterButton> 회원가입 </RegisterButton>
+          </Link>
+        </Form>
 
-      <Break />
+        <Break />
 
-      <a href={process.env.REACT_APP_KAKAO_AUTH_URL}>
-        <KakaoButton> 카카오 로그인 </KakaoButton>
-      </a>
+        <a href={process.env.REACT_APP_KAKAO_AUTH_URL}>
+          <KakaoButton> 카카오 로그인 </KakaoButton>
+        </a>
+      </Card>
     </Container>
   );
 }
@@ -93,16 +90,26 @@ const Container = styled.section`
   align-items: center;
   padding-top: 80px;
 `;
+const Card = styled.article`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 3rem;
+`;
 
 const Title = styled.h1`
   font-size: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  color: #33a23d;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin: auto;
   gap: 1rem;
 `;
 
@@ -111,11 +118,10 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   box-sizing: border-box;
-  width: 300px;
 `;
 
 const Button = styled.button`
-  background-color: #4b2789;
+  background-color: #33a23d;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem;
@@ -126,7 +132,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #8b5ad8;
+    background-color: #33a23d;
   }
 
   &:focus {
@@ -136,17 +142,17 @@ const Button = styled.button`
 
 const RegisterButton = styled.button`
   background-color: #fff;
-  color: #4b2789;
+  color: #33a23d;
   font-size: 1rem;
   padding: 0.5rem;
-  border: solid 1px #4b2789;
+  border: solid 1px #33a23d;
   border-radius: 4px;
   box-sizing: border-box;
   width: 300px;
   cursor: pointer;
 
   &:hover {
-    background-color: #8b5ad8;
+    background-color: #33a23d;
   }
 
   &:focus {

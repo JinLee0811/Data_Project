@@ -9,6 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   -ms-overflow-style: none;
+  color: black;
 }
 
 ::-webkit-scrollbar {
@@ -22,6 +23,7 @@ code {
 
 a {
   text-decoration: none;
+  color: black;
 }
 
 button,
@@ -29,4 +31,25 @@ input {
   font-family: "NanumSquareNeo", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
+}
+
+.slide-in-left-enter {
+  transform: translateX(-100%);
+}
+
+.slide-in-left-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 300ms;
+}
+
+.slide-in-left-exit {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.slide-in-left-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: all 300ms;
 }
