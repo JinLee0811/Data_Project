@@ -1,12 +1,25 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import MultiRangeSlider from "../../utils/MultiRangeSlider";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Link, useOutletContext } from 'react-router-dom';
+import styled from 'styled-components';
+import MultiRangeSlider from '../../utils/MultiRangeSlider';
 
 const SearchSide = () => {
   const [price, setPrice] = useState({ min: 10, max: 100 });
   const [commuteTime, setCommuteTime] = useState({ min: 10, max: 120 });
+  const { setMapOption, setMarkers } = useOutletContext();
+
+  useEffect(() => {
+    setMapOption((cur) => ({
+      //모든 지도 컨트롤 숨기기
+      scaleControl: false,
+      logoControl: false,
+      mapDataControl: false,
+      zoomControl: false,
+      mapTypeControl: false,
+      tileTransition: true,
+    }));
+    setMarkers([]);
+  }, []);
 
   return (
     <SearchSideContainer>
@@ -58,7 +71,7 @@ const SearchSide = () => {
         </FieldContainer>
       </SearchForm>
       <SearchButton>
-        <Link to={"stationlist"}>찾아보자!</Link>
+        <Link to={'stationlist'}>찾아보자!</Link>
       </SearchButton>
     </SearchSideContainer>
   );
@@ -90,12 +103,12 @@ const Fieldset = styled.fieldset`
   align-items: center;
   justify-content: center;
   width: 93%;
-  border: solid #4b278913;
+  border: solid #33a23d13;
   border-width: 1px 0 0px 0;
   padding-top: 60px;
 
   legend {
-    font-family: "NanumSquareNeoExtraBold";
+    font-family: 'NanumSquareNeoExtraBold';
   }
 
   *:focus {
@@ -105,15 +118,15 @@ const Fieldset = styled.fieldset`
     width: 80%;
     height: 45px;
     margin: 10px auto;
-    border: 3px solid #4b2789;
+    border: 3px solid #33a23d;
     padding: 0px 20px;
     border-radius: 4px;
   }
   #query:focus {
-    border: 3px solid #6e39c9;
+    border: 3px solid #83d189;
   }
 
-  input[type="radio"] {
+  input[type='radio'] {
     margin-left: 15px;
     margin-right: 30px;
     appearance: none;
@@ -126,12 +139,12 @@ const Fieldset = styled.fieldset`
   label {
     margin-left: 16px;
   }
-  input[type="radio"]:hover {
+  input[type='radio']:hover {
     border: 3px solid #b3b3b3;
   }
 
-  input[type="radio"]:checked {
-    border: 0.3em solid #8b5ad8;
+  input[type='radio']:checked {
+    border: 0.3em solid #7bc745;
   }
 `;
 
@@ -152,12 +165,12 @@ const SearchButton = styled.div`
     height: 50px;
     width: 110px;
     color: white;
-    background-color: #8b5ad8;
+    background-color: #33a23d;
     text-decoration: none;
     box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.1);
   }
   a:hover {
-    background-color: #8a5ad8d8;
+    background-color: #83d189;
   }
 `;
 

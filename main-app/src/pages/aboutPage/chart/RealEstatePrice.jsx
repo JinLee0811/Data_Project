@@ -59,7 +59,16 @@ const datasets = {
   ],
 };
 const options = {
-  plugins: [{}],
+  plugins: {
+    title: {
+      display: true,
+      text: '수도권 지하철 역세권의 공동주택 실거래정보 <출처: 한국부동산원>',
+      position: 'bottom',
+      font: {
+        size: 16,
+      },
+    },
+  },
   animation: {
     duration: 2000,
   },
@@ -100,7 +109,7 @@ const RealEstatePrice = forwardRef((props, ref) => {
         ref={ref}
         redraw={props.redraw}
         width={1200}
-        height={600}
+        height={700}
       />
     </div>
   );

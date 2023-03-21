@@ -49,6 +49,9 @@ const option = {
       ],
       position: 'bottom',
       align: 'start',
+      font: {
+        size: 16,
+      },
     },
   },
   animation: {

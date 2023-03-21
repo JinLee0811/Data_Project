@@ -48,7 +48,15 @@ const AboutPage = () => {
           "체감시간 기반 역세권 추천 서비스"
         </h2>
         <span className={scrollPosition > 250 ? 'none' : 'arrow'}>&darr;</span>
-        <h1 className={scrollPosition > 250 ? 'h1-purple' : 'hidden'}>
+        <h1
+          className={
+            scrollPosition > 250
+              ? scrollPosition >= 900
+                ? 'hidden h1-purple'
+                : 'h1-purple'
+              : 'hidden'
+          }
+        >
           <span>어디</span>가게?
         </h1>
 
@@ -86,27 +94,38 @@ const AboutPage = () => {
             대략적인 부동산 가격대를 알고싶은데 허위매물때문에 헷갈리네...
           </p>
         </IntroDescription>
+        <LogoBox className={scrollPosition < 900 ? 'hidden' : ''}>
+          <Logo>
+            <div>2</div>
+            <span>사가게?</span>
+          </Logo>
+        </LogoBox>
         <img
           src={scrollPosition < 900 ? searchingImg : searchingImgAfter}
-          className={
-            scrollPosition > 200 && scrollPosition < 1150 ? '' : 'hidden'
-          }
+          className={scrollPosition > 200 && scrollPosition < 1150 ? '' : ''}
           alt='searchingImg'
         ></img>
-        <LogoBox className={scrollPosition < 900 ? 'hidden' : ''}></LogoBox>
       </IntroContainer>
       <InsightContainer1>
-        <ChartContainer className='pieChart'>
+        <ChartContainer
+          className={`${
+            scrollPosition < 1300 ? 'hidden pieChart' : 'pieChart'
+          }`}
+        >
           <SelectionFactor
             ref={selectionFactorRef}
-            redraw={scrollPosition > 1200}
+            redraw={scrollPosition > 1300}
           ></SelectionFactor>
           <ChartDescription>
             <p>서울에서 현재 거처 선택시 가장 중요하게 생각하는</p>
             <h1>"통근, 통학에 좋은 위치와 저렴한 주거비!"</h1>
           </ChartDescription>
         </ChartContainer>
-        <ChartContainer className='pieChart'>
+        <ChartContainer
+          className={`${
+            scrollPosition < 1900 ? 'hidden pieChart' : 'pieChart'
+          }`}
+        >
           <ChartDescription>
             <h1 className='left'>또 다른 데이터 역시</h1>
             <h1 className='right'>
@@ -115,7 +134,7 @@ const AboutPage = () => {
           </ChartDescription>
           <SelectionFactor2
             ref={selectionFactor2Ref}
-            redraw={scrollPosition > 1800}
+            redraw={scrollPosition > 1900}
           ></SelectionFactor2>
         </ChartContainer>
       </InsightContainer1>
@@ -180,19 +199,61 @@ const AboutPage = () => {
           <p></p>
           <p></p>
           <p></p>
-          <p className={scrollPosition > 5550 ? 'bold' : 'small'}>이사가게!</p>
+          <p className={scrollPosition > 5550 ? 'bold' : 'small'}>
+            {' '}
+            <Logo>
+              <div>2</div>
+              <span>사가게?</span>
+            </Logo>
+          </p>
         </TrainDescribe>
       </TrainContainer>
       <InsightContainer2>
-        <h1>소요시간과 만족도</h1>
-        <img
-          src={article1}
-          style={{ transform: 'translate(-30px,-30px)' }}
-          alt='article'
-        ></img>
-        <img src={article2} alt='article'></img>
-        <img src={article3} alt='article'></img>
-        <img src={article4} alt='article'></img>
+        <h1>
+          직장인의 행복은 출퇴근 <strong>소요시간</strong>순이잖아요
+        </h1>
+        <ArticleContainer>
+          <img
+            src={article1}
+            alt='article'
+            style={{ transform: 'translate(100px,20px) skew(5deg,3deg)' }}
+            className={`${
+              scrollPosition < 7050 + 0 || scrollPosition > 7050 + 100
+                ? ''
+                : 'focus'
+            }`}
+          ></img>
+          <img
+            src={article2}
+            alt='article'
+            style={{ transform: 'translate(50px,40px) skew(5deg,3deg)' }}
+            className={`${
+              scrollPosition < 7050 + 100 || scrollPosition > 7050 + 200
+                ? ''
+                : 'focus'
+            }`}
+          ></img>
+          <img
+            src={article3}
+            alt='article'
+            style={{ transform: 'translate(-50px,60px) skew(5deg,3deg)' }}
+            className={`${
+              scrollPosition < 7050 + 200 || scrollPosition > 7050 + 300
+                ? ''
+                : 'focus'
+            }`}
+          ></img>
+          <img
+            src={article4}
+            alt='article'
+            style={{ transform: 'translate(-150px,80px) skew(5deg,3deg)' }}
+            className={`${
+              scrollPosition < 7050 + 300 || scrollPosition > 7050 + 400
+                ? ''
+                : 'focus'
+            }`}
+          ></img>
+        </ArticleContainer>
       </InsightContainer2>
 
       <RushHourContainer>
@@ -260,22 +321,33 @@ const AboutPage = () => {
       </RushHourContainer>
 
       <InsightContainer3>
-        <ChartContainer className='barChart'>
+        <ChartContainer
+          className={`${
+            scrollPosition < 9800 ? 'hidden barChart' : 'barChart'
+          }`}
+        >
           <ChartDescription>
             <h1>같은 출근 시간</h1>
             <h1>꽉 찬 지하철과 텅빈 지하철의 차이가 보이시나요?</h1>
           </ChartDescription>
           <CongestionByStation
             ref={congestionByStationRef}
-            redraw={0}
+            redraw={scrollPosition > 9750}
           ></CongestionByStation>
         </ChartContainer>
-        <ChartContainer className='barChart'>
+        <ChartContainer
+          className={`${
+            scrollPosition < 10600 ? 'hidden barChart' : 'barChart'
+          }`}
+        >
           <ChartDescription>
             <h1>같은 지하철도</h1>
             <h1>상선, 하선에 따라 큰 혼잡도 차이를 보입니다!</h1>
           </ChartDescription>
-          <CongestionByLine ref={congestionByLineRef}></CongestionByLine>
+          <CongestionByLine
+            ref={congestionByLineRef}
+            redraw={scrollPosition > 10550}
+          ></CongestionByLine>
         </ChartContainer>
       </InsightContainer3>
 
@@ -287,27 +359,52 @@ const AboutPage = () => {
                 ? 'focus'
                 : ''
             }`}
-          ></CartoonCut>
+          >
+            <CartoonSubtitle>
+              "서울에서 방을 구해야하는데 여기저기 허위매물 기사 투성이네"
+            </CartoonSubtitle>
+          </CartoonCut>
           <CartoonCut
             className={`cut2 ${
               scrollPosition > 12550 + 200 && scrollPosition < 12550 + 400
                 ? 'focus'
                 : ''
             }`}
-          ></CartoonCut>
+          >
+            <CartoonSubtitle>
+              "아는역도 없고 가격도 다 제각각이고"
+            </CartoonSubtitle>
+          </CartoonCut>
           <CartoonCut
             className={`cut3 ${
               scrollPosition > 12550 + 400
                 ? scrollPosition > 12550 + 600
-                  ? 'focus cut4'
+                  ? 'focus none'
                   : 'focus'
                 : ''
             }`}
-          ></CartoonCut>
+          >
+            <CartoonSubtitle>
+              "이 두개를 접목해준 서비스 어디 없나?"
+            </CartoonSubtitle>
+          </CartoonCut>
+          <CartoonCut
+            className={`cut4 ${
+              scrollPosition > 12550 + 600 ? 'focus' : 'none'
+            }`}
+          >
+            <CartoonSubtitle>
+              "이 두개를 접목해준 서비스 어디 없나?"
+            </CartoonSubtitle>
+          </CartoonCut>
         </CartoonGrid>
       </RealEstateContainer>
       <InsightContainer4>
-        <ChartContainer>
+        <ChartContainer
+          className={`${
+            scrollPosition < 13800 ? 'hidden barChart' : 'barChart'
+          }`}
+        >
           <ChartDescription>
             <h1>역마다 다른 가격차이에</h1>
             <h1>예산에 맞는 역세권을 선택하기 힘드시죠?</h1>
@@ -316,7 +413,10 @@ const AboutPage = () => {
               사용자가 원하는 예산에 맞춰서 더욱 똑똑하게 역세권을 추천해줍니다
             </p>
           </ChartDescription>
-          <RealEstatePrice></RealEstatePrice>
+          <RealEstatePrice
+            ref={congestionByLineRef}
+            redraw={scrollPosition > 13750}
+          ></RealEstatePrice>
         </ChartContainer>
       </InsightContainer4>
       <PleaseTakeMeUp
@@ -399,12 +499,57 @@ const IntroDescription = styled.div`
 `;
 
 const LogoBox = styled.div`
-  padding-top: 50px;
-  position: sticky;
-  top: 200px;
-
+  position: absolute;
   color: #33a23d;
-  font-size: 40px;
+  top: 1160px;
+  padding: 50px 100px;
+  background-color: #eeeeee;
+  border-radius: 50px;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-top-color: #eeeeee;
+    border-bottom: 0;
+    border-left: 0;
+    margin-left: -10px;
+    margin-bottom: -20px;
+  }
+`;
+
+const Logo = styled.div`
+  position: relative;
+  color: #33a23d;
+  flex-direction: row !important;
+  font-family: 'NanumSquareNeoExtraBold';
+  font-size: 54px;
+  margin-top: 12px;
+  height: 120px;
+  width: 300px;
+  border: 10px solid #33a23d;
+  border-radius: 120px;
+  background-color: white;
+  box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
+  div {
+    color: white;
+    font-family: 'NanumSquareNeoHeavy';
+    position: absolute;
+    left: 16px;
+    background-color: #33a23d;
+    border-radius: 100%;
+    width: 76px;
+    height: 76px;
+    line-height: 76px;
+    text-align: center;
+  }
+  span {
+    position: absolute;
+    left: 100px;
+  }
 `;
 
 const InsightContainer1 = styled.div`
@@ -420,11 +565,32 @@ const InsightContainer1 = styled.div`
 `;
 
 const InsightContainer2 = styled.div`
-  height: 1400px;
+  height: 1500px;
+  padding-top: 100px;
+  h1 {
+    position: sticky;
+    top: 10px;
+    font-size: 46px;
+    strong {
+      color: #33a23d;
+    }
+  }
+`;
+const ArticleContainer = styled.div`
+  width: 50%;
+  position: sticky;
+  top: 80px;
+
   img {
+    transition: margin 0.3s ease-in-out;
+    margin-top: 500px;
     position: absolute;
     transform: skew(5deg, 5deg);
-    width: 800px;
+    width: 100%;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
+  }
+  .focus {
+    margin-top: 0px;
   }
 `;
 
@@ -452,8 +618,12 @@ const InsightContainer4 = styled.div`
 const ChartContainer = styled.div`
   width: 100%;
   justify-content: center;
+  transition: opacity 0.3s;
   canvas {
     margin: 20px;
+  }
+  .hidden {
+    opacity: 0;
   }
 `;
 
@@ -478,7 +648,7 @@ const TrainContainer = styled.div`
   flex-direction: row;
   position: relative;
   width: 100%;
-  height: 3700px;
+  height: 3600px;
   white-space: nowrap;
 `;
 
@@ -514,6 +684,8 @@ const TrainDescribe = styled.div`
     font-size: 100px;
     transform: scale(1);
     color: #33a23d;
+    text-shadow: none;
+    padding-bottom: 40px;
   }
 `;
 const RushHourContainer = styled.div`
@@ -572,6 +744,9 @@ const CartoonGrid = styled.div`
   div:nth-child(3) {
     grid-column: auto / span 3;
   }
+  div:nth-child(4) {
+    grid-column: auto / span 3;
+  }
   .cut1 {
     background-image: url(${cut1});
   }
@@ -585,17 +760,30 @@ const CartoonGrid = styled.div`
   .cut4 {
     background-image: url(${cut4});
     background-position: center;
+    span {
+      display: none;
+    }
   }
   .focus {
     filter: grayscale(0%);
   }
 `;
 const CartoonCut = styled.div`
+  position: relative;
   margin: 10px;
   background-color: white;
   background-size: cover;
   filter: grayscale(100%) blur(1px);
   transition: filter 0.3s;
+`;
+
+const CartoonSubtitle = styled.span`
+  position: absolute;
+  color: #fcd111;
+  font-style: italic;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-size: 20px;
+  bottom: 30px;
 `;
 
 const PleaseTakeMeUp = styled.div`
