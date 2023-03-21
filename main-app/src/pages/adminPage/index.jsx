@@ -35,6 +35,7 @@ const Container = styled.section`
   display: flex;
   flex-direction: row;
   height: 100vh;
+  margin-top: 2rem;
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -63,7 +64,7 @@ const Aside = styled.aside`
     }
 
     .active {
-      border-bottom: 2px solid #4b2789;
+      border-bottom: 2px solid #33a23d;
       /* padding-bottom: 3px; */
     }
     @media (max-width: 768px) {

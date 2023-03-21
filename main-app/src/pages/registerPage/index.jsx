@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import useHttpRequest from "../../utils/useHttp";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const serverUrl = process.env.REACT_APP_API_URL;
+  const { sendRequest } = useHttpRequest();
 
   const [inputs, setInputs] = useState({
     name: "",
@@ -63,9 +64,9 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await axios.post(serverUrl + "/register", inputs);
-      console.log(res);
-      alert(res.data);
+      const response = await sendRequest("/register", "post", inputs);
+      console.log(response);
+      alert(response.data);
       navigate("/login");
     } catch (err) {
       console.log(err);
@@ -74,45 +75,54 @@ const RegisterPage = () => {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <Card>
         <Title>회원가입</Title>
-        <Input
-          type='text'
-          name='name'
-          placeholder='이름'
-          value={inputs.name}
-          onChange={handleChange}
-        />
-        <Input
-          type='text'
-          name='nickname'
-          placeholder='닉네임'
-          value={inputs.nickname}
-          onChange={handleChange}
-        />
-        <Input
-          type='email'
-          name='email'
-          placeholder='이메일'
-          value={inputs.email}
-          onChange={handleChange}
-        />
-        <Input
-          type='password'
-          name='password'
-          placeholder='비밀번호'
-          value={inputs.password}
-          onChange={handleChange}
-        />
-        <Input
-          type='password'
-          name='confirmPassword'
-          placeholder='비밀번호 확인'
-          value={inputs.confirmPassword}
-          onChange={handleChange}
-        />
-        <Button type='submit'>회원가입</Button>
-      </Form>
+        <Form onSubmit={handleSubmit}>
+          <Label>이름</Label>
+          <Input
+            type='text'
+            name='name'
+            placeholder='이름'
+            value={inputs.name}
+            onChange={handleChange}
+          />
+
+          <Label>닉네임</Label>
+          <Input
+            type='text'
+            name='nickname'
+            placeholder='닉네임'
+            value={inputs.nickname}
+            onChange={handleChange}
+          />
+
+          <Label>이메일</Label>
+          <Input
+            type='email'
+            name='email'
+            placeholder='이메일'
+            value={inputs.email}
+            onChange={handleChange}
+          />
+          <Label>비밀번호</Label>
+          <Input
+            type='password'
+            name='password'
+            placeholder='비밀번호'
+            value={inputs.password}
+            onChange={handleChange}
+          />
+          <Label>비밀번호 확인</Label>
+          <Input
+            type='password'
+            name='confirmPassword'
+            placeholder='비밀번호 확인'
+            value={inputs.confirmPassword}
+            onChange={handleChange}
+          />
+          <Button type='submit'>가입하기</Button>
+        </Form>
+      </Card>
     </Container>
   );
 };
@@ -120,28 +130,41 @@ const RegisterPage = () => {
 const Container = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding-top: 80px;
+`;
+
+const Card = styled.article`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 3rem;
 `;
 
 const Title = styled.h1`
   font-size: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  color: #33a23d;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  align-items: center;
+  margin: auto;
 `;
 
+const Label = styled.label`
+  font-size: 0.5rem;
+  margin-bottom: 0.3rem;
+`;
 const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   box-sizing: border-box;
-  width: 300px;
+  margin-bottom: 1rem;
 `;
 
 const Button = styled.button`

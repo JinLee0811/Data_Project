@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SideDrawer = (props) => {
@@ -9,36 +8,14 @@ const SideDrawer = (props) => {
   return (
     <CSSTransition
       in={props.show}
-      timeout={500}
+      timeout={300}
       classNames='slide-in-left'
       mountOnEnter
       unmountOnExit
       nodeRef={nodeRef}
     >
-      <Aside>
-        <ul>
-          <li onClick={props.closeNav}>
-            <Link to='/about'>소개</Link>
-          </li>
-          <li onClick={props.closeNav}>
-            <Link to='/'>역찾기</Link>
-          </li>
-        </ul>
-        <ul>
-          <li onClick={props.closeNav}>
-            <Link to='/admin/user'>관리자</Link>
-          </li>
-          <li onClick={props.closeNav}>
-            <Link to='/register'>회원가입</Link>
-          </li>
-          <li onClick={props.closeNav}>
-            <Link to='/login'>로그인</Link>
-          </li>
-
-          <li onClick={props.closeNav}>
-            <Link to='/user'>마이페이지</Link>
-          </li>
-        </ul>
+      <Aside ref={nodeRef} onClick={props.closeNav}>
+        {props.children}
       </Aside>
     </CSSTransition>
   );
@@ -60,10 +37,13 @@ const Aside = styled.aside`
 
     li {
       padding-bottom: 1rem;
-
       @media (max-width: 768px) {
         font-size: 0.8rem;
       }
     }
+  }
+
+  @media (min-width: 768px) {
+    display: none;
   }
 `;

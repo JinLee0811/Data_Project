@@ -1,67 +1,58 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useHttpRequest from "./useHttp";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const serverUrl = process.env.REACT_APP_API_URL;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(serverUrl + "/account", {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
-        console.log(response.data);
-        if (response?.data) {
+        const response = await sendRequest("/account", "get");
+        console.log(response);
+        if (response && response.isAdmin) {
           setIsLoggedIn(true);
-          setIsAdmin(response.data.isAdmin);
+          setIsAdmin(true);
         }
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data);
       }
     };
     fetchUserData();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isAdmin, sendRequest]);
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(
-        serverUrl + "/login",
-        JSON.stringify({ email, password }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response);
+      await sendRequest("/login", "post", { email, password });
       setIsLoggedIn(true);
       navigate("/");
     } catch (err) {
-      //backend error handling 추가해야함.
-      console.log(err.message);
+      console.log(err.message); //업데이트 필요
       alert(err);
     }
   };
 
   const logout = async () => {
     try {
-      await axios.delete(serverUrl + "/logout", { withCredentials: true });
+      await sendRequest("/logout", "delete", {});
       setIsLoggedIn(false);
       setIsAdmin(false);
       navigate("/");
     } catch (err) {
       console.log(err);
+      console.log(err.message);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, isAdmin, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, isAdmin, setIsLoggedIn, logout, login }}
+    >
       {children}
     </AuthContext.Provider>
   );

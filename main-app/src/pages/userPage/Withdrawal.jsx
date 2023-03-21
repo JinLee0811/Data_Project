@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../utils/AuthContext";
 
 const Withdrawl = (props) => {
   const serverUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -25,6 +27,7 @@ const Withdrawl = (props) => {
         });
         alert("이용해주셔서 감사합니다.");
         navigate("/login");
+        setIsLoggedIn(false);
       }
     } catch (error) {
       console.error(error);

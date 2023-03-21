@@ -73,14 +73,14 @@ const data = {
     {
       label: '출근 시간대 외선/하선 혼잡도',
       data: datasets.downLineCongestion,
-      borderColor: '#4b2789',
-      backgroundColor: '#4b2789',
+      borderColor: '#33a23d',
+      backgroundColor: '#33a23d',
       yAxisID: 'y',
     },
     {
       label: '출근 시간대 내선/상선 혼잡도',
       data: datasets.upLineCongestion,
-      borderColor: '#4b2789',
+      borderColor: '#33a23d',
       backgroundColor: '#b6b6b6',
       yAxisID: 'y',
     },

@@ -1,58 +1,53 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import useHttpRequest from "../../utils/useHttp";
 
 function UserManage() {
-  const serverUrl = process.env.REACT_APP_API_URL;
-  const [usersList, setUsersList] = useState();
-  const [showActiveUser, setShowActiveUser] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [isActiveUserShown, setIsActiveUserShown] = useState(true);
+  const { sendRequest } = useHttpRequest();
+
+  const fetchData = async () => {
+    try {
+      const response = await sendRequest("/admin/users", "get");
+      console.log(response);
+      setUsers(response);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(serverUrl + "/admin/users", {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        });
-        console.log(response.data);
-        setUsersList(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     fetchData();
-    console.log("useEffect called");
   }, []);
 
-  const handleDelete = useCallback(async (e) => {
-    const user_id = e.target.id;
-    console.log(user_id);
+  const handleDelete = useCallback(async (user_id) => {
     try {
-      const response = await axios.delete(
-        serverUrl + `/admin/users/${user_id}`,
-        {
-          headers: { Content_Type: "application/json" },
-          withCredentials: true,
-        }
+      const response = await sendRequest(
+        `/admin/users/${user_id}`,
+        "delete",
+        {}
       );
       console.log(response);
+      fetchData();
     } catch (err) {
       console.log(err);
     }
-  });
+  }, []);
 
-  const filteredData = showActiveUser
-    ? usersList?.filter((user) => user.deletedAt === null)
-    : usersList?.filter((user) => user.deletedAt !== null);
+  // const filteredData = useMemo(() => {
+  //   return isActiveUserShown
+  //     ? users?.filter((user) => user.deletedAt === null)
+  //     : users?.filter((user) => user.deletedAt !== null);
+  // }, [users, isActiveUserShown]);
 
   return (
-    filteredData && (
+    users && (
       <>
         <Select
-          id='showActiveUser'
-          value={showActiveUser}
-          onChange={(e) => setShowActiveUser(JSON.parse(e.target.value))}
+          id='isActiveUserShown'
+          value={isActiveUserShown}
+          onChange={(e) => setIsActiveUserShown(JSON.parse(e.target.value))}
         >
           <option value={true}>활성화 사용자</option>
           <option value={false}>삭제된 사용자</option>
@@ -70,25 +65,28 @@ function UserManage() {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((user) => (
-              <tr key={user.id}>
-                <TableData>{user.createdAt.split("T")[0]}</TableData>
-                <TableData>{user.email}</TableData>
-                <TableData>{user.name}</TableData>
-                <TableData>{user.nickname}</TableData>
-                <TableData> {user.isAdmin ? "admin" : "user"}</TableData>
-                <TableData>
-                  <DeleteButton
-                    id={user.id}
-                    onClick={(e) => {
-                      handleDelete(e);
-                    }}
-                  >
-                    삭제
-                  </DeleteButton>
-                </TableData>
-              </tr>
-            ))}
+            {users
+              .filter((user) =>
+                isActiveUserShown
+                  ? user.deletedAt === null
+                  : user.deletedAt !== null
+              )
+              .map((user) => (
+                <tr key={user.id}>
+                  <TableData>{user.createdAt.split("T")[0]}</TableData>
+                  <TableData>{user.email}</TableData>
+                  <TableData>{user.name}</TableData>
+                  <TableData>{user.nickname}</TableData>
+                  <TableData> {user.isAdmin ? "admin" : "user"}</TableData>
+                  <TableData>
+                    {isActiveUserShown && (
+                      <DeleteButton onClick={() => handleDelete(user.id)}>
+                        삭제
+                      </DeleteButton>
+                    )}
+                  </TableData>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </>
@@ -114,6 +112,8 @@ const TableHeader = styled.th`
 
 const TableData = styled.td`
   border-bottom: 1px solid #ddd;
+  /* min-height: 2rem; */
+  height: 2rem;
 `;
 
 const DeleteButton = styled.button`

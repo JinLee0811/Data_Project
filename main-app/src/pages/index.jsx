@@ -17,6 +17,7 @@ import KakaoLogin from "./loginPage/KakaoLogin";
 import ReviewManage from "./adminPage/ReviewManage";
 import UserManage from "./adminPage/UserManage";
 import Calculate from "./adminPage/Calculate";
+import SearchStation from "./mainPage/SearchStation";
 
 export {
   MainPage,
@@ -38,4 +39,5 @@ export {
   ReviewManage,
   UserManage,
   Calculate,
+  SearchStation,
 };
