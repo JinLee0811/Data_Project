@@ -50,7 +50,7 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             onChange={handleChange}
             checked={feelTimeMethod === 'feel_time_weekend_m'}
           />
-          <label htmlFor='feel_time_weekend_m'>주말 출근</label>
+          <label htmlFor='feel_time_weekend_m'>주말 아침</label>
         </div>
         <div>
           <input
@@ -61,7 +61,7 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             onChange={handleChange}
             checked={feelTimeMethod === 'feel_time_weekend_d'}
           />
-          <label htmlFor='feel_time_weekend_d'>주말 종일</label>
+          <label htmlFor='feel_time_weekend_d'>주말 점심</label>
         </div>
         <div>
           <input
@@ -72,7 +72,7 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             onChange={handleChange}
             checked={feelTimeMethod === 'feel_time_weekend_n'}
           />
-          <label htmlFor='feel_time_weekend_n'>주말 퇴근</label>
+          <label htmlFor='feel_time_weekend_n'>주말 저녁</label>
         </div>
       </fieldset>
     </form>

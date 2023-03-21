@@ -134,7 +134,7 @@ const AboutPage = () => {
           </ChartDescription>
           <SelectionFactor2
             ref={selectionFactor2Ref}
-            redraw={scrollPosition > 1900}
+            redraw={scrollPosition > 1890}
           ></SelectionFactor2>
         </ChartContainer>
       </InsightContainer1>
@@ -392,11 +392,7 @@ const AboutPage = () => {
             className={`cut4 ${
               scrollPosition > 12550 + 600 ? 'focus' : 'none'
             }`}
-          >
-            <CartoonSubtitle>
-              "이 두개를 접목해준 서비스 어디 없나?"
-            </CartoonSubtitle>
-          </CartoonCut>
+          ></CartoonCut>
         </CartoonGrid>
       </RealEstateContainer>
       <InsightContainer4>
