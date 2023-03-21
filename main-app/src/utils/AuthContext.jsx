@@ -1,6 +1,6 @@
-import { createContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import useHttpRequest from "./useHttp";
+import { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useHttpRequest from './useHttp';
 
 export const AuthContext = createContext();
 
@@ -13,14 +13,14 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await sendRequest("/account", "get");
+        const response = await sendRequest('/account', 'get');
         console.log(response);
         if (response && response.isAdmin) {
           setIsLoggedIn(true);
           setIsAdmin(true);
         }
       } catch (err) {
-        console.log(err.response.data);
+        console.log(err?.response.data);
       }
     };
     fetchUserData();
@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      await sendRequest("/login", "post", { email, password });
+      await sendRequest('/login', 'post', { email, password });
       setIsLoggedIn(true);
-      navigate("/");
+      navigate('/');
     } catch (err) {
       console.log(err.message); //업데이트 필요
       alert(err);
@@ -39,10 +39,10 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await sendRequest("/logout", "delete", {});
+      await sendRequest('/logout', 'delete', {});
       setIsLoggedIn(false);
       setIsAdmin(false);
-      navigate("/");
+      navigate('/');
     } catch (err) {
       console.log(err);
       console.log(err.message);

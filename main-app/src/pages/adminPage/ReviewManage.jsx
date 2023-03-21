@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
-import useHttpRequest from "../../utils/useHttp";
+import React, { useState, useEffect, useCallback } from 'react';
+import styled from 'styled-components';
+import useHttpRequest from '../../utils/useHttp';
 
 function ReviewManage() {
   const [reviews, setReviews] = useState();
@@ -8,7 +8,7 @@ function ReviewManage() {
 
   const fetchData = async () => {
     try {
-      const response = await sendRequest("/admin/review", "get");
+      const response = await sendRequest('/admin/review', 'get');
       console.log(response.data);
       setReviews(() => response.data);
     } catch (err) {
@@ -24,7 +24,7 @@ function ReviewManage() {
     try {
       const response = await sendRequest(
         `/admin/review/${review_id}`,
-        "delete",
+        'delete',
         {}
       );
       console.log(response);
@@ -51,7 +51,7 @@ function ReviewManage() {
         <tbody>
           {reviews.map((review) => (
             <tr key={review.id}>
-              <TableData>{review.createdAt.split("T")[0]}</TableData>
+              <TableData>{review.createdAt.split('T')[0]}</TableData>
               <TableData>{review.user.name}</TableData>
               <TableData>{review.user.nickname}</TableData>
               <TableData>{review.station.station_line}</TableData>
