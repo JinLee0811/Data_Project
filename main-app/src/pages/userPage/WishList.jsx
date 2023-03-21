@@ -1,36 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
-const sampleData = [
-  {
-    id: 4,
-    timeStamp: 2303121122,
-    userId: 2,
-    title: "건대입구역",
-    content: "사람 많고 붐빔, 근데 먹을 곳 많아요.",
-  },
-];
-
-const sampleLikeData = [
-  {
-    id: 1,
-    userId: 2,
-    station: "서울역",
-  },
-];
+import axios from "axios";
 
 function WishList(props) {
-  const [reviews, setReviews] = useState([]);
-  const [likes, setLike] = useState([]);
+  const serverUrl = process.env.REACT_APP_API_URL;
+  const [wish, setWish] = useState("");
 
   useEffect(() => {
-    const userId = 2;
-    setReviews(sampleData.filter((review) => review.userId === userId));
-  }, []);
-
-  useEffect(() => {
-    const userId = 2;
-    setLike(sampleLikeData.filter((like) => like.userId === userId));
+    const getUserWish = async () => {
+      try {
+        const response = await axios.get(serverUrl + "/wish", {
+          withCredentials: true,
+        });
+        setWish(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUserWish();
   }, []);
 
   return (
@@ -38,12 +25,16 @@ function WishList(props) {
       <SectionTitle>내가 찜한 역세권❤️</SectionTitle>
       <DetailSection>
         <SectionContent>
-          {likes.map((like) => (
-            <SubwayBox key={like.id}>
-              <DeleteButton>x</DeleteButton>
-              {like.station}
-            </SubwayBox>
-          ))}
+          {wish && wish.length > 0 ? (
+            wish.map((wish) => (
+              <SubwayBox key={wish.user_id}>
+                <DeleteButton>x</DeleteButton>
+                {wish.station_id}
+              </SubwayBox>
+            ))
+          ) : (
+            <SubwayBox>찜한 역세권이 없습니다.</SubwayBox>
+          )}
         </SectionContent>
       </DetailSection>
     </>
@@ -56,11 +47,12 @@ const DetailSection = styled.div`
   border-radius: 5px;
   width: 500px;
   height: 400px;
-  background-color: #e0dafc;
+  background-color: #a0dda5;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 20px;
+  font-family: "NanumSquareNeoExtraBold";
 `;
 const SubwayBox = styled.div`
   margin: 5px 5px;
@@ -69,10 +61,10 @@ const SubwayBox = styled.div`
   border-radius: 100px;
   display: inline-block;
   :hover {
-    background-color: #8b5ad8;
+    background-color: #7bc745;
     color: white;
     button {
-      background-color: #8b5ad8;
+      background-color: #7bc745;
       color: white;
     }
   }

@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
           setIsAdmin(true);
         }
       } catch (err) {
-        console.log(err.response.data);
+        console.log(err?.response.data);
       }
     };
     fetchUserData();

@@ -6,28 +6,22 @@ const SearchStation = () => {
   const [query, setQuery] = useState('');
   const [coordinates, setCoordinates] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .get(
-        `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}`,
-        {
-          headers: {
-            'X-NCP-APIGW-API-KEY-ID': '7i91u5s2cy',
-            'X-NCP-APIGW-API-KEY': 'xxjJYz0XdU06ihtYwYDrcox65sjspzWKegexuUWt',
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        setCoordinates(
-          response.data.addresses[0].x,
-          response.data.addresses[0].y
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    const apiUrl = process.env.REACT_APP_GOOGLE_API_URL;
+    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+    const url = `${apiUrl}?address=${encodeURIComponent(query)}&key=${apiKey}`;
+
+    try {
+      const response = await axios.get(url);
+      const { lat, lng } = response.data.results[0].geometry.location;
+      setCoordinates({ x: lat, y: lng });
+
+      console.log(lat, lng);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChange = (e) => {

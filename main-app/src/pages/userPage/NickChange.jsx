@@ -36,7 +36,7 @@ const NickChange = () => {
     setNickname(event.target.value);
   };
 
-  const handleNicknameSubmit = async (event) => {
+  const hadleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.patch(
@@ -46,6 +46,7 @@ const NickChange = () => {
       );
       console.log("Nickname updated successfully");
       window.location.reload();
+      setIsOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -54,7 +55,7 @@ const NickChange = () => {
   return (
     <>
       <Greeting>변경하고자 하는 닉네임을 입력해 주세요.</Greeting>
-      <Form onSubmit={handleNicknameSubmit}>
+      <Form onSubmit={hadleSubmit}>
         <ConfirmBox>중복되지 않는 본인만의 닉네임으로 변경해보세요.</ConfirmBox>
         <Input
           type='text'
@@ -64,11 +65,10 @@ const NickChange = () => {
           onChange={handleNicknameChange}
         />
         <Button onClick={openModal}>닉네임 변경하기</Button>
-        <Modal isOpen={isOpen} onClose={closeModal}>
-          <h2>모달 내용</h2>
-          <p>이곳에 모달 내용을 작성할 수 있습니다.</p>
+        <Modal isOpen={isOpen} onClose={closeModal} type='submit'>
+          <h2>닉네임 변경</h2>
+          <p>닉네임을 변경하시겠습니까?</p>
         </Modal>
-        <Button type='submit'>닉네임 변경하기</Button>
       </Form>
     </>
   );
@@ -101,7 +101,7 @@ const ConfirmBox = styled.h4`
 `;
 
 const Button = styled.button`
-  background-color: #8b5ad8;
+  background-color: #33a23d;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -110,7 +110,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #4b2789;
+    background-color: #7bc745;
   }
 
   &:focus {

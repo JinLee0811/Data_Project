@@ -1,12 +1,60 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import MultiRangeSlider from '../../utils/MultiRangeSlider';
+import ModalInput from '../../components/ModalInput';
+import useHttpRequest from '../../utils/useHttp';
 import axios from 'axios';
 
 const SearchSide = () => {
   const [price, setPrice] = useState({ min: 10, max: 100 });
   const [commuteTime, setCommuteTime] = useState({ min: 10, max: 120 });
+  const { setMapOption, setMarkers } = useOutletContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [coordinates, setCoordinates] = useState({ pos_x: '', pos_y: '' });
+  const { sendRequest } = useHttpRequest();
+
+  const handleQueryFocus = () => {
+    setIsModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCoordinatesUpdate = (pos_x, pos_y) => {
+    setCoordinates(pos_x, pos_y);
+  };
+
+  const fetchData = async () => {
+    const serverUrl = process.env.REACT_APP_API_URL;
+    try {
+      const response = await axios.post(
+        serverUrl + '/main/station',
+        coordinates,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    setMapOption((cur) => ({
+      //모든 지도 컨트롤 숨기기
+      scaleControl: false,
+      logoControl: false,
+      mapDataControl: false,
+      zoomControl: false,
+      mapTypeControl: false,
+      tileTransition: true,
+    }));
+    setMarkers([]);
+    console.log(coordinates);
+    fetchData();
+  }, [coordinates]);
 
   return (
     <SearchSideContainer>
@@ -19,6 +67,7 @@ const SearchSide = () => {
               name='query'
               id='query'
               placeholder='찾고싶은 장소를 입력해주세요'
+              onFocus={handleQueryFocus}
             />
           </Fieldset>
           <Fieldset>
@@ -60,6 +109,13 @@ const SearchSide = () => {
       <SearchButton>
         <Link to={'stationlist'}>찾아보자!</Link>
       </SearchButton>
+      <ModalInput
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onUpdateCoordinates={handleCoordinatesUpdate}
+      >
+        목적지 장소를 입력하세요
+      </ModalInput>
     </SearchSideContainer>
   );
 };
@@ -90,7 +146,7 @@ const Fieldset = styled.fieldset`
   align-items: center;
   justify-content: center;
   width: 93%;
-  border: solid #4b278913;
+  border: solid #33a23d13;
   border-width: 1px 0 0px 0;
   padding-top: 60px;
 
@@ -105,12 +161,12 @@ const Fieldset = styled.fieldset`
     width: 80%;
     height: 45px;
     margin: 10px auto;
-    border: 3px solid #4b2789;
+    border: 3px solid #33a23d;
     padding: 0px 20px;
     border-radius: 4px;
   }
   #query:focus {
-    border: 3px solid #6e39c9;
+    border: 3px solid #83d189;
   }
 
   input[type='radio'] {
@@ -131,7 +187,7 @@ const Fieldset = styled.fieldset`
   }
 
   input[type='radio']:checked {
-    border: 0.3em solid #8b5ad8;
+    border: 0.3em solid #7bc745;
   }
 `;
 
@@ -152,12 +208,12 @@ const SearchButton = styled.div`
     height: 50px;
     width: 110px;
     color: white;
-    background-color: #8b5ad8;
+    background-color: #33a23d;
     text-decoration: none;
     box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.1);
   }
   a:hover {
-    background-color: #8a5ad8d8;
+    background-color: #83d189;
   }
 `;
 
