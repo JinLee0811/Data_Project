@@ -20,6 +20,24 @@ function Review(props) {
     getUserReview();
   }, []);
 
+  const handleDeleteReview = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${serverUrl}/review/${id}`, {
+        withCredentials: true,
+      });
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //날짜 받아오기
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(date).toLocaleDateString("ko-KR", options);
+  };
+
   return (
     <>
       <SectionTitle>내가 쓴 리뷰📝</SectionTitle>
@@ -28,8 +46,14 @@ function Review(props) {
           {review && review.length > 0 ? (
             review.map((review) => (
               <ReviewBox key={review.id}>
-                <DeleteButton>x</DeleteButton>({review.createdAt}){" "}
-                {review.station_id} - {review.body}
+                <DeleteButton onClick={(e) => handleDeleteReview(e, review.id)}>
+                  x
+                </DeleteButton>
+                <StationInfo>
+                  {review.station.station_line} {review.station.station_name}역
+                </StationInfo>
+                <DateInfo>{formatDate(review.createdAt)}</DateInfo>
+                <ReviewContent>{review.body}</ReviewContent>
               </ReviewBox>
             ))
           ) : (
@@ -59,7 +83,7 @@ const ReviewBox = styled.div`
   margin: 0px 0px 15px 0px;
   padding: 20px 20px 20px 20px;
   background-color: white;
-  border-radius: 100px;
+  border-radius: 10px;
   display: inline-block;
   font-size: 13px;
   :hover {
@@ -70,6 +94,20 @@ const ReviewBox = styled.div`
       color: white;
     }
   }
+`;
+
+const StationInfo = styled.span`
+  font-weight: bold;
+`;
+
+const DateInfo = styled.span`
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 8px;
+`;
+
+const ReviewContent = styled.div`
+  margin-top: 10px;
 `;
 
 const SectionContent = styled.div`
