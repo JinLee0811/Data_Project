@@ -51,6 +51,9 @@ const option = {
       align: 'end',
       display: true,
       text: '서울시 거주지 선택시 고려요인 <출처: 서울특별시, 서울시도시정책지표조사>',
+      font: {
+        size: 16,
+      },
     },
   },
   animation: {

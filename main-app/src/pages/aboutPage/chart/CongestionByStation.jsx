@@ -44,7 +44,16 @@ const datasets = {
   ],
 };
 const options = {
-  plugins: [{}],
+  plugins: {
+    title: {
+      display: true,
+      text: '지하철 혼잡도 정보 <출처: 서울교통공사>',
+      position: 'bottom',
+      font: {
+        size: 16,
+      },
+    },
+  },
   animation: {
     duration: 2000,
   },
@@ -96,7 +105,7 @@ const CongestionByStation = forwardRef((props, ref) => {
         data={data}
         ref={ref}
         redraw={props.redraw}
-        width={800}
+        width={1200}
         height={500}
       />
     </div>
