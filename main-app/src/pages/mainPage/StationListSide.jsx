@@ -2,55 +2,67 @@ import React, { useState, useEffect } from 'react';
 import { Link, useOutletContext, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+import useHttpRequest from '../../utils/useHttp';
 import FeelTimeMethod from './FeelTimeMethod';
 
 const StationListSide = () => {
   const location = useLocation();
 
-  const [stationList, setStationList] = useState();
-  const [feelTimeMethod, setFeelTimeMethod] = useState('feel_time_weekday_m');
+  const { sendRequest } = useHttpRequest();
   const { setMapOption, setMarkers } = useOutletContext();
 
+  const [feelTimeMethod, setFeelTimeMethod] = useState('feel_time_weekday_m');
+  const [stationList, setStationList] = useState([]);
+  const [stationRank, setStationRank] = useState([]);
+  const inputs = location.state;
+
+  const getStationList = async () => {
+    try {
+      const res = await sendRequest('/main/stationWithin', 'post', inputs);
+      setStationList([...res.stationList]);
+    } catch (err) {}
+  };
+
+  //이전 페이지에서 받아온 검색 조건으로 지하철 조회
   useEffect(() => {
     getStationList();
   }, []);
 
+  //지하철 목록 순위매기기
   useEffect(() => {
-    const { naver } = window;
     if (stationList) {
-      getMarkerList();
-      setMapOption((cur) => ({
-        ...cur,
-        center: new naver.maps.LatLng(37.500799, 127.036969),
-        zoom: 14,
-      }));
+      setStationRank(stationList.slice(0, 5));
     }
   }, [stationList]);
 
-  const getStationList = async () => {
-    try {
-      const res = await axios.get('/data/StationData.json');
-      setStationList(res.data);
-    } catch (err) {
-      console.log(err);
+  //순위 목록으로 지도 다시 그리기
+  useEffect(() => {
+    const { naver } = window;
+    if (stationRank.length > 0) {
+      console.log(stationRank);
+      setMapOption((cur) => ({
+        ...cur,
+        center: new naver.maps.LatLng(37.540693, 127.07023),
+        zoom: 14,
+      }));
+      getMarkerList();
     }
-  };
+  }, [stationRank]);
 
   const getMarkerList = () => {
-    stationList.map((station, index) => {
+    stationRank.forEach((item, index) => {
       setMarkers((cur) => [
         ...cur,
         {
-          lat: station.pos_y,
-          lng: station.pos_x,
+          lat: item.station.pos_x,
+          lng: item.station.pos_y,
           rank: index + 1,
-          station_name: station.station_name,
-          station_line: station.station_line,
-          area: station.area,
-          rent_price: station.rent_price,
-          lease_price: station.lease_price,
-          travel_time: station.travel_time,
-          feel_time: station.feel_time,
+          station_name: item.station.station_name,
+          station_line: item.station.station_line,
+          rent_price: item.station.rent_price,
+          lease_price: item.station.lease_price,
+          travel_time: item.time,
+          feel_time: item.dd,
         },
       ]);
     });
@@ -63,10 +75,10 @@ const StationListSide = () => {
         setFeelTimeMethod={setFeelTimeMethod}
       ></FeelTimeMethod>
       <StationListContainer>
-        {stationList &&
-          stationList.map((station, index) => (
+        {stationRank &&
+          stationRank.map((item, index) => (
             <StationContainer key={index}>
-              {station.station_name}
+              {item.station.station_name}
             </StationContainer>
           ))}
       </StationListContainer>

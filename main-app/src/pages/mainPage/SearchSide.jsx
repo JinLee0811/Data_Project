@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import MultiRangeSlider from '../../utils/MultiRangeSlider';
+import ModalInput from '../../components/ModalInput';
 import useHttpRequest from '../../utils/useHttp';
+import axios from 'axios';
 
 const SearchSide = () => {
   const navigate = useNavigate();
@@ -11,7 +13,36 @@ const SearchSide = () => {
   const [type, setType] = useState('lease');
 
   const { setMapOption, setMarkers } = useOutletContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [coordinates, setCoordinates] = useState({ pos_x: '', pos_y: '' });
   const { sendRequest } = useHttpRequest();
+
+  const handleQueryFocus = () => {
+    setIsModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCoordinatesUpdate = (pos_x, pos_y) => {
+    setCoordinates(pos_x, pos_y);
+  };
+
+  const fetchData = async () => {
+    const serverUrl = process.env.REACT_APP_API_URL;
+    try {
+      const response = await axios.post(
+        serverUrl + '/main/station',
+        coordinates,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     setMapOption((cur) => ({
@@ -24,7 +55,9 @@ const SearchSide = () => {
       tileTransition: true,
     }));
     setMarkers([]);
-  }, []);
+    console.log(coordinates);
+    fetchData();
+  }, [coordinates]);
 
   const handleSubmit = async () => {
     const inputs = {
@@ -50,6 +83,7 @@ const SearchSide = () => {
               name='query'
               id='query'
               placeholder='찾고싶은 장소를 입력해주세요'
+              onFocus={handleQueryFocus}
             />
           </Fieldset>
           <Fieldset>
@@ -105,6 +139,13 @@ const SearchSide = () => {
       <SearchButton onClick={() => handleSubmit()}>
         <div>찾아보자!</div>
       </SearchButton>
+      <ModalInput
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onUpdateCoordinates={handleCoordinatesUpdate}
+      >
+        목적지 장소를 입력하세요
+      </ModalInput>
     </SearchSideContainer>
   );
 };

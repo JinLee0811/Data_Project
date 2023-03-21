@@ -5,7 +5,6 @@ import axios from "axios";
 // 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수
 function UserPage(props) {
   const serverUrl = process.env.REACT_APP_API_URL;
-  const [imageUrl, setImageUrl] = useState("");
   const [wish, setWish] = useState("");
   const [review, setReview] = useState("");
   const [userInfo, setUserInfo] = useState("");
@@ -21,15 +20,6 @@ function UserPage(props) {
     }
   };
   useEffect(() => {
-    getUserInfo();
-    // 랜덤 고양이 이미지 가져오기
-    // fetch("https://api.thecatapi.com/v1/images/search")
-    //   .then((response) => response.json())
-    //   .then((data) => setImageUrl(data[0].url))
-    //   .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
     const getUserWish = async () => {
       try {
         const response = await axios.get(serverUrl + "/wish", {
@@ -40,6 +30,7 @@ function UserPage(props) {
         console.error(error);
       }
     };
+    getUserInfo();
     getUserWish();
   }, []);
 

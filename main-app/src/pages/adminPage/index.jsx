@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Outlet, NavLink } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Outlet, NavLink } from 'react-router-dom';
 
 function Sidebar() {
   return (

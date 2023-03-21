@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
-import useHttpRequest from "../../utils/useHttp";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import useHttpRequest from '../../utils/useHttp';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const { sendRequest } = useHttpRequest();
 
   const [inputs, setInputs] = useState({
-    name: "",
-    nickname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    nickname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const handleChange = (e) => {
@@ -38,19 +37,19 @@ const RegisterPage = () => {
     confirmPassword,
   }) => {
     if (emailCheck(email) === false) {
-      return "이메일 형식이 올바르지 않습니다.";
+      return '이메일 형식이 올바르지 않습니다.';
     }
     if (name.length < 2) {
-      return "두글자 이상의 이름을 설정해주세요.";
+      return '두글자 이상의 이름을 설정해주세요.';
     }
     if (nickname.length < 2) {
-      return "두글자 이상의 닉네임을 설정해주세요.";
+      return '두글자 이상의 닉네임을 설정해주세요.';
     }
     if (password.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
+      return '비밀번호는 4글자 이상이어야합니다.';
     }
     if (password !== confirmPassword) {
-      return "비밀번호가 일치하지 않습니다.";
+      return '비밀번호가 일치하지 않습니다.';
     }
     return true;
   };
@@ -58,16 +57,16 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validated = validateForm(inputs);
-    if (typeof validated === "string") {
+    if (typeof validated === 'string') {
       alert(validated);
       return;
     }
 
     try {
-      const response = await sendRequest("/register", "post", inputs);
+      const response = await sendRequest('/register', 'post', inputs);
       console.log(response);
       alert(response.data);
-      navigate("/login");
+      navigate('/login');
     } catch (err) {
       console.log(err);
     }

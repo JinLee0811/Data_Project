@@ -40,6 +40,8 @@ function MyPage(props) {
         withCredentials: true,
       });
       getUserReview();
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -51,6 +53,8 @@ function MyPage(props) {
         withCredentials: true,
       });
       getUserWish();
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -84,7 +88,11 @@ function MyPage(props) {
                 <DeleteButton onClick={(e) => handleDeleteReview(e, review.id)}>
                   x
                 </DeleteButton>
-                ({review.createdAt}) {review.station_id} - {review.body}
+                <StationInfo>
+                  {review.station.station_line} {review.station.station_name}역
+                </StationInfo>
+                <DateInfo>{formatDate(review.createdAt)}</DateInfo>
+                <ReviewContent>{review.body}</ReviewContent>
               </ReviewBox>
             ))
           ) : (
@@ -134,7 +142,7 @@ const ReviewBox = styled.div`
   margin: 0px 0px 15px 0px;
   padding: 20px 20px 20px 20px;
   background-color: white;
-  border-radius: 100px;
+  border-radius: 10px;
   display: inline-block;
   font-size: 13px;
   :hover {
@@ -146,6 +154,25 @@ const ReviewBox = styled.div`
     }
   }
 `;
+
+const StationInfo = styled.span`
+  font-weight: bold;
+`;
+
+const DateInfo = styled.span`
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 8px;
+`;
+
+const ReviewContent = styled.div`
+  margin-top: 10px;
+`;
+
+const formatDate = (date) => {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(date).toLocaleDateString("ko-KR", options);
+};
 
 const SectionContent = styled.div`
   font-size: 16px;
