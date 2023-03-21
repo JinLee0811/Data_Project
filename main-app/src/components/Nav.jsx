@@ -1,13 +1,12 @@
-import React from 'react';
-import { useState, useContext } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import SideDrawer from './SideDrawer';
-import { AuthContext } from '../utils/AuthContext';
+import React from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import SideDrawer from "./SideDrawer";
+import NavLink from "./NavLink";
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  const { isLoggedIn, isAdmin, logout } = useContext(AuthContext);
 
   const handleOpenDrawer = () => {
     setDrawerIsOpen(true);
@@ -16,72 +15,25 @@ const Nav = () => {
   const handleCloseDrawer = () => {
     setDrawerIsOpen(false);
   };
-
   return (
     <>
       {drawerIsOpen && <Backdrop onClick={handleCloseDrawer}></Backdrop>}
-      <SideDrawer show={drawerIsOpen} closeNav={handleCloseDrawer}></SideDrawer>
+      <SideDrawer show={drawerIsOpen} closeNav={handleCloseDrawer}>
+        <NavLink></NavLink>
+      </SideDrawer>
       <NavigationBar>
         <SideDrawerButton onClick={handleOpenDrawer}>
           <span />
           <span />
           <span />
         </SideDrawerButton>
-
         <Link to='/'>
           <LogoBox>
             <div>2</div>
             <span>사가게?</span>
           </LogoBox>
         </Link>
-
-        <ul>
-          <li>
-            <Link to='/about'>
-              <div className='station'></div>
-              <p>소개</p>
-            </Link>
-          </li>
-          {isAdmin && (
-            <li>
-              <Link to='/admin/user'>
-                <div className='station'></div>
-                <p>관리자</p>
-              </Link>
-            </li>
-          )}
-          {isLoggedIn ? (
-            <>
-              <li>
-                <Link to='/user'>
-                  <div className='station'></div>
-                  <p>마이페이지</p>
-                </Link>
-              </li>
-              <li onClick={logout}>
-                <Link>
-                  <div className='station'></div>
-                  <p>로그아웃</p>
-                </Link>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to='/register'>
-                  <div className='station'></div>
-                  <p>회원가입</p>
-                </Link>
-              </li>
-              <li>
-                <Link to='/login'>
-                  <div className='station'></div>
-                  <p>로그인</p>
-                </Link>
-              </li>
-            </>
-          )}
-        </ul>
+        <NavLink></NavLink>
       </NavigationBar>
     </>
   );
@@ -102,7 +54,7 @@ const SideDrawerButton = styled.button`
     display: block;
     width: 2.5rem;
     height: 1px;
-    background: #fff;
+    background: #33a23d;
   }
 
   @media (max-width: 768px) {
@@ -128,11 +80,11 @@ const LogoBox = styled.div`
   position: relative;
   color: #33a23d;
   flex-direction: row;
-  font-family: 'NanumSquareNeoExtraBold';
-  font-size: 28px;
+  font-family: "NanumSquareNeoExtraBold";
+  font-size: 1.5rem;
   margin-top: 12px;
-  height: 60px;
-  width: 157px;
+  height: 2.5rem;
+  width: 9rem;
   border: 10px solid #33a23d;
   border-radius: 40px;
   align-items: center;
@@ -140,19 +92,25 @@ const LogoBox = styled.div`
   box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
   div {
     color: white;
-    font-family: 'NanumSquareNeoHeavy';
+    font-family: "NanumSquareNeoHeavy";
     position: absolute;
     left: 6px;
     background-color: #33a23d;
     border-radius: 100%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
+    width: 2.2rem;
+    height: 2.2rem;
+    line-height: 2.2rem;
     text-align: center;
   }
   span {
     position: absolute;
     left: 50px;
+  }
+  @media (max-width: 768px) {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
   }
 `;
 
@@ -200,7 +158,7 @@ const NavigationBar = styled.nav`
           color: #33a23d;
           width: 80px;
           text-align: center;
-          font-family: 'NanumSquareNeoBold';
+          font-family: "NanumSquareNeoBold";
           letter-spacing: 1px;
         }
       }
@@ -212,6 +170,8 @@ const NavigationBar = styled.nav`
 
   @media (max-width: 768px) {
     padding-left: 1.5rem;
+    background-color: #fff;
+    position: static;
   }
 `;
 

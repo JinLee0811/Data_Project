@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Outlet, NavLink } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { Outlet, NavLink } from "react-router-dom";
 
 function Sidebar() {
   return (
@@ -35,6 +35,7 @@ const Container = styled.section`
   display: flex;
   flex-direction: row;
   height: 100vh;
+  margin-top: 2rem;
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -48,11 +49,10 @@ const MainContainer = styled.section`
 
 const Aside = styled.aside`
   width: 200px;
-  background-color: #f2f2f2;
+
   position: relative;
   top: 0;
   left: 0;
-  bottom: 0;
 
   ul {
     list-style: none;
@@ -64,7 +64,7 @@ const Aside = styled.aside`
     }
 
     .active {
-      border-bottom: 2px solid #4b2789;
+      border-bottom: 2px solid #33a23d;
       /* padding-bottom: 3px; */
     }
     @media (max-width: 768px) {
