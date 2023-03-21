@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import axios from "axios";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 
 const SearchStation = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [coordinates, setCoordinates] = useState({});
 
   const handleSubmit = (e) => {
@@ -13,8 +13,8 @@ const SearchStation = () => {
         `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}`,
         {
           headers: {
-            "X-NCP-APIGW-API-KEY-ID": "7i91u5s2cy",
-            "X-NCP-APIGW-API-KEY": "xxjJYz0XdU06ihtYwYDrcox65sjspzWKegexuUWt",
+            'X-NCP-APIGW-API-KEY-ID': '7i91u5s2cy',
+            'X-NCP-APIGW-API-KEY': 'xxjJYz0XdU06ihtYwYDrcox65sjspzWKegexuUWt',
           },
         }
       )
@@ -87,7 +87,7 @@ const Fieldset = styled.fieldset`
   padding-top: 60px;
 
   legend {
-    font-family: "NanumSquareNeoExtraBold";
+    font-family: 'NanumSquareNeoExtraBold';
   }
 
   *:focus {
@@ -108,11 +108,11 @@ const Fieldset = styled.fieldset`
   label {
     margin-left: 16px;
   }
-  input[type="radio"]:hover {
+  input[type='radio']:hover {
     border: 3px solid #b3b3b3;
   }
 
-  input[type="radio"]:checked {
+  input[type='radio']:checked {
     border: 0.3em solid #8b5ad8;
   }
 `;

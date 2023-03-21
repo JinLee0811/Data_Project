@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import MultiRangeSlider from "../../utils/MultiRangeSlider";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import MultiRangeSlider from '../../utils/MultiRangeSlider';
+import axios from 'axios';
 
 const SearchSide = () => {
   const [price, setPrice] = useState({ min: 10, max: 100 });
@@ -58,7 +58,7 @@ const SearchSide = () => {
         </FieldContainer>
       </SearchForm>
       <SearchButton>
-        <Link to={"stationlist"}>찾아보자!</Link>
+        <Link to={'stationlist'}>찾아보자!</Link>
       </SearchButton>
     </SearchSideContainer>
   );
@@ -95,7 +95,7 @@ const Fieldset = styled.fieldset`
   padding-top: 60px;
 
   legend {
-    font-family: "NanumSquareNeoExtraBold";
+    font-family: 'NanumSquareNeoExtraBold';
   }
 
   *:focus {
@@ -113,7 +113,7 @@ const Fieldset = styled.fieldset`
     border: 3px solid #6e39c9;
   }
 
-  input[type="radio"] {
+  input[type='radio'] {
     margin-left: 15px;
     margin-right: 30px;
     appearance: none;
@@ -126,11 +126,11 @@ const Fieldset = styled.fieldset`
   label {
     margin-left: 16px;
   }
-  input[type="radio"]:hover {
+  input[type='radio']:hover {
     border: 3px solid #b3b3b3;
   }
 
-  input[type="radio"]:checked {
+  input[type='radio']:checked {
     border: 0.3em solid #8b5ad8;
   }
 `;

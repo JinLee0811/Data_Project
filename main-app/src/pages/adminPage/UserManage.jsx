@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import styled from "styled-components";
-import useHttpRequest from "../../utils/useHttp";
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import styled from 'styled-components';
+import useHttpRequest from '../../utils/useHttp';
 
 function UserManage() {
   const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ function UserManage() {
 
   const fetchData = async () => {
     try {
-      const response = await sendRequest("/admin/users", "get");
+      const response = await sendRequest('/admin/users', 'get');
       console.log(response);
       setUsers(response);
     } catch (err) {
@@ -25,7 +25,7 @@ function UserManage() {
     try {
       const response = await sendRequest(
         `/admin/users/${user_id}`,
-        "delete",
+        'delete',
         {}
       );
       console.log(response);
@@ -73,11 +73,11 @@ function UserManage() {
               )
               .map((user) => (
                 <tr key={user.id}>
-                  <TableData>{user.createdAt.split("T")[0]}</TableData>
+                  <TableData>{user.createdAt.split('T')[0]}</TableData>
                   <TableData>{user.email}</TableData>
                   <TableData>{user.name}</TableData>
                   <TableData>{user.nickname}</TableData>
-                  <TableData> {user.isAdmin ? "admin" : "user"}</TableData>
+                  <TableData> {user.isAdmin ? 'admin' : 'user'}</TableData>
                   <TableData>
                     {isActiveUserShown && (
                       <DeleteButton onClick={() => handleDelete(user.id)}>
