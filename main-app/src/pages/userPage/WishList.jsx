@@ -9,7 +9,7 @@ function WishList(props) {
   useEffect(() => {
     const getUserWish = async () => {
       try {
-        const response = await axios.get(serverUrl + "/wish", {
+        const response = await axios.get(serverUrl + "/wish/mypage", {
           withCredentials: true,
         });
         setWish(response.data);
@@ -44,7 +44,7 @@ function WishList(props) {
                 <DeleteButton onClick={(e) => handleDeleteWish(e, wish.id)}>
                   x
                 </DeleteButton>
-                {wish.station_id}
+                {wish.station.station_name}역
               </SubwayBox>
             ))
           ) : (
@@ -74,6 +74,7 @@ const SubwayBox = styled.div`
   padding: 20px 20px 20px 20px;
   background-color: white;
   border-radius: 100px;
+  font-size: 13px;
 
   display: inline-block;
   :hover {

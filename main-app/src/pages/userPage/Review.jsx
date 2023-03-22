@@ -5,6 +5,8 @@ import axios from "axios";
 function Review(props) {
   const serverUrl = process.env.REACT_APP_API_URL;
   const [review, setReview] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
 
   useEffect(() => {
     const getUserReview = async () => {
@@ -71,7 +73,6 @@ const DetailSection = styled.div`
   border-radius: 5px;
   background-color: #a0dda5;
   width: 500px;
-  height: 400px;
 `;
 
 const SectionTitle = styled.h2`
@@ -84,7 +85,7 @@ const ReviewBox = styled.div`
   padding: 20px 20px 20px 20px;
   background-color: white;
   border-radius: 10px;
-  display: inline-block;
+  display: block;
   font-size: 13px;
   :hover {
     background-color: #7bc745;
