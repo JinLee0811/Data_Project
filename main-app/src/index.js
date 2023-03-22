@@ -23,7 +23,8 @@ import {
   NickChange,
   WishList,
   Review,
-  SearchStation,
+  StationInfoReview,
+  StationInfoGeneral,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -44,12 +45,18 @@ const router = createBrowserRouter([
             element: <StationListSide />,
           },
           {
-            path: 'staioninfo',
+            path: 'stationinfo/:id',
             element: <StationInfoSide />,
-          },
-          {
-            path: 'stationquery',
-            element: <SearchStation />,
+            children: [
+              {
+                path: 'general',
+                element: <StationInfoGeneral />,
+              },
+              {
+                path: 'review',
+                element: <StationInfoReview />,
+              },
+            ],
           },
         ],
       },

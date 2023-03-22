@@ -7,13 +7,13 @@ function Sidebar() {
     <Aside>
       <ul>
         <li>
-          <NavLink to='/admin/user'>사용자 관리</NavLink>
+          <NavLink to='user'>사용자 관리</NavLink>
         </li>
         <li>
-          <NavLink to='/admin/review'>리뷰 관리</NavLink>
+          <NavLink to='review'>리뷰 관리</NavLink>
         </li>
         <li>
-          <NavLink to='/admin/calculate'>계산식</NavLink>
+          <NavLink to='calculate'>계산식</NavLink>
         </li>
       </ul>
     </Aside>

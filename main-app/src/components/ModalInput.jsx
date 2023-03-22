@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
-function ModalInput({ isOpen, onClose, children, onUpdateCoordinates }) {
+function ModalInput({ isOpen, onClose, children, inputHeight = 45, onSubmit }) {
   const inputRef = useRef(null);
   const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -13,21 +14,12 @@ function ModalInput({ isOpen, onClose, children, onUpdateCoordinates }) {
     }
   }, [isOpen]);
 
-  const handleModalSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const apiUrl = process.env.REACT_APP_GOOGLE_API_URL;
-    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-    const url = `${apiUrl}?address=${encodeURIComponent(query)}&key=${apiKey}`;
-
-    try {
-      const response = await axios.get(url);
-      const pos_x = response.data.results[0].geometry.location.lat;
-      const pos_y = response.data.results[0].geometry.location.lng;
-      onUpdateCoordinates({ pos_x, pos_y });
-      setQuery('');
-    } catch (err) {
-      console.log(err);
-    }
+    setIsLoading(true);
+    await onSubmit(query);
+    setIsLoading(false);
+    setQuery('');
     onClose();
   };
 
@@ -48,9 +40,12 @@ function ModalInput({ isOpen, onClose, children, onUpdateCoordinates }) {
           name='query'
           value={query}
           onChange={handleInputChange}
+          height={inputHeight}
         ></Input>
         <div>
-          <ConfirmButton onClick={handleModalSubmit}>확인</ConfirmButton>
+          <ConfirmButton onClick={handleSubmit} disabled={isLoading}>
+            확인
+          </ConfirmButton>
           <CancelButton onClick={onClose}>취소</CancelButton>
         </div>
       </ModalContent>
@@ -85,7 +80,7 @@ const ModalContent = styled.div`
 
 const Input = styled.input`
   width: 300px;
-  height: 45px;
+  height: ${(props) => props.height}px;
   margin: 1rem;
   border: 3px solid #33a23d;
   padding: 0px 20px;
@@ -100,7 +95,8 @@ const ConfirmButton = styled.button`
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  background-color: ${(props) => (props.disabled ? '#ccc' : '#33a23d')};
 `;
 
 const CancelButton = styled.button`
@@ -111,7 +107,6 @@ const CancelButton = styled.button`
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  cursor: pointer;
 `;
 
 export default ModalInput;

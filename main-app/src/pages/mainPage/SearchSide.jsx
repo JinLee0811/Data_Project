@@ -21,20 +21,27 @@ const SearchSide = () => {
     setIsModalOpen(false);
   };
 
-  const handleCoordinatesUpdate = (pos_x, pos_y) => {
-    setCoordinates(pos_x, pos_y);
+  //모달에게, 서브밋 시 사용되는 함수 전달
+  const handleModalSubmit = async (query) => {
+    const apiUrl = process.env.REACT_APP_GOOGLE_API_URL;
+    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+    const url = `${apiUrl}?address=${encodeURIComponent(query)}&key=${apiKey}`;
+
+    try {
+      const response = await axios.get(url);
+      console.log(response.data.results);
+      const pos_x = response.data.results[0].geometry.location.lat;
+      const pos_y = response.data.results[0].geometry.location.lng;
+      setCoordinates({ pos_x, pos_y });
+    } catch (err) {
+      console.log(err);
+    }
+    handleModalClose();
   };
 
   const fetchData = async () => {
-    const serverUrl = process.env.REACT_APP_API_URL;
     try {
-      const response = await axios.post(
-        serverUrl + '/main/station',
-        coordinates,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const response = await sendRequest('/main/station', 'post', coordinates);
       console.log(response);
     } catch (err) {
       console.log(err);
@@ -52,7 +59,6 @@ const SearchSide = () => {
       tileTransition: true,
     }));
     setMarkers([]);
-    console.log(coordinates);
     fetchData();
   }, [coordinates]);
 
@@ -112,7 +118,7 @@ const SearchSide = () => {
       <ModalInput
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onUpdateCoordinates={handleCoordinatesUpdate}
+        onSubmit={handleModalSubmit}
       >
         목적지 장소를 입력하세요
       </ModalInput>

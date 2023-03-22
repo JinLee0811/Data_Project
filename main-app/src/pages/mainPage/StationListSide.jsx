@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import FeelTimeMethod from './FeelTimeMethod';
@@ -8,7 +8,7 @@ const StationListSide = () => {
   const [stationList, setStationList] = useState();
   const [feelTimeMethod, setFeelTimeMethod] = useState('feel_time_weekday_m');
   const { setMapOption, setMarkers } = useOutletContext();
-
+  const navigate = useNavigate();
   useEffect(() => {
     getStationList();
   }, []);

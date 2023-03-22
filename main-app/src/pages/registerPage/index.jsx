@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
+import { ClipLoader } from 'react-spinners';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
 
   const [inputs, setInputs] = useState({
     name: '',
@@ -72,6 +73,14 @@ const RegisterPage = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Container>
+        <ClipLoader color='#33a23d' loading={isLoading} />
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Card>
@@ -119,7 +128,9 @@ const RegisterPage = () => {
             value={inputs.confirmPassword}
             onChange={handleChange}
           />
-          <Button type='submit'>가입하기</Button>
+          <Button type='submit' disabled={isLoading}>
+            가입하기
+          </Button>
         </Form>
       </Card>
     </Container>
@@ -130,6 +141,7 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   padding-top: 80px;
+  align-items: center;
 `;
 
 const Card = styled.article`
