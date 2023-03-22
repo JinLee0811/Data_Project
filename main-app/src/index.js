@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             element: <StationListSide />,
           },
           {
-            path: 'stationinfo/:id',
+            path: 'stationinfo',
             element: <StationInfoSide />,
             children: [
               {
