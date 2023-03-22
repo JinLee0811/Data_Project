@@ -1,107 +1,103 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Link, Outlet } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Link, Outlet } from 'react-router-dom';
+import useHttpRequest from '../../utils/useHttp';
+
 // 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수
 function UserPage(props) {
-  const serverUrl = process.env.REACT_APP_API_URL;
-  const [wish, setWish] = useState("");
-  const [review, setReview] = useState("");
-  const [userInfo, setUserInfo] = useState("");
+  const [wish, setWish] = useState();
+  const [review, setReview] = useState();
+  const [userInfo, setUserInfo] = useState();
+  const { sendRequest } = useHttpRequest();
+
+  useEffect(() => {
+    getUserInfo();
+    getUserWish();
+    getUserReview();
+  }, []);
 
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(serverUrl + "/account", {
-        withCredentials: true,
-      });
-      setUserInfo(response.data);
+      const response = await sendRequest('/account', 'get');
+      setUserInfo((cur) => response);
     } catch (error) {
       console.error(error);
     }
   };
-  useEffect(() => {
-    const getUserWish = async () => {
-      try {
-        const response = await axios.get(serverUrl + "/wish", {
-          withCredentials: true,
-        });
-        setWish(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getUserInfo();
-    getUserWish();
-  }, []);
+  const getUserWish = async () => {
+    try {
+      const response = await sendRequest('/wish/mypage', 'get');
+      setWish((cur) => response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getUserReview = async () => {
+    try {
+      const response = await sendRequest('/review', 'get');
+      setReview((cur) => response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  useEffect(() => {
-    const getUserReview = async () => {
-      try {
-        const response = await axios.get(serverUrl + "/review", {
-          withCredentials: true,
-        });
-        setReview(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getUserReview();
-  }, []);
   return (
     <>
-      <UserPageContainer>
-        <LeftContainer>
-          <InsideLeftContainer>
-            <UserBrief>
-              <ProfileImage
-                src={
-                  "https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000"
-                }
-                alt='Profile Image'
-              />
+      {wish && review && userInfo && (
+        <UserPageContainer>
+          <LeftContainer>
+            <InsideLeftContainer>
               <UserBrief>
-                <UserName>{userInfo.nickname}</UserName>
-                <Link to='/user/nickchange'>
-                  <NickChange>✏️</NickChange>
+                <ProfileImage
+                  src={
+                    'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000'
+                  }
+                  alt='Profile Image'
+                />
+                <UserBrief>
+                  <UserName>{userInfo.nickname}</UserName>
+                  <Link to='/user/nickchange'>
+                    <NickChange>✏️</NickChange>
+                  </Link>
+                </UserBrief>
+                <UserEmail>{userInfo.email}</UserEmail>
+                <UserInfo>나의 찜:</UserInfo>
+                <Link to='/user/wishlist'>
+                  <StationCount>{wish.length}</StationCount>
                 </Link>
-              </UserBrief>
-              <UserEmail>{userInfo.email}</UserEmail>
-              <UserInfo>나의 찜:</UserInfo>
-              <Link to='/user/wishlist'>
-                <StationCount>{wish.length}</StationCount>
-              </Link>
-              <UserInfo>나의 리뷰:</UserInfo>
-              <Link to='/user/review'>
-                <StationCount>{review.length}</StationCount>
-              </Link>
-              <UserBrief>
-                <Link to='/'>
-                  <UserButton>역 찾으러 가기</UserButton>
+                <UserInfo>나의 리뷰:</UserInfo>
+                <Link to='/user/review'>
+                  <StationCount>{review.length}</StationCount>
                 </Link>
+                <UserBrief>
+                  <Link to='/'>
+                    <UserButton>역 찾으러 가기</UserButton>
+                  </Link>
+                </UserBrief>
               </UserBrief>
-            </UserBrief>
-          </InsideLeftContainer>
-        </LeftContainer>
-        <MarginDiv></MarginDiv>
-        <RightContainer>
-          <MenuBar>
-            <ul>
-              <li>
-                <Link to='/user'>마이페이지</Link>
-              </li>
-              <li>
-                <Link to='/user/useredit'>프로필관리</Link>
-              </li>
-              <li>
-                <Link to='/user/withdrawl'>회원탈퇴</Link>
-              </li>
-            </ul>
-          </MenuBar>
-          <RightSection>
-            <Outlet />
-          </RightSection>
-        </RightContainer>
-      </UserPageContainer>
+            </InsideLeftContainer>
+          </LeftContainer>
+          <MarginDiv></MarginDiv>
+          <RightContainer>
+            <MenuBar>
+              <ul>
+                <li>
+                  <Link to='/user'>마이페이지</Link>
+                </li>
+                <li>
+                  <Link to='/user/useredit'>프로필관리</Link>
+                </li>
+                <li>
+                  <Link to='/user/withdrawl'>회원탈퇴</Link>
+                </li>
+              </ul>
+            </MenuBar>
+            <RightSection>
+              <Outlet />
+            </RightSection>
+          </RightContainer>
+        </UserPageContainer>
+      )}
       <Footer>
         <p>
           <a
@@ -109,7 +105,7 @@ function UserPage(props) {
             target='_blank'
             rel='noreferrer'>
             Notion
-          </a>{" "}
+          </a>{' '}
           |
           <a
             href='https://kdt-gitlab.elice.io/ai_track/class_06/data_project/team02/frontend-real'
@@ -201,6 +197,8 @@ const UserInfo = styled.p`
 `;
 const UserButton = styled.button`
   background-color: #33a23d;
+  font-size: 16px;
+  font-weight: bold;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;
