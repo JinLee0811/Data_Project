@@ -1,19 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import buildingImg from './markerImage/building.png';
 
 const MainPage = () => {
   const mapElement = useRef(null);
   const [mapOption, setMapOption] = useState({
+    scaleControl: false,
     logoControl: false,
     mapDataControl: false,
-    scaleControl: false,
+    zoomControl: false,
+    mapTypeControl: false,
+    tileTransition: false,
+    background: '#33A23D',
+    minZoom: 12,
   });
   const [markers, setMarkers] = useState([]);
+  const [startPoint, setStartPoint] = useState([]);
+  //맵 클릭 이벤트 활성화
+  const [clickEvent, setClickEvent] = useState(false);
+  //맵 클릭 이벤트 좌표 값
+  const clickPoint = useRef({});
 
   useEffect(() => {
     const { naver } = window;
     const map = new naver.maps.Map(mapElement.current, mapOption);
+    //마커클릭
     const getClickHandler = (myMarker, myInfoWindow) => {
       return () => {
         myInfoWindow.getMap()
@@ -21,6 +33,40 @@ const MainPage = () => {
           : myInfoWindow.open(map, myMarker);
       };
     };
+    //맵클릭
+    const handleClickMap = (e) => {
+      console.log(e.coord);
+      clickPoint.current = e.coord;
+      console.log(clickPoint);
+    };
+
+    //사용자가 찍은 시작점과 가까운 지하철역 마커 그리기
+    if (startPoint.length === 2) {
+      const startPointMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(startPoint[0].lat, startPoint[0].lng),
+        setClickable: false,
+        map,
+        icon: {
+          url: buildingImg,
+          anchor: new naver.maps.Point(32, 54),
+          origin: new naver.maps.Point(0, 0),
+        },
+      });
+      const startStationMarker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(startPoint[1].lat, startPoint[1].lng),
+        setClickable: false,
+        map,
+        icon: {
+          content: `
+            <div class='startStation'>
+              <div class='start'>출발</div>
+              <span class='stationName'>${startPoint[1].station_name}역</span>
+            </div>
+          `,
+          anchor: new naver.maps.Point(0, -10),
+        },
+      });
+    }
 
     //마커 그리기
     markers.forEach((marker) => {
@@ -50,8 +96,8 @@ const MainPage = () => {
               </div>
               <div class='station-info'>
                 <div class='time'>
-                  <p>소요시간: ${marker.travel_time}</p>
-                  <p>체감시간: ${marker.feel_time}</p>
+                  <p>소요시간: ${marker.travel_time}분</p>
+                  <p>체감시간: ${marker.feel_time}분</p>
                 </div>
                 <hr>
                 <div class='price'>
@@ -69,6 +115,7 @@ const MainPage = () => {
         borderWidth: 0,
         backgroundColor: 'transparent',
       });
+      //마커 클릭시 정보창 띄워주기
       naver.maps.Event.addListener(
         myMarker,
         'click',
@@ -78,13 +125,26 @@ const MainPage = () => {
         myInfoWindow.open(map, myMarker);
       }
     });
-  }, [mapOption, markers]);
+
+    if (clickEvent) {
+      naver.maps.Event.addListener(map, 'click', handleClickMap);
+    } else {
+      naver.maps.Event.clearListeners(map, 'click');
+    }
+  }, [mapOption, markers, startPoint]);
 
   return (
     <>
       <MainContainer>
         <SideBarContainer>
-          <Outlet context={{ setMapOption, setMarkers }} />
+          <Outlet
+            context={{
+              setMapOption,
+              setMarkers,
+              setStartPoint,
+              setClickEvent,
+            }}
+          />
         </SideBarContainer>
         <MapContainer ref={mapElement}>map</MapContainer>
       </MainContainer>
@@ -181,7 +241,7 @@ const MapContainer = styled.div`
         .time,
         .price {
           justify-content: center;
-          width: 120px;
+          width: 130px;
           flex-direction: column;
         }
       }
@@ -193,6 +253,52 @@ const MapContainer = styled.div`
       width: 30px;
       height: 30px;
       background-color: yellowgreen;
+    }
+  }
+  //출발마커 CSS
+  .startStation {
+    position: relative;
+    height: 28px;
+    white-space: nowrap;
+    background: #fff;
+    border: 1px solid #a1a1a1;
+    border-radius: 10px;
+    z-index: 11;
+    .stationName {
+      line-height: 28px;
+      margin-left: 16px;
+      padding-right: 5px;
+      font-size: 12px;
+      font-family: 'NanumSquareNeoExtraBold';
+    }
+    .start {
+      text-align: center;
+      line-height: 28px;
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      left: -20px;
+      top: -3px;
+      border-radius: 50%;
+      border: 4px solid #33a23d;
+      color: #f7f7f7;
+      font-size: 13px;
+      font-family: 'NanumSquareNeoExtraBold';
+      background-color: #33a23d;
+    }
+    .start:after {
+      bottom: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: '';
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(51, 162, 61, 0);
+      border-bottom-color: #33a23d;
+      border-width: 12px;
+      margin-left: -12px;
     }
   }
 `;
