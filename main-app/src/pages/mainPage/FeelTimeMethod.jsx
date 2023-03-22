@@ -12,67 +12,67 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
           <input
             type='radio'
             name='feel_time_method'
-            id='feel_time_weekday_m'
-            value='feel_time_weekday_m'
+            id='dm'
+            value='dm'
             onChange={handleChange}
-            checked={feelTimeMethod === 'feel_time_weekday_m'}
+            checked={feelTimeMethod === 'dm'}
           />
-          <label htmlFor='feel_time_weekday_m'>평일 출근</label>
+          <label htmlFor='dm'>평일 출근</label>
         </div>
         <div>
           <input
             type='radio'
             name='feel_time_method'
-            id='feel_time_weekday_d'
-            value='feel_time_weekday_d'
+            id='dd'
+            value='dd'
             onChange={handleChange}
-            checked={feelTimeMethod === 'feel_time_weekday_d'}
+            checked={feelTimeMethod === 'dd'}
           />
-          <label htmlFor='feel_time_weekday_d'>평일 종일</label>
+          <label htmlFor='dd'>평일 종일</label>
         </div>
         <div>
           <input
             type='radio'
             name='feel_time_method'
-            id='feel_time_weekday_n'
-            value='feel_time_weekday_n'
+            id='dn'
+            value='dn'
             onChange={handleChange}
-            checked={feelTimeMethod === 'feel_time_weekday_n'}
+            checked={feelTimeMethod === 'dn'}
           />
-          <label htmlFor='feel_time_weekday_n'>평일 퇴근</label>
+          <label htmlFor='dn'>평일 퇴근</label>
         </div>
         <div>
           <input
             type='radio'
             name='feel_time_method'
-            id='feel_time_weekend_m'
-            value='feel_time_weekend_m'
+            id='em'
+            value='em'
             onChange={handleChange}
-            checked={feelTimeMethod === 'feel_time_weekend_m'}
+            checked={feelTimeMethod === 'em'}
           />
-          <label htmlFor='feel_time_weekend_m'>주말 출근</label>
+          <label htmlFor='em'>주말 아침</label>
         </div>
         <div>
           <input
             type='radio'
             name='feel_time_method'
-            id='feel_time_weekend_d'
-            value='feel_time_weekend_d'
+            id='ed'
+            value='ed'
             onChange={handleChange}
-            checked={feelTimeMethod === 'feel_time_weekend_d'}
+            checked={feelTimeMethod === 'ed'}
           />
-          <label htmlFor='feel_time_weekend_d'>주말 종일</label>
+          <label htmlFor='ed'>주말 점심</label>
         </div>
         <div>
           <input
             type='radio'
             name='feel_time_method'
-            id='feel_time_weekend_n'
-            value='feel_time_weekend_n'
+            id='en'
+            value='en'
             onChange={handleChange}
-            checked={feelTimeMethod === 'feel_time_weekend_n'}
+            checked={feelTimeMethod === 'en'}
           />
-          <label htmlFor='feel_time_weekend_n'>주말 퇴근</label>
+          <label htmlFor='en'>주말 저녁</label>
         </div>
       </fieldset>
     </form>

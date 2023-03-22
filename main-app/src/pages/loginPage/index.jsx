@@ -1,16 +1,17 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { AuthContext } from "../../utils/AuthContext";
+import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { AuthContext } from '../../utils/AuthContext';
+import { ClipLoader } from 'react-spinners';
 
 function LoginPage() {
   const { login } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
-
   function emailCheck(email) {
     const regex =
       /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
@@ -19,22 +20,24 @@ function LoginPage() {
 
   const validateForm = ({ email, password }) => {
     if (emailCheck(email) === false) {
-      return "이메일 형식이 올바르지 않습니다.";
+      return '이메일 형식이 올바르지 않습니다.';
     }
     if (password.length < 4) {
-      return "비밀번호는 4글자 이상이어야합니다.";
+      return '비밀번호는 4글자 이상이어야합니다.';
     }
     return true;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     const validated = validateForm(inputs);
-    if (typeof validated === "string") {
+    if (typeof validated === 'string') {
       alert(validated);
       return;
     }
-    login(inputs.email, inputs.password);
+    await login(inputs.email, inputs.password);
+    setIsLoading(false);
   };
 
   const handleChange = (e) => {
@@ -45,6 +48,13 @@ function LoginPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <Container>
+        <ClipLoader color='#33a23d' loading={isLoading} />
+      </Container>
+    );
+  }
   return (
     <Container>
       <Card>
@@ -89,6 +99,7 @@ const Container = styled.section`
   flex-direction: column;
   align-items: center;
   padding-top: 80px;
+  align-items: center;
 `;
 const Card = styled.article`
   display: flex;
