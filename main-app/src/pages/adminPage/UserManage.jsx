@@ -29,7 +29,7 @@ function UserManage() {
         {}
       );
       console.log(response);
-      fetchData();
+      await fetchData();
     } catch (err) {
       console.log(err);
     }

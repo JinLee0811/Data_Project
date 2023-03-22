@@ -23,8 +23,6 @@ const useHttpRequest = () => {
         withCredentials: true,
         signal,
       });
-      console.log(response.data);
-      console.log(response.data.message);
       setIsLoading(false);
       return response.data;
     } catch (err) {

@@ -3,6 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 import MultiRangeSlider from '../../utils/MultiRangeSlider';
 import ModalInput from '../../components/ModalInput';
+import useHttpRequest from '../../utils/useHttp';
 import axios from 'axios';
 
 const SearchSide = () => {
@@ -20,7 +21,7 @@ const SearchSide = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startStation, setStartStation] = useState();
   const [fetchLoading, setFetchLoading] = useState(false);
-
+  const { sendRequest } = useHttpRequest();
   const handleQueryFocus = () => {
     setIsModalOpen(true);
   };
@@ -29,8 +30,22 @@ const SearchSide = () => {
     setIsModalOpen(false);
   };
 
-  const handleCoordinatesUpdate = (pos_x, pos_y) => {
-    setCoordinates(pos_x, pos_y);
+  //모달에게, 서브밋 시 사용되는 함수 전달
+  const handleModalSubmit = async (query) => {
+    const apiUrl = process.env.REACT_APP_GOOGLE_API_URL;
+    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+    const url = `${apiUrl}?address=${encodeURIComponent(query)}&key=${apiKey}`;
+
+    try {
+      const response = await axios.get(url);
+      console.log(response.data.results);
+      const pos_x = response.data.results[0].geometry.location.lat;
+      const pos_y = response.data.results[0].geometry.location.lng;
+      setCoordinates({ pos_x, pos_y });
+    } catch (err) {
+      console.log(err);
+    }
+    handleModalClose();
   };
 
   const handleSubmit = () => {
@@ -55,17 +70,10 @@ const SearchSide = () => {
   };
 
   const fetchData = async () => {
-    const serverUrl = process.env.REACT_APP_API_URL;
     try {
-      const response = await axios.post(
-        serverUrl + '/main/station',
-        coordinates,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-      console.log(response.data.message);
-      setStartStation(response.data.station);
+      const response = await sendRequest('/main/station', 'post', coordinates);
+      console.log(response);
+      setStartStation(response.station);
       setFetchLoading(false);
     } catch (err) {
       console.log(err);
@@ -75,6 +83,7 @@ const SearchSide = () => {
   useEffect(() => {
     setFetchLoading(true);
     fetchData();
+
     setMarkers([]);
   }, [coordinates]);
 
@@ -207,9 +216,9 @@ const SearchSide = () => {
       <ModalInput
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        onUpdateCoordinates={handleCoordinatesUpdate}
+        onSubmit={handleModalSubmit}
       >
-        목적지 장소를 입력하세요
+        출발지 주소를 입력하세요
       </ModalInput>
     </SearchSideContainer>
   );
@@ -307,7 +316,7 @@ const SearchButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 30px;
   div {
     border-radius: 3px;
     line-height: 50px;

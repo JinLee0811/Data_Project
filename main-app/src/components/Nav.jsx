@@ -1,9 +1,9 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import SideDrawer from "./SideDrawer";
-import NavLink from "./NavLink";
+import React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import SideDrawer from './SideDrawer';
+import NavLink from './NavLink';
 
 const Nav = () => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
@@ -80,10 +80,10 @@ const LogoBox = styled.div`
   position: relative;
   color: #33a23d;
   flex-direction: row;
-  font-family: "NanumSquareNeoExtraBold";
+  font-family: 'NanumSquareNeoExtraBold';
   font-size: 1.5rem;
   margin-top: 12px;
-  height: 2.5rem;
+  height: 3.7rem;
   width: 9rem;
   border: 10px solid #33a23d;
   border-radius: 40px;
@@ -92,14 +92,14 @@ const LogoBox = styled.div`
   box-shadow: 2px 1px 2px rgb(0, 0, 0, 0.3), -2px 1px 2px rgb(0, 0, 0, 0.2);
   div {
     color: white;
-    font-family: "NanumSquareNeoHeavy";
+    font-family: 'NanumSquareNeoHeavy';
     position: absolute;
     left: 6px;
     background-color: #33a23d;
     border-radius: 100%;
-    width: 2.2rem;
-    height: 2.2rem;
-    line-height: 2.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
     text-align: center;
   }
   span {
@@ -111,6 +111,14 @@ const LogoBox = styled.div`
     left: 50%;
     top: 0;
     transform: translateX(-50%);
+    height: 2.5rem;
+    width: 7rem;
+    font-size: 1rem;
+    div {
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;
+    }
   }
 `;
 
@@ -158,7 +166,7 @@ const NavigationBar = styled.nav`
           color: #33a23d;
           width: 80px;
           text-align: center;
-          font-family: "NanumSquareNeoBold";
+          font-family: 'NanumSquareNeoBold';
           letter-spacing: 1px;
         }
       }

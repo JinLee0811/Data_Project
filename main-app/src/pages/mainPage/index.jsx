@@ -164,6 +164,7 @@ const MainContainer = styled.div`
 
 const SideBarContainer = styled.div`
   padding-top: 0px;
+  overflow-y: auto;
 `;
 
 const MapContainer = styled.div`
