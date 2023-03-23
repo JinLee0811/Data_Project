@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
+import { ClipLoader } from 'react-spinners';
+import Modal from '../../components/Modal';
 
 function UserManage() {
   const [users, setUsers] = useState([]);
   const [isActiveUserShown, setIsActiveUserShown] = useState(true);
-  const { sendRequest } = useHttpRequest();
+  const { sendRequest, isLoading } = useHttpRequest();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -21,25 +25,28 @@ function UserManage() {
     fetchData();
   }, []);
 
-  const handleDelete = useCallback(async (user_id) => {
+  const handleDelete = async () => {
     try {
       const response = await sendRequest(
-        `/admin/users/${user_id}`,
+        `/admin/users/${userIdToDelete}`,
         'delete',
         {}
       );
-      console.log(response);
+      alert(response);
+      setUserIdToDelete(null);
       await fetchData();
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  };
 
-  // const filteredData = useMemo(() => {
-  //   return isActiveUserShown
-  //     ? users?.filter((user) => user.deletedAt === null)
-  //     : users?.filter((user) => user.deletedAt !== null);
-  // }, [users, isActiveUserShown]);
+  if (isLoading) {
+    return (
+      <Container>
+        <ClipLoader color='#33a23d' loading={isLoading} />
+      </Container>
+    );
+  }
 
   return (
     users && (
@@ -80,7 +87,13 @@ function UserManage() {
                   <TableData> {user.isAdmin ? 'admin' : 'user'}</TableData>
                   <TableData>
                     {isActiveUserShown && (
-                      <DeleteButton onClick={() => handleDelete(user.id)}>
+                      <DeleteButton
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setUserIdToDelete(user.id);
+                          console.log(user.id);
+                        }}
+                      >
                         삭제
                       </DeleteButton>
                     )}
@@ -89,17 +102,28 @@ function UserManage() {
               ))}
           </tbody>
         </Table>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleDelete}
+        >
+          <DeleteMessage>
+            정말로 사용자를 비활성화(삭제)하겠습니까?
+          </DeleteMessage>
+        </Modal>
       </>
     )
   );
 }
+
+// () => handleDelete(user.id)
 
 const Select = styled.select`
   margin-bottom: 1rem;
 `;
 const Table = styled.table`
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   border-collapse: collapse;
 `;
 
@@ -112,7 +136,6 @@ const TableHeader = styled.th`
 
 const TableData = styled.td`
   border-bottom: 1px solid #ddd;
-  /* min-height: 2rem; */
   height: 2rem;
 `;
 
@@ -128,6 +151,17 @@ const DeleteButton = styled.button`
   cursor: pointer;
   border-radius: 0.5rem;
   font-size: 0.6rem;
+`;
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  align-items: center;
+`;
+
+const DeleteMessage = styled.div`
+  padding: 1rem;
+  font-size: 1rem;
 `;
 
 export default UserManage;

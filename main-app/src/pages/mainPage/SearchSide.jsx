@@ -39,6 +39,8 @@ const SearchSide = () => {
   };
 
   //모달에게, 서브밋 시 사용되는 함수 전달
+  // google geocoding 사용
+
   const handleModalSubmit = async (query) => {
     const apiUrl = process.env.REACT_APP_GOOGLE_API_URL;
     const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -59,7 +61,7 @@ const SearchSide = () => {
       );
       setAddress(resAddress);
     } catch (err) {
-      console.log(err);
+      alert('제대로된 주소를 입력해주세요.');
     }
 
     handleModalClose();

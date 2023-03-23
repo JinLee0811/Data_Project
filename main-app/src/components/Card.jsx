@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Card({ review }) {
   return (
     <Container>
-      <Author>{review.username}</Author>
+      <Author>{review?.user?.name}</Author>
       <Body>{review.body}</Body>
       <Date>{review.createdAt.split('T')[0]}</Date>
     </Container>
