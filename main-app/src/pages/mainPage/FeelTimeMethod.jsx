@@ -83,7 +83,7 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
 };
 
 const StyledForm = styled.form`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   legend {
     text-align: center;
     padding-bottom: 10px;
@@ -119,6 +119,9 @@ const RadioContainer = styled.div`
   input:checked + label {
     background-color: #33a23d;
     color: white;
+  }
+  * {
+    cursor: pointer;
   }
 `;
 const RadioInput = styled.input`

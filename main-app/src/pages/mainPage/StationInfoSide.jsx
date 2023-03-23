@@ -103,7 +103,7 @@ const StationInfoSide = () => {
           <Line line={station?.station_line}>{station?.station_line}</Line>
         </Main>
         <LikeInfo>
-          <button
+          <Like
             className='material-icons'
             onClick={handleToggleLike}
             disable={isToggleLoading}
@@ -111,7 +111,7 @@ const StationInfoSide = () => {
             {isLoggedIn && wish && wish?.wish_id
               ? 'favorite'
               : 'favorite_border'}
-          </button>
+          </Like>
 
           <LikeCount>
             찜 갯수({isLoggedIn ? wish?.stationWishCount : wish})
