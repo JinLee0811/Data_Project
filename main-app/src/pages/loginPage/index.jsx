@@ -34,6 +34,7 @@ function LoginPage() {
     const validated = validateForm(inputs);
     if (typeof validated === 'string') {
       alert(validated);
+      setIsLoading(false);
       return;
     }
     await login(inputs.email, inputs.password);
@@ -143,7 +144,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #33a23d;
+    background-color: #7bc745;
   }
 
   &:focus {
@@ -163,7 +164,8 @@ const RegisterButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #33a23d;
+    background-color: #7bc745;
+    color: #fff;
   }
 
   &:focus {

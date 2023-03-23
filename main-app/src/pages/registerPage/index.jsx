@@ -6,7 +6,7 @@ import { ClipLoader } from 'react-spinners';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { sendRequest, isLoading } = useHttpRequest();
+  const { sendRequest, isLoading, Error } = useHttpRequest();
 
   const [inputs, setInputs] = useState({
     name: '',
@@ -65,11 +65,11 @@ const RegisterPage = () => {
 
     try {
       const response = await sendRequest('/register', 'post', inputs);
-      console.log(response);
       alert(response.data);
       navigate('/login');
     } catch (err) {
       console.log(err);
+      alert(err.response.data.error);
     }
   };
 
@@ -190,7 +190,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #33a23d;
+    background-color: #7bc745;
   }
 
   &:focus {

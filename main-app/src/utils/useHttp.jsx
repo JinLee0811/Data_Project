@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const useHttpRequest = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [isCancelled, setIsCancelled] = useState(false);
 
   const sendRequest = useCallback(async (url, method = 'get', body = null) => {
@@ -12,7 +11,6 @@ const useHttpRequest = () => {
     const serverUrl = process.env.REACT_APP_API_URL;
 
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await axios({
@@ -29,7 +27,6 @@ const useHttpRequest = () => {
       if (err.name === 'AbortError') {
         console.log('요청이 취소되었습니다.');
       } else {
-        setError(err.message || '문제가 발생했습니다.'); //이거는 백엔드 에러에 따라 바꿔야할 듯
         setIsLoading(false);
         throw err;
       }
@@ -44,7 +41,6 @@ const useHttpRequest = () => {
 
   return {
     isLoading,
-    error,
     sendRequest,
   };
 };
