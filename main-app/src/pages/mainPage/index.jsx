@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import buildingImg from './markerImage/building.png';
+import { lineColors } from '../../utils/stationColor';
 
 const MainPage = () => {
   const mapElement = useRef(null);
@@ -12,7 +13,6 @@ const MainPage = () => {
     zoomControl: false,
     mapTypeControl: false,
     tileTransition: false,
-    background: '#33A23D',
     minZoom: 12,
   });
   const [markers, setMarkers] = useState([]);
@@ -20,7 +20,7 @@ const MainPage = () => {
   //맵 클릭 이벤트 활성화
   const [clickEvent, setClickEvent] = useState(false);
   //맵 클릭 이벤트 좌표 값
-  const clickPoint = useRef({});
+  const [clickPoint, setClickPoint] = useState();
 
   useEffect(() => {
     const { naver } = window;
@@ -35,9 +35,7 @@ const MainPage = () => {
     };
     //맵클릭
     const handleClickMap = (e) => {
-      console.log(e.coord);
-      clickPoint.current = e.coord;
-      console.log(clickPoint);
+      setClickPoint(e.coord);
     };
 
     //사용자가 찍은 시작점과 가까운 지하철역 마커 그리기
@@ -63,7 +61,7 @@ const MainPage = () => {
               <span class='stationName'>${startPoint[1].station_name}역</span>
             </div>
           `,
-          anchor: new naver.maps.Point(0, -10),
+          anchor: new naver.maps.Point(-5, -10),
         },
       });
     }
@@ -86,29 +84,29 @@ const MainPage = () => {
         map,
       });
       //마커 클릭 시 보여줄 정보창 정보 입력
+
       const myInfoWindow = new naver.maps.InfoWindow({
         content: `
           <div class='iw'>
             <div class='iw-inner'>
               <div class='station'>
                 <h2>${marker.station_name}</h2>
-                <p>${marker.station_line}</p>
+                <p style='color:${lineColors[marker.station_line]}'>${
+          marker.station_line
+        }</p>
               </div>
               <div class='station-info'>
                 <div class='time'>
-                  <p>소요시간: ${marker.travel_time}분</p>
-                  <p>체감시간: ${marker.feel_time}분</p>
+                  <p><span>소요: </span>${marker.travel_time}분</p>
+                  <p><span>체감: </span>${marker.feel_time}분</p>
                 </div>
                 <hr>
                 <div class='price'>
-                 <p>월세: ${marker.rent_price}</p>
-                 <p>전세: ${marker.lease_price}</p>
+                 <p><span>평균 가격</span> ${marker.price} 만원</p>
                 </div>                    
               </div>
             </div>
-            <div class='wish'>
-              <div></div>
-            </div>
+
           </div>
         `,
         anchorSize: { width: 10, height: 10 },
@@ -121,9 +119,6 @@ const MainPage = () => {
         'click',
         getClickHandler(myMarker, myInfoWindow)
       );
-      if (marker.rank === 1) {
-        myInfoWindow.open(map, myMarker);
-      }
     });
 
     if (clickEvent) {
@@ -143,6 +138,7 @@ const MainPage = () => {
               setMarkers,
               setStartPoint,
               setClickEvent,
+              clickPoint,
             }}
           />
         </SideBarContainer>
@@ -165,6 +161,8 @@ const MainContainer = styled.div`
 const SideBarContainer = styled.div`
   padding-top: 0px;
   overflow-y: auto;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2), 5px 0 15px 0 rgba(0, 0, 0, 0.1);
+  z-index: 100;
 `;
 
 const MapContainer = styled.div`
@@ -228,32 +226,39 @@ const MapContainer = styled.div`
         padding-bottom: 5px;
         h2 {
           margin: 0;
-          color: #33a23d;
+          margin-left: 5px;
+          color: #3d3d3d;
+          font-size: 22px;
         }
         p {
           margin-bottom: 0px;
           font-weight: bold;
-          color: #696969;
         }
       }
       .station-info {
         padding: 5px;
         justify-content: space-between;
+        font-size: 14px;
+        hr {
+          margin: 10px;
+          border-left: 1px solid #cecece;
+        }
         .time,
         .price {
+          margin: 0px;
+          text-align: center;
           justify-content: center;
-          width: 130px;
           flex-direction: column;
+
+          span {
+            font-size: 14px;
+          }
+          line-height: 20px;
+        }
+        .time {
+          width: 120px;
         }
       }
-    }
-    .wish {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 30px;
-      height: 30px;
-      background-color: yellowgreen;
     }
   }
   //출발마커 CSS
@@ -281,11 +286,11 @@ const MapContainer = styled.div`
       left: -20px;
       top: -3px;
       border-radius: 50%;
-      border: 4px solid #33a23d;
+      border: 4px solid #849483;
       color: #f7f7f7;
       font-size: 13px;
       font-family: 'NanumSquareNeoExtraBold';
-      background-color: #33a23d;
+      background-color: #849483;
     }
     .start:after {
       bottom: 100%;
@@ -297,7 +302,7 @@ const MapContainer = styled.div`
       position: absolute;
       pointer-events: none;
       border-color: rgba(51, 162, 61, 0);
-      border-bottom-color: #33a23d;
+      border-bottom-color: #849483;
       border-width: 12px;
       margin-left: -12px;
     }

@@ -1,15 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
 
 const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
   const handleChange = (e) => {
     setFeelTimeMethod(e.target.value);
   };
   return (
-    <form>
+    <StyledForm>
+      <legend>
+        주로 <strong>언제</strong> 지하철을 사용하세요?
+      </legend>
       <fieldset>
-        <legend>주로 언제 지하철을 사용하세요?</legend>
-        <div>
-          <input
+        <RadioContainer>
+          <RadioInput
             type='radio'
             name='feel_time_method'
             id='dm'
@@ -18,9 +21,9 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             checked={feelTimeMethod === 'dm'}
           />
           <label htmlFor='dm'>평일 출근</label>
-        </div>
-        <div>
-          <input
+        </RadioContainer>
+        <RadioContainer>
+          <RadioInput
             type='radio'
             name='feel_time_method'
             id='dd'
@@ -29,9 +32,9 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             checked={feelTimeMethod === 'dd'}
           />
           <label htmlFor='dd'>평일 종일</label>
-        </div>
-        <div>
-          <input
+        </RadioContainer>
+        <RadioContainer>
+          <RadioInput
             type='radio'
             name='feel_time_method'
             id='dn'
@@ -40,9 +43,9 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             checked={feelTimeMethod === 'dn'}
           />
           <label htmlFor='dn'>평일 퇴근</label>
-        </div>
-        <div>
-          <input
+        </RadioContainer>
+        <RadioContainer>
+          <RadioInput
             type='radio'
             name='feel_time_method'
             id='em'
@@ -51,9 +54,9 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             checked={feelTimeMethod === 'em'}
           />
           <label htmlFor='em'>주말 아침</label>
-        </div>
-        <div>
-          <input
+        </RadioContainer>
+        <RadioContainer>
+          <RadioInput
             type='radio'
             name='feel_time_method'
             id='ed'
@@ -62,9 +65,9 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             checked={feelTimeMethod === 'ed'}
           />
           <label htmlFor='ed'>주말 점심</label>
-        </div>
-        <div>
-          <input
+        </RadioContainer>
+        <RadioContainer>
+          <RadioInput
             type='radio'
             name='feel_time_method'
             id='en'
@@ -73,10 +76,53 @@ const FeelTimeMethod = ({ feelTimeMethod, setFeelTimeMethod }) => {
             checked={feelTimeMethod === 'en'}
           />
           <label htmlFor='en'>주말 저녁</label>
-        </div>
+        </RadioContainer>
       </fieldset>
-    </form>
+    </StyledForm>
   );
 };
+
+const StyledForm = styled.form`
+  margin-bottom: 30px;
+  legend {
+    text-align: center;
+    padding-bottom: 10px;
+    strong {
+      color: #33a23d;
+    }
+  }
+  fieldset {
+    height: 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 0px;
+    margin: 10px;
+    grid-gap: 5px;
+    border: 0px;
+  }
+`;
+
+const RadioContainer = styled.div`
+  label {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    font-family: 'NanumSquareNeoBold';
+    background-color: #ebebeb;
+    font-size: 14px;
+    color: #3f3f3f;
+  }
+  input:checked + label {
+    background-color: #33a23d;
+    color: white;
+  }
+`;
+const RadioInput = styled.input`
+  display: none;
+`;
 
 export default FeelTimeMethod;

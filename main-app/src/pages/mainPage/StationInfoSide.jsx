@@ -53,15 +53,10 @@ const TableList = styled.div`
   padding: 1rem;
   font-size: 0.8rem;
   justify-content: space-around;
-  
+
   .active {
-      border-bottom: 2px solid #33a23d;
-      
-    }
-
-
-}
-
+    border-bottom: 2px solid #33a23d;
+  }
 `;
 
 const Button = styled.button`
