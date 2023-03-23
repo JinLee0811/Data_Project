@@ -45,10 +45,11 @@ const option = {
     title: {
       display: true,
       text: [
-        '현재 거처 선택 이유 <출처: 「주택거처주거실태조사」, 국토교통부>',
+        '현재 거처 선택 이유',
+        ' <출처: 「주택거처주거실태조사」, 국토교통부>',
       ],
       position: 'bottom',
-      align: 'start',
+      align: 'center',
       font: {
         size: 16,
       },

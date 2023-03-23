@@ -257,6 +257,10 @@ const MapContainer = styled.div`
         }
         .time {
           width: 120px;
+          p {
+            margin: 0px;
+            font-size: 16px;
+          }
         }
       }
     }

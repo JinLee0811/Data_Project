@@ -20,7 +20,7 @@ const SearchSide = () => {
   const [address, setAddress] = useState('');
   const [commuteTime, setCommuteTime] = useState({ min: 0, max: 80 });
   const [type, setType] = useState('rent');
-  const [price, setPrice] = useState({ min: 2, max: 13 });
+  const [price, setPrice] = useState({ min: 2, max: 11 });
   const [size, setSize] = useState(8);
   const [deposit, setDeposit] = useState(3000);
   const [priority, setPriority] = useState('congestion');
@@ -167,7 +167,7 @@ const SearchSide = () => {
           <Fieldset>
             <legend>희망 소요시간 </legend>
             <RangeInfo>
-              {commuteTime.min} ~ {commuteTime.max}분
+              {commuteTime.min} 분 ~ {commuteTime.max} 분
             </RangeInfo>
             <MultiRangeSlider
               min={0}
@@ -178,6 +178,36 @@ const SearchSide = () => {
             ></MultiRangeSlider>
           </Fieldset>
 
+          <Fieldset className='radioContainer'>
+            <legend>무엇이 더 중요한가요?? </legend>
+            <label htmlFor='priority'>혼잡도: </label>
+            <input
+              id='congestion'
+              value='congestion'
+              type='radio'
+              name='priority'
+              checked={priority === 'congestion'}
+              onChange={(e) => setPriority(e.target.value)}
+            />
+            <label htmlFor='priority'>시간: </label>
+            <input
+              id='time'
+              value='time'
+              type='radio'
+              name='priority'
+              checked={priority === 'time'}
+              onChange={(e) => setPriority(e.target.value)}
+            />
+            <label htmlFor='priority'>가격: </label>
+            <input
+              id='price'
+              value='price'
+              type='radio'
+              name='priority'
+              checked={priority === 'price'}
+              onChange={(e) => setPriority(e.target.value)}
+            />
+          </Fieldset>
           <Fieldset className='radioContainer'>
             <legend>거래방식 </legend>
             <label htmlFor='type'>전세: </label>
@@ -199,15 +229,17 @@ const SearchSide = () => {
               onChange={(e) => setType(e.target.value)}
             />
           </Fieldset>
+
           <Fieldset>
             <legend>평균 단위면적 당 가격 </legend>
             <RangeInfo>
-              {price.min} ~ {price.max} 만원
+              {(price.min * 10000).toLocaleString()} 원 ~{' '}
+              {(price.max * 10000).toLocaleString()} 원
             </RangeInfo>
             <MultiRangeSlider
               min={2}
-              max={13}
-              step={1}
+              max={11}
+              step={0.01}
               value={price}
               onChange={setPrice}
             ></MultiRangeSlider>
@@ -261,37 +293,6 @@ const SearchSide = () => {
               )}
             </p>
           </div>
-
-          <Fieldset className='radioContainer'>
-            <legend>무엇이 더 중요한가요?? </legend>
-            <label htmlFor='priority'>혼잡도: </label>
-            <input
-              id='congestion'
-              value='congestion'
-              type='radio'
-              name='priority'
-              checked={priority === 'congestion'}
-              onChange={(e) => setPriority(e.target.value)}
-            />
-            <label htmlFor='priority'>시간: </label>
-            <input
-              id='time'
-              value='time'
-              type='radio'
-              name='priority'
-              checked={priority === 'time'}
-              onChange={(e) => setPriority(e.target.value)}
-            />
-            <label htmlFor='priority'>가격: </label>
-            <input
-              id='price'
-              value='price'
-              type='radio'
-              name='priority'
-              checked={priority === 'price'}
-              onChange={(e) => setPriority(e.target.value)}
-            />
-          </Fieldset>
         </FieldContainer>
       </SearchForm>
       <SearchButton onClick={() => handleSubmit()}>
