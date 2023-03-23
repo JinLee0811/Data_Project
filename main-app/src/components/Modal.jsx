@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import ReactDOM from 'react-dom';
 
 function Modal({ isOpen, onClose, children, onSubmit }) {
+  const handleModalClick = (e) => {
+    e.stopPropagation();
+  };
+
   if (!isOpen) return null;
-  return (
-    <ModalOverlay>
+  return ReactDOM.createPortal(
+    <ModalOverlay onClick={onClose}>
       <ModalContent>
         {children}
         <div>
@@ -12,7 +17,8 @@ function Modal({ isOpen, onClose, children, onSubmit }) {
           <CancelButton onClick={onClose}>취소</CancelButton>
         </div>
       </ModalContent>
-    </ModalOverlay>
+    </ModalOverlay>,
+    document.getElementById('modal-root')
   );
 }
 
