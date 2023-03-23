@@ -8,7 +8,7 @@ const LoadingScreen = ({ text }) => {
       <LoadingImg>
         <div className='text'>
           {text}
-          <div class='lds-spinner'>
+          <div className='lds-spinner'>
             <div></div>
             <div></div>
             <div></div>
@@ -35,27 +35,29 @@ const LoadingFullScreen = styled.div`
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 10000;
+  z-index: 20000;
   background-color: #8f8f8f39;
 `;
 
 const LoadingImg = styled.div`
   position: absolute;
-  top: 74%;
+  bottom: 0px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -30%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
   * {
     opacity: 1;
   }
   .text {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 54px;
+    font-size: 2.5vw;
     font-family: 'NanumSquareNeoExtraBold';
   }
   .lds-spinner {

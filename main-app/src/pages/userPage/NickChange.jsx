@@ -11,7 +11,7 @@ const NickChange = () => {
   const { userInfo, setUserInfo, isLoading } = useOutletContext();
 
   console.log(userInfo);
-  const [nickname, setNickname] = useState(userInfo.nickname);
+  const [nickname, setNickname] = useState(userInfo ? userInfo.nickname : null);
   const openModal = (e) => {
     e.preventDefault();
     setIsOpen(true);

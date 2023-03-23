@@ -5,6 +5,7 @@ import MultiRangeSlider from '../../utils/MultiRangeSlider';
 import ModalInput from '../../components/ModalInput';
 import useHttpRequest from '../../utils/useHttp';
 import axios from 'axios';
+import LoadingScreen from '../../components/LoadingScreen';
 
 const SearchSide = () => {
   const navigate = useNavigate();
@@ -12,15 +13,22 @@ const SearchSide = () => {
   const { setMapOption, setMarkers, setStartPoint, setClickEvent, clickPoint } =
     useOutletContext();
 
-  const [coordinates, setCoordinates] = useState({ pos_x: '', pos_y: '' });
+  const [coordinates, setCoordinates] = useState({
+    pos_x: '',
+    pos_y: '',
+  });
+  const [address, setAddress] = useState('');
   const [commuteTime, setCommuteTime] = useState({ min: 0, max: 80 });
   const [type, setType] = useState('rent');
-  const [price, setPrice] = useState({ min: 1, max: 13 });
+  const [price, setPrice] = useState({ min: 2, max: 13 });
+  const [size, setSize] = useState(8);
+  const [deposit, setDeposit] = useState(3000);
   const [priority, setPriority] = useState('congestion');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startStation, setStartStation] = useState();
   const [fetchLoading, setFetchLoading] = useState(false);
+
   const { sendRequest } = useHttpRequest();
   const handleQueryFocus = () => {
     setIsModalOpen(true);
@@ -44,16 +52,24 @@ const SearchSide = () => {
       const pos_x = response.data.results[0].geometry.location.lat;
       const pos_y = response.data.results[0].geometry.location.lng;
       setCoordinates({ pos_x, pos_y });
+      const resAddress = response.data.results[0].address_components.reduce(
+        (acc, cur, idx, arr) => {
+          if (idx === arr.length - 4) arr.splice(1);
+          return (acc = cur.short_name + ' ' + acc);
+        },
+        ''
+      );
+      setAddress(resAddress);
     } catch (err) {
       alert('제대로된 주소를 입력해주세요.');
     }
+
     handleModalClose();
   };
 
   const handleSubmit = () => {
     //validation
     if (!startStation) {
-      alert('출발지를 설정해주세요');
       setIsModalOpen(true);
       return;
     }
@@ -66,6 +82,9 @@ const SearchSide = () => {
       price_min: price.min,
       price_max: price.max,
       priority,
+      size,
+      deposit,
+      stationName: startStation.station_name,
     };
 
     navigate('/stationlist', { state: inputs });
@@ -83,9 +102,18 @@ const SearchSide = () => {
   };
 
   useEffect(() => {
+    setClickEvent(true);
+  }, []);
+
+  useEffect(() => {
+    if (clickPoint) {
+      setCoordinates({ pos_x: clickPoint.y, pos_y: clickPoint.x });
+    }
+  }, [clickPoint]);
+
+  useEffect(() => {
     setFetchLoading(true);
     fetchData();
-
     setMarkers([]);
   }, [coordinates]);
 
@@ -105,6 +133,7 @@ const SearchSide = () => {
           lng: Number(startStation.pos_y),
         },
       ]);
+
       setMapOption((cur) => ({
         ...cur,
         center: new naver.maps.LatLng(
@@ -119,6 +148,9 @@ const SearchSide = () => {
 
   return (
     <SearchSideContainer>
+      {fetchLoading && (
+        <LoadingScreen text={'가장 가까운 역을 계산중입니다.'} />
+      )}
       <SearchForm>
         <FieldContainer>
           <Fieldset className='queryContainer'>
@@ -127,6 +159,7 @@ const SearchSide = () => {
               type='text'
               name='query'
               id='query'
+              value={address}
               placeholder='🔍 찾고 싶은 장소를 입력해주세요! '
               onFocus={handleQueryFocus}
             />
@@ -146,7 +179,7 @@ const SearchSide = () => {
           </Fieldset>
 
           <Fieldset className='radioContainer'>
-            <legend>거래유형 </legend>
+            <legend>거래방식 </legend>
             <label htmlFor='type'>전세: </label>
             <input
               id='lease'
@@ -167,18 +200,67 @@ const SearchSide = () => {
             />
           </Fieldset>
           <Fieldset>
-            <legend>단위면적 당 평균 가격 </legend>
+            <legend>평균 단위면적 당 가격 </legend>
             <RangeInfo>
               {price.min} ~ {price.max} 만원
             </RangeInfo>
             <MultiRangeSlider
-              min={1}
+              min={2}
               max={13}
               step={1}
               value={price}
               onChange={setPrice}
             ></MultiRangeSlider>
           </Fieldset>
+
+          <div className='calcBox'>
+            <p className='calcPrice'>
+              예상 평균 가격{' '}
+              <strong>({type === 'rent' ? '월세' : '전세'})</strong>
+            </p>
+            <p>
+              <input
+                className='size'
+                id='size'
+                value={size}
+                onChange={(e) => {
+                  if (e.target.value < 0 || e.target.value > 100) {
+                    alert('1이상 100이하의 값을 입력해주세요ㅠ');
+                    return;
+                  }
+                  setSize(e.target.value);
+                }}
+              ></input>
+              평형 기준:{' '}
+              {type === 'rent' ? (
+                //월세 예상 가격
+                <span>
+                  <input
+                    className='deposit'
+                    id='deposit'
+                    value={deposit}
+                    onChange={(e) => setDeposit(e.target.value)}
+                  ></input>
+                  /
+                  {Math.round(price.min * size * 3.3 - deposit / 100) < 0
+                    ? 0
+                    : Math.round(price.min * size * 3.3 - deposit / 100)}
+                  ~
+                  {Math.round(price.max * size * 3.3 - deposit / 100) < 0
+                    ? 0
+                    : Math.round(price.max * size * 3.3 - deposit / 100)}{' '}
+                  만원
+                </span>
+              ) : (
+                //전세 예상 가격
+                <span>
+                  {Math.round(price.min * size * 3.3 * 100).toLocaleString()} ~{' '}
+                  {Math.round(price.max * size * 3.3 * 100).toLocaleString()}{' '}
+                  만원
+                </span>
+              )}
+            </p>
+          </div>
 
           <Fieldset className='radioContainer'>
             <legend>무엇이 더 중요한가요?? </legend>
@@ -226,9 +308,13 @@ const SearchSide = () => {
   );
 };
 
-const SearchSideContainer = styled.div``;
+const SearchSideContainer = styled.div`
+  height: 100%;
+`;
 
-const SearchForm = styled.form``;
+const SearchForm = styled.form`
+  height: 100%;
+`;
 
 const FieldContainer = styled.div`
   display: flex;
@@ -245,11 +331,41 @@ const FieldContainer = styled.div`
     padding-top: 40px;
     height: 70px;
   }
+  .calcBox {
+    margin-bottom: 30px;
+    color: #585858;
+    p {
+      text-align: center;
+      margin: 5px;
+      font-size: 14px;
+    }
+    .calcPrice {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    input {
+      border: 0;
+      border-bottom: 1px dotted #7bc745;
+      font-family: 'NanumSquareNeoExtraBold';
+      color: #585858;
+    }
+    .size {
+      text-align: center;
+      width: 24px;
+      font-size: 15px;
+    }
+    .deposit {
+      height: 18px;
+      width: 48px;
+      padding: 0;
+      font-size: 15px;
+    }
+  }
 `;
 const Fieldset = styled.fieldset`
   display: flex;
   flex-direction: column;
-  height: 60px;
+  height: 50px;
   align-items: center;
   justify-content: center;
   width: 93%;
@@ -307,6 +423,10 @@ const Fieldset = styled.fieldset`
   input[type='radio']:checked {
     border: 0.3em solid #7bc745;
   }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
 `;
 
 const RangeInfo = styled.div`
@@ -315,16 +435,18 @@ const RangeInfo = styled.div`
 `;
 
 const SearchButton = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
   div {
+    position: absolute;
+    bottom: 20px;
     border-radius: 3px;
-    line-height: 50px;
+    line-height: 60px;
     text-align: center;
-    height: 50px;
-    width: 110px;
+    height: 60px;
+    width: 200px;
     color: white;
     background-color: #33a23d;
     text-decoration: none;
