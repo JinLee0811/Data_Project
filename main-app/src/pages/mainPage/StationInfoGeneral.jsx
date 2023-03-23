@@ -36,7 +36,7 @@ export default function StationfacilInfoGeneral() {
     station &&
     facilInfo && (
       <>
-        <Div>호선: {station?.station_line}</Div>
+        {/* <Div>호선: {station?.station_line}</Div> */}
         <Div>단위면적 가격: {station?.rent_price}</Div>
 
         <Div>
@@ -111,20 +111,22 @@ export default function StationfacilInfoGeneral() {
           <Complex>
             <div>
               출근(상행) -
-              {getLevel(station.StationCrowdedness[0].startTime_upbound)}
+              {getLevel(station?.StationCrowdedness[0]?.startTime_upbound)}
             </div>
             <Circle
-              level={getLevel(station.StationCrowdedness[0].startTime_upbound)}
+              level={getLevel(
+                station?.StationCrowdedness[0]?.startTime_upbound
+              )}
             ></Circle>
           </Complex>
           <Complex>
             <div>
               출근(하행) -
-              {getLevel(station.StationCrowdedness[0].startTime_downbound)}
+              {getLevel(station?.StationCrowdedness[0]?.startTime_downbound)}
             </div>
             <Circle
               level={getLevel(
-                station.StationCrowdedness[0].startTime_downbound
+                station?.StationCrowdedness[0]?.startTime_downbound
               )}
             ></Circle>
           </Complex>
@@ -141,10 +143,12 @@ export default function StationfacilInfoGeneral() {
           <Complex>
             <div>
               퇴근(하행) -
-              {getLevel(station.StationCrowdedness[0].endTime_downbound)}
+              {getLevel(station?.StationCrowdedness[0]?.endTime_downbound)}
             </div>
             <Circle
-              level={getLevel(station.StationCrowdedness[0].endTime_downbound)}
+              level={getLevel(
+                station?.StationCrowdedness[0]?.endTime_downbound
+              )}
             ></Circle>
           </Complex>
         </Div>
@@ -162,11 +166,11 @@ const Div = styled.div`
   /* font-family: 'NanumSquareNeoExtraBold'; */
   .material-symbols-outlined {
     color: #999;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
   h1 {
     padding: 5px;
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   .complex {
     padding-top: 1rem;
