@@ -1,24 +1,28 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext, useParams, useLocation } from 'react-router-dom';
 import useHttpRequest from '../../utils/useHttp';
 import { ClipLoader } from 'react-spinners';
 
 export default function StationfacilInfoGeneral() {
   const station = useOutletContext();
-  console.log(station);
   const { station_id } = useParams();
   const [facilInfo, setFacilInfo] = useState();
   const { sendRequest, isLoading } = useHttpRequest();
+  const location = useLocation();
+  // const [leasePrice, setLeasePrice] = useState(location.state?.leasePrice || 0);
+  // const [rentPrice, setRentPrice] = useState(location.state?.rentPrice || 0);
+  // console.log(location.state);
+
+  const leasePrice = location.state?.leasePrice || 0; //state로 정의 안해도 되남..?
+  const rentPrice = location.state?.rentPrice || 0;
 
   const getLevel = (level) => {
     if (level > 50) return '혼잡';
     if (level > 34) return '보통';
     return '쾌적';
   };
-
-  // type B1: 월세 rent B2: 전세 lease
 
   const naverUrl = `https://new.land.naver.com/rooms?ms=${station?.pos_x},${station?.pos_y},16&a=APT:OPST:ABYG:OBYG:GM:OR:VL:DDDGG:JWJT:SGJT:HOJT`;
 
@@ -41,8 +45,16 @@ export default function StationfacilInfoGeneral() {
     station &&
     facilInfo && (
       <>
-        {/* <Div>호선: {station?.station_line}</Div> */}
-        <Div>단위면적 가격: {station?.rent_price}</Div>
+        <Div>
+          <div className='header'> 평균 가격 정보 </div>
+          <div className='price'>
+            <span className='price'>전세: {leasePrice}만원</span>
+            <span className='price'>
+              월세:
+              {rentPrice}만원
+            </span>
+          </div>
+        </Div>
 
         <Div>
           편의시설
@@ -184,6 +196,15 @@ const Div = styled.div`
   .complex {
     padding-top: 1rem;
     padding-left: 0.5rem;
+  }
+  .header {
+    padding-bottom: 1rem;
+  }
+  .price {
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
