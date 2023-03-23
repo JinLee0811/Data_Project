@@ -12,9 +12,6 @@ function Sidebar() {
         <li>
           <NavLink to='review'>리뷰 관리</NavLink>
         </li>
-        <li>
-          <NavLink to='calculate'>계산식</NavLink>
-        </li>
       </ul>
     </Aside>
   );

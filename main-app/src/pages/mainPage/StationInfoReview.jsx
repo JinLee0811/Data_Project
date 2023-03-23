@@ -98,11 +98,11 @@ const Div = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   border-bottom: 0.5px solid #e9ecef;
   cursor: pointer;
   span {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     padding-left: 0.5rem;
   }
 `;

@@ -7,15 +7,20 @@ import { ClipLoader } from 'react-spinners';
 
 export default function StationfacilInfoGeneral() {
   const station = useOutletContext();
+  console.log(station);
   const { station_id } = useParams();
   const [facilInfo, setFacilInfo] = useState();
   const { sendRequest, isLoading } = useHttpRequest();
 
   const getLevel = (level) => {
-    if (level > 60) return '혼잡';
+    if (level > 50) return '혼잡';
     if (level > 34) return '보통';
     return '쾌적';
   };
+
+  // type B1: 월세 rent B2: 전세 lease
+
+  const naverUrl = `https://new.land.naver.com/rooms?ms=${station?.pos_x},${station?.pos_y},16&a=APT:OPST:ABYG:OBYG:GM:OR:VL:DDDGG:JWJT:SGJT:HOJT`;
 
   useEffect(() => {
     sendRequest(`/facilities/${station_id}`, 'get')
@@ -23,7 +28,7 @@ export default function StationfacilInfoGeneral() {
         setFacilInfo(response.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [station_id]);
 
   if (isLoading) {
     return (
@@ -102,56 +107,61 @@ export default function StationfacilInfoGeneral() {
                     : facilInfo.hospitals[0].name}
                 </div>
               </GridHead>
-              <div> </div>
+              <Distance>
+                {facilInfo?.hospitals.length !== 0 &&
+                  `(반경 ${facilInfo.hospitals[0].dist}m)`}
+              </Distance>
             </GridItem>
           </Grid>
         </Div>
         <Div>
           <div>혼잡도</div>
           <Complex>
-            <div>
-              출근(상행) -
-              {getLevel(station?.StationCrowdedness[0]?.startTime_upbound)}
-            </div>
+            <div>출근(상행) -</div>
             <Circle
               level={getLevel(
                 station?.StationCrowdedness[0]?.startTime_upbound
               )}
             ></Circle>
+            <div>
+              {getLevel(station?.StationCrowdedness[0]?.startTime_upbound)}
+            </div>
           </Complex>
           <Complex>
-            <div>
-              출근(하행) -
-              {getLevel(station?.StationCrowdedness[0]?.startTime_downbound)}
-            </div>
+            <div>출근(하행) -</div>
             <Circle
               level={getLevel(
                 station?.StationCrowdedness[0]?.startTime_downbound
               )}
             ></Circle>
+            <div>
+              {getLevel(station?.StationCrowdedness[0]?.startTime_downbound)}
+            </div>
           </Complex>
 
           <Complex>
-            <div>
-              퇴근(상행) -
-              {getLevel(station.StationCrowdedness[0].endTime_upbound)}
-            </div>
+            <div>퇴근(상행) -</div>
             <Circle
               level={getLevel(station.StationCrowdedness[0].endTime_upbound)}
             ></Circle>
+            <div>{getLevel(station.StationCrowdedness[0].endTime_upbound)}</div>
           </Complex>
           <Complex>
-            <div>
-              퇴근(하행) -
-              {getLevel(station?.StationCrowdedness[0]?.endTime_downbound)}
-            </div>
+            <div>퇴근(하행) -</div>
             <Circle
               level={getLevel(
                 station?.StationCrowdedness[0]?.endTime_downbound
               )}
             ></Circle>
+            <div>
+              {getLevel(station?.StationCrowdedness[0]?.endTime_downbound)}
+            </div>
           </Complex>
         </Div>
+        <Find>
+          <a href={naverUrl}>{station?.station_name}역 근처 부동산 매물 찾기</a>
+          <span class='material-icons'>arrow_forward</span>
+        </Find>
       </>
     )
   );
@@ -160,10 +170,9 @@ export default function StationfacilInfoGeneral() {
 const Div = styled.div`
   display: flex;
   padding: 1.2rem 1rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   border-bottom: 0.5px solid #e9ecef;
   flex-direction: column;
-  /* font-family: 'NanumSquareNeoExtraBold'; */
   .material-symbols-outlined {
     color: #999;
     font-size: 1.3rem;
@@ -187,7 +196,7 @@ const Grid = styled.div`
 
 const GridItem = styled.div`
   padding: 5px;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 `;
 const GridHead = styled.div`
   display: flex;
@@ -213,7 +222,7 @@ const LoadingContainer = styled.section`
 const Circle = styled.div`
   width: 20px;
   height: 20px;
-  margin-left: 10px;
+  margin: 0 7px;
   border-radius: 50%;
   background: ${({ level }) =>
     `radial-gradient(circle, ${complex_level[level]}, #fff)`};
@@ -226,6 +235,9 @@ const Complex = styled.div`
   padding-top: 1rem;
   padding-left: 0.5rem;
   align-items: center;
+  div {
+    font-size: 0.9rem;
+  }
 `;
 
 const complex_level = {
@@ -233,3 +245,10 @@ const complex_level = {
   보통: '#ffff00',
   쾌적: '#00ff00',
 };
+
+const Find = styled.div`
+  display: flex;
+  padding: 1.2rem 1rem;
+  font-size: 1rem;
+  align-items: center;
+`;

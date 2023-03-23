@@ -16,7 +16,6 @@ import AdminPage from './adminPage';
 import KakaoLogin from './loginPage/KakaoLogin';
 import ReviewManage from './adminPage/ReviewManage';
 import UserManage from './adminPage/UserManage';
-import Calculate from './adminPage/Calculate';
 import StationInfoGeneral from './mainPage/StationInfoGeneral';
 import StationInfoReview from './mainPage/StationInfoReview';
 
@@ -39,7 +38,6 @@ export {
   WishList,
   ReviewManage,
   UserManage,
-  Calculate,
   StationInfoGeneral,
   StationInfoReview,
 };

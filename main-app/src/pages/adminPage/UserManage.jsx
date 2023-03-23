@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
 import { ClipLoader } from 'react-spinners';
 import Modal from '../../components/Modal';
+import ReactPaginate from 'react-paginate';
 
 function UserManage() {
   const [users, setUsers] = useState([]);
@@ -10,18 +11,23 @@ function UserManage() {
   const { sendRequest, isLoading } = useHttpRequest();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [pageNumber, setPageNumber] = useState(0);
+  const usersPerPage = 12;
 
-  const fetchData = async () => {
-    try {
-      const response = await sendRequest('/admin/users', 'get');
-      console.log(response);
-      setUsers(response);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  const startIndex = pageNumber * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await sendRequest('/admin/users', 'get');
+        console.log(response);
+        setUsers(response);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
     fetchData();
   }, []);
 
@@ -32,9 +38,20 @@ function UserManage() {
         'delete',
         {}
       );
+      setUsers((prev) =>
+        prev.map((user) => {
+          if (user.id === userIdToDelete) {
+            return {
+              ...user,
+              deletedAt: new Date(),
+            };
+          }
+          return user;
+        })
+      );
       alert(response);
       setUserIdToDelete(null);
-      await fetchData();
+      // await fetchData();
     } catch (err) {
       console.log(err);
     }
@@ -78,6 +95,7 @@ function UserManage() {
                   ? user.deletedAt === null
                   : user.deletedAt !== null
               )
+              .slice(startIndex, endIndex)
               .map((user) => (
                 <tr key={user.id}>
                   <TableData>{user.createdAt.split('T')[0]}</TableData>
@@ -91,7 +109,6 @@ function UserManage() {
                         onClick={() => {
                           setIsModalOpen(true);
                           setUserIdToDelete(user.id);
-                          console.log(user.id);
                         }}
                       >
                         삭제
@@ -102,6 +119,24 @@ function UserManage() {
               ))}
           </tbody>
         </Table>
+        <PaginationContainer>
+          <ReactPaginate
+            previousLabel={'<'}
+            nextLabel={'>'}
+            pageCount={Math.ceil(
+              users.filter((user) =>
+                isActiveUserShown
+                  ? user.deletedAt === null
+                  : user.deletedAt !== null
+              ).length / usersPerPage
+            )}
+            onPageChange={(selected) => {
+              setPageNumber(selected.selected);
+            }}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+          />
+        </PaginationContainer>
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -162,6 +197,28 @@ const Container = styled.section`
 const DeleteMessage = styled.div`
   padding: 1rem;
   font-size: 1rem;
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  ul {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    a {
+      padding: 1rem;
+    }
+  }
+  .active {
+    font-family: 'NanumSquareNeoExtraBold';
+    a {
+      color: #33a23d;
+    }
+  }
 `;
 
 export default UserManage;

@@ -18,7 +18,6 @@ import {
   AboutPage,
   UserManage,
   ReviewManage,
-  Calculate,
   Withdrawl,
   NickChange,
   WishList,
@@ -88,10 +87,6 @@ const router = createBrowserRouter([
           {
             path: 'review',
             element: <ReviewManage />,
-          },
-          {
-            path: 'calculate',
-            element: <Calculate />,
           },
         ],
       },

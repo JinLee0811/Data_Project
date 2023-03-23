@@ -1,42 +1,53 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
 import { ClipLoader } from 'react-spinners';
+import Modal from '../../components/Modal';
+import ReactPaginate from 'react-paginate';
 
 function ReviewManage() {
   const [reviews, setReviews] = useState();
   const { sendRequest, isLoading } = useHttpRequest();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviewIdToDelete, setReviewIdToDelete] = useState(null);
+  const [pageNumber, setPageNumber] = useState(0);
+  const reviewsPerPage = 12;
 
-  const fetchData = async () => {
+  const startIndex = pageNumber * reviewsPerPage;
+  const endIndex = startIndex + reviewsPerPage;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await sendRequest('/admin/review', 'get');
+        const response_active = response.filter(
+          (item) => item.deletedAt === null
+        );
+        setReviews(response_active);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleDelete = async () => {
     try {
-      const response = await sendRequest('/admin/review', 'get');
-      console.log(response);
-      const response_active = response.filter(
-        (item) => item.deletedAt === null
+      const response = await sendRequest(
+        `/admin/review/${reviewIdToDelete}`,
+        'delete',
+        {}
       );
-      setReviews(response_active);
+      const newReview = reviews.filter(
+        (review) => review.id !== reviewIdToDelete
+      );
+      setReviews(newReview);
+      alert(response);
+      setReviewIdToDelete(null);
     } catch (err) {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleDelete = useCallback(async (review_id) => {
-    try {
-      const response = await sendRequest(
-        `/admin/review/${review_id}`,
-        'delete',
-        {}
-      );
-      console.log(response);
-      await fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
 
   if (isLoading) {
     return (
@@ -47,39 +58,62 @@ function ReviewManage() {
   }
   return (
     reviews && (
-      <Table>
-        <thead>
-          <tr>
-            <TableHeader>Created Date</TableHeader>
-            <TableHeader>이름</TableHeader>
-            <TableHeader>호선</TableHeader>
-            <TableHeader>지하철역</TableHeader>
-            <TableHeader>리뷰</TableHeader>
-            <TableHeader>관리</TableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {reviews.map((review) => (
-            <tr key={review.id}>
-              <TableData>{review.createdAt.split('T')[0]}</TableData>
-              <TableData>{review.user.name}</TableData>
-
-              <TableData>{review.station.station_line}</TableData>
-              <TableData>{review.station.station_name}</TableData>
-              <TableReviewData>{review.body}</TableReviewData>
-              <TableData>
-                <DeleteButton
-                  onClick={() => {
-                    handleDelete(review.id);
-                  }}
-                >
-                  삭제
-                </DeleteButton>
-              </TableData>
+      <>
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>Created Date</TableHeader>
+              <TableHeader>이름</TableHeader>
+              <TableHeader>호선</TableHeader>
+              <TableHeader>지하철역</TableHeader>
+              <TableHeader>리뷰</TableHeader>
+              <TableHeader>관리</TableHeader>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {reviews.slice(startIndex, endIndex).map((review) => (
+              <tr key={review.id}>
+                <TableData>{review.createdAt.split('T')[0]}</TableData>
+                <TableData>{review.user.name}</TableData>
+
+                <TableData>{review.station.station_line}</TableData>
+                <TableData>{review.station.station_name}</TableData>
+                <TableReviewData>{review.body}</TableReviewData>
+                <TableData>
+                  <DeleteButton
+                    onClick={() => {
+                      setIsModalOpen(true);
+                      setReviewIdToDelete(review.id);
+                    }}
+                  >
+                    삭제
+                  </DeleteButton>
+                </TableData>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <PaginationContainer>
+          <ReactPaginate
+            previousLabel={'<'}
+            nextLabel={'>'}
+            pageCount={Math.ceil(reviews.length / reviewsPerPage)}
+            onPageChange={(selected) => {
+              setPageNumber(selected.selected);
+            }}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+          />
+        </PaginationContainer>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleDelete}
+        >
+          <DeleteMessage>정말로 리뷰를 삭제하겠습니까?</DeleteMessage>
+        </Modal>
+      </>
     )
   );
 }
@@ -124,5 +158,32 @@ const Container = styled.section`
   flex-direction: column;
   padding-top: 80px;
   align-items: center;
+`;
+
+const DeleteMessage = styled.div`
+  padding: 1rem;
+  font-size: 1rem;
+`;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  ul {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    a {
+      padding: 1rem;
+    }
+  }
+  .active {
+    font-family: 'NanumSquareNeoExtraBold';
+    a {
+      color: #33a23d;
+    }
+  }
 `;
 export default ReviewManage;

@@ -51,10 +51,10 @@ const StationInfoSide = () => {
 
     try {
       const endpoint =
-        wish?.wish_id.length === 0 //wish_id 가 있는 경우에는 delete, 없으면 like 해주기
+        wish?.wish_id?.length === 0 //wish_id 가 있는 경우에는 delete, 없으면 like 해주기
           ? `/wish/${station_id}`
           : `/wish/station/${station_id}`;
-      const method = wish?.wish_id.length === 0 ? 'post' : 'delete';
+      const method = wish?.wish_id?.length === 0 ? 'post' : 'delete';
       const response = await sendRequest(endpoint, method, {});
 
       setWish((prev) => ({
@@ -62,16 +62,17 @@ const StationInfoSide = () => {
         wish_id: method === 'post' ? response.newWish.id : '',
         stationWishCount: prev.stationWishCount + (method === 'post' ? 1 : -1),
       }));
+      setIsToggleLoading(false);
     } catch (error) {
       console.log(error);
+      setIsToggleLoading(false);
     }
-
-    setIsToggleLoading(false);
   };
 
   function handleGoBack() {
     navigate(-1);
   }
+
   if (error) {
     return (
       <LoadingContainer>
@@ -103,7 +104,7 @@ const StationInfoSide = () => {
           <Line line={station?.station_line}>{station?.station_line}</Line>
         </Main>
         <LikeInfo>
-          <button
+          <Like
             className='material-icons'
             onClick={handleToggleLike}
             disable={isToggleLoading}
@@ -111,7 +112,7 @@ const StationInfoSide = () => {
             {isLoggedIn && wish && wish?.wish_id
               ? 'favorite'
               : 'favorite_border'}
-          </button>
+          </Like>
 
           <LikeCount>
             찜 갯수({isLoggedIn ? wish?.stationWishCount : wish})
@@ -140,7 +141,7 @@ const LoadingContainer = styled.section`
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  padding-top: 80px;
+  padding-top: 70px;
   justify-content: center;
 `;
 
@@ -154,7 +155,7 @@ const GoBack = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   span {
     color: '#ccc';
     text-align: center;
@@ -207,7 +208,7 @@ const TableList = styled.div`
   border-top: 1px solid #e9ecef;
   border-bottom: 1px solid #e9ecef;
   padding: 1rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
 
   justify-content: space-around;
 

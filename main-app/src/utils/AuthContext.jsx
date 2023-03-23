@@ -36,8 +36,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/');
       }
     } catch (err) {
-      console.log(err.message); //업데이트 필요
-      alert(err);
+      alert(err.response.data.error);
     }
   };
 
@@ -49,7 +48,6 @@ export const AuthProvider = ({ children }) => {
       navigate('/');
     } catch (err) {
       console.log(err);
-      console.log(err.message);
     }
   };
 
