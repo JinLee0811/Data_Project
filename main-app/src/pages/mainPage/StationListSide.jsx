@@ -10,6 +10,7 @@ import useHttpRequest from '../../utils/useHttp';
 import FeelTimeMethod from './FeelTimeMethod';
 import LoadingScreen from '../../components/LoadingScreen';
 import { lineColors } from '../../utils/stationColor';
+import ReactPaginate from 'react-paginate';
 
 const StationListSide = () => {
   const location = useLocation();
@@ -22,7 +23,8 @@ const StationListSide = () => {
   const [feelTimeMethod, setFeelTimeMethod] = useState('dm');
   const [stationList, setStationList] = useState([]);
   const [stationRank, setStationRank] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -45,13 +47,8 @@ const StationListSide = () => {
       } else {
         stationList.sort((a, b) => a['time'] - b['time']);
       }
-      setStationRank(stationList.slice(0, 5));
     }
   }, [stationList, feelTimeMethod]);
-
-  useEffect(() => {
-    setStationRank(stationList.slice((page - 1) * 5, page * 5));
-  }, [page]);
 
   //순위 목록으로 지도에 마커 그리기
   useEffect(() => {
@@ -64,6 +61,19 @@ const StationListSide = () => {
       setIsLoading(false);
     }
   }, [stationRank]);
+
+  //페이지 네이션
+  useEffect(() => {
+    const itemsPerPage = 5;
+    if (stationList.length > 0) {
+      setTotalPage(Math.ceil(stationList.length / itemsPerPage));
+      setStationRank(stationList.slice(page * 5, (page + 1) * 5));
+    }
+  }, [stationList, page]);
+
+  const handlePageClick = (e) => {
+    setPage(e.selected);
+  };
 
   //이전 페이지에서 받아온 검색 조건으로 지하철 조회
   const getStationList = async () => {
@@ -80,7 +90,7 @@ const StationListSide = () => {
         seen.add(obj.station.station_name);
         return true;
       });
-      setStationList(newStationList);
+      setStationList(newStationList.slice(0, 49));
     } catch (err) {
       console.log(err);
     }
@@ -91,7 +101,7 @@ const StationListSide = () => {
       stationRank.map((item, index) => ({
         lat: item.station.pos_x,
         lng: item.station.pos_y,
-        rank: index + 1 + (page - 1) * 5,
+        rank: index + 1 + page * 5,
         price:
           inputs.type === 'rent'
             ? `${inputs.deposit}/${Math.round(
@@ -114,7 +124,17 @@ const StationListSide = () => {
       ...cur,
       center: new naver.maps.LatLng(item.station.pos_x, item.station.pos_y),
     }));
-    navigate(`/stationinfo/${item.id}/general`);
+    navigate(`/stationinfo/${item.id}/general`, {
+      state: {
+        redirectUrl: location.pathname + location.search,
+        leasePrice: `${Math.round(
+          item.station['lease_price'] * inputs.size * 3.3 * 100
+        ).toLocaleString()}`,
+        rentPrice: `${inputs.deposit}/${Math.round(
+          item.station['rent_price'] * inputs.size * 3.3 - inputs.deposit / 100
+        )}`,
+      },
+    });
   };
 
   return (
@@ -134,7 +154,7 @@ const StationListSide = () => {
                 key={index}
                 onClick={(e) => handleStationClick(e, item)}
               >
-                <div className='rank'>{index + 1 + (page - 1) * 5}</div>
+                <div className='rank'>{index + 1 + page * 5}</div>
                 <div className='stationName'>
                   <p
                     style={{
@@ -158,12 +178,21 @@ const StationListSide = () => {
                       </span>
                     </p>
                     <p>
-                      부동산 점수:{' '}
+                      <br></br>{' '}
                       <span className='price'>
                         {inputs.type === 'rent'
-                          ? item.station.rent_price
-                          : item.station.lease_price}
+                          ? `${inputs.deposit}/${Math.round(
+                              item.station['rent_price'] * inputs.size * 3.3 -
+                                inputs.deposit / 100
+                            )}`
+                          : Math.round(
+                              item.station['lease_price'] *
+                                inputs.size *
+                                3.3 *
+                                100
+                            ).toLocaleString()}{' '}
                       </span>
+                      만원
                     </p>
                   </div>
                 </div>
@@ -171,7 +200,29 @@ const StationListSide = () => {
             ))
           : !isLoading && <div>조건에 맞는 역세권이 없습니다...😢</div>}
       </StationListContainer>
-      <Link to={'/'}>다시 검색해볼래요?</Link>
+      <ReactPaginate
+        nextLabel='>'
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={1}
+        pageCount={totalPage}
+        previousLabel='<'
+        pageClassName='page-item'
+        pageLinkClassName='page-link'
+        previousClassName='page-item'
+        previousLinkClassName='page-link'
+        nextClassName='page-item'
+        nextLinkClassName='page-link'
+        breakLabel='...'
+        breakClassName='page-item'
+        breakLinkClassName='page-link'
+        containerClassName='pagination'
+        activeClassName='active'
+        renderOnZeroPageCount={null}
+      />
+      <Link className='back' to={'/'}>
+        다시 검색해볼래요?
+      </Link>
     </StationListSideContainer>
   );
 };
@@ -180,10 +231,30 @@ const StationListSideContainer = styled.div`
   padding-top: 60px;
   height: calc(100%-60px);
   position: relative;
-  a {
+  .back {
     position: absolute;
     right: 10px;
     padding: 10px;
+  }
+  .back:hover {
+    font-weight: bold;
+    color: #505050;
+  }
+  .pagination {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    list-style: none;
+    padding: 0px;
+    justify-content: space-evenly;
+    li {
+      cursor: pointer;
+    }
+    .active {
+      a {
+        font-weight: bold;
+      }
+    }
   }
 `;
 const StartInfo = styled.div`
@@ -202,11 +273,13 @@ const StationListContainer = styled.ul`
   margin-bottom: 10px;
 `;
 const StationContainer = styled.li`
+  position: relative;
   display: flex;
   height: 20%;
   overflow: hidden;
   justify-content: space-between;
   border-bottom: 1px solid #e9e9e9;
+  cursor: pointer;
   &:hover {
     background-color: #f8f8f8;
   }
@@ -218,11 +291,29 @@ const StationContainer = styled.li`
     border-left: 1px solid #e9e9e9;
     margin: 10px;
   }
+  .rank {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    background-color: #33a23d;
+    position: absolute;
+    left: 8px;
+    top: 20%;
+    transform: translate(0, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+  }
   .stationName {
     display: flex;
     flex-direction: column;
+
+    justify-content: center;
     width: 140px;
-    padding: 20px 0px 10px 10px;
+    height: 100%;
+    padding: 0px;
+    padding-left: 30px;
 
     h2 {
       font-size: 22px;
@@ -235,7 +326,7 @@ const StationContainer = styled.li`
     }
   }
   .stationInfo {
-    width: 140px;
+    width: 150px;
     text-align: right;
     padding: 15px 10px 15px 10px;
     p {

@@ -15,6 +15,7 @@ import article1 from './image/article1.png';
 import article2 from './image/article2.png';
 import article3 from './image/article3.png';
 import article4 from './image/article4.png';
+import lastImg from './image/last.png';
 
 //chart
 import SelectionFactor from './chart/SelectionFactor';
@@ -118,7 +119,10 @@ const AboutPage = () => {
           ></SelectionFactor>
           <ChartDescription>
             <p>서울에서 현재 거처 선택시 가장 중요하게 생각하는</p>
-            <h1>"통근, 통학에 좋은 위치와 저렴한 주거비!"</h1>
+            <h1>
+              "<strong className='first'>통근, 통학에 좋은 위치</strong>와{' '}
+              <strong className='second'>저렴한 주거비</strong>!"
+            </h1>
           </ChartDescription>
         </ChartContainer>
         <ChartContainer
@@ -129,8 +133,12 @@ const AboutPage = () => {
           <ChartDescription>
             <h1 className='left'>또 다른 데이터 역시</h1>
             <h1 className='right'>
-              <strong>경제적 여건</strong>과 <strong>교통 여건</strong> 이네요
+              <strong className='first'>경제적 여건</strong>과{' '}
+              <strong className='second'>교통 여건</strong> 이네요
             </h1>
+            <p className='conclusion'>
+              그래서 저희는 지하철 소요시간과 부동산 가격에 집중하였습니다.
+            </p>
           </ChartDescription>
           <SelectionFactor2
             ref={selectionFactor2Ref}
@@ -212,13 +220,14 @@ const AboutPage = () => {
         <h1>
           직장인의 행복은 출퇴근 <strong>소요시간</strong>순이잖아요
         </h1>
+
         <ArticleContainer>
           <img
             src={article1}
             alt='article'
             style={{ transform: 'translate(100px,20px) skew(5deg,3deg)' }}
             className={`${
-              scrollPosition < 7050 + 0 || scrollPosition > 7050 + 100
+              scrollPosition < 7050 + 0 || scrollPosition > 7050 + 200
                 ? ''
                 : 'focus'
             }`}
@@ -228,7 +237,7 @@ const AboutPage = () => {
             alt='article'
             style={{ transform: 'translate(50px,40px) skew(5deg,3deg)' }}
             className={`${
-              scrollPosition < 7050 + 100 || scrollPosition > 7050 + 200
+              scrollPosition < 7050 + 200 || scrollPosition > 7050 + 400
                 ? ''
                 : 'focus'
             }`}
@@ -238,7 +247,7 @@ const AboutPage = () => {
             alt='article'
             style={{ transform: 'translate(-50px,60px) skew(5deg,3deg)' }}
             className={`${
-              scrollPosition < 7050 + 200 || scrollPosition > 7050 + 300
+              scrollPosition < 7050 + 400 || scrollPosition > 7050 + 600
                 ? ''
                 : 'focus'
             }`}
@@ -248,11 +257,15 @@ const AboutPage = () => {
             alt='article'
             style={{ transform: 'translate(-150px,80px) skew(5deg,3deg)' }}
             className={`${
-              scrollPosition < 7050 + 300 || scrollPosition > 7050 + 400
+              scrollPosition < 7050 + 600 || scrollPosition > 7050 + 800
                 ? ''
                 : 'focus'
             }`}
           ></img>
+          <p className={`conclusion ${scrollPosition > 7850 ? '' : 'hidden'}`}>
+            그래서 저희는 거리순이 아닌 소요시간을 계산하였습니다.<br></br>
+            원하는 출발지점에서 소요되는 시간의 위치를 구할 수 있습니다.
+          </p>
         </ArticleContainer>
       </InsightContainer2>
 
@@ -261,7 +274,7 @@ const AboutPage = () => {
         <div className='rushHourDescription'>
           <span
             className={
-              scrollPosition > 8350 && scrollPosition < 8350 + 100
+              scrollPosition > 8850 && scrollPosition < 8850 + 100
                 ? 'focus'
                 : ''
             }
@@ -270,7 +283,7 @@ const AboutPage = () => {
           </span>
           <span
             className={
-              scrollPosition > 8350 + 100 && scrollPosition < 8350 + 200
+              scrollPosition > 8850 + 100 && scrollPosition < 8850 + 200
                 ? 'focus'
                 : ''
             }
@@ -279,7 +292,7 @@ const AboutPage = () => {
           </span>
           <span
             className={
-              scrollPosition > 8350 + 200 && scrollPosition < 8350 + 300
+              scrollPosition > 8850 + 200 && scrollPosition < 8850 + 300
                 ? 'focus'
                 : ''
             }
@@ -289,7 +302,7 @@ const AboutPage = () => {
           </span>
           <span
             className={
-              scrollPosition > 8350 + 300 && scrollPosition < 8350 + 400
+              scrollPosition > 8850 + 300 && scrollPosition < 8850 + 400
                 ? 'focus'
                 : ''
             }
@@ -299,7 +312,7 @@ const AboutPage = () => {
           </span>
           <span
             className={
-              scrollPosition > 8350 + 400 && scrollPosition < 8350 + 500
+              scrollPosition > 8850 + 400 && scrollPosition < 8850 + 500
                 ? 'focus'
                 : ''
             }
@@ -308,7 +321,7 @@ const AboutPage = () => {
           </span>
           <span
             className={
-              scrollPosition > 8350 + 500 && scrollPosition < 8350 + 600
+              scrollPosition > 8850 + 500 && scrollPosition < 8850 + 600
                 ? 'focus'
                 : ''
             }
@@ -328,7 +341,11 @@ const AboutPage = () => {
         >
           <ChartDescription>
             <h1>같은 출근 시간</h1>
-            <h1>꽉 찬 지하철과 텅빈 지하철의 차이가 보이시나요?</h1>
+            <h1>
+              <strong className='full'>꽉 찬 지하철</strong>과{' '}
+              <strong className='empty'>텅 빈 지하철</strong>의 차이가
+              보이시나요?
+            </h1>
           </ChartDescription>
           <CongestionByStation
             ref={congestionByStationRef}
@@ -342,20 +359,28 @@ const AboutPage = () => {
         >
           <ChartDescription>
             <h1>같은 지하철도</h1>
-            <h1>상선, 하선에 따라 큰 혼잡도 차이를 보입니다!</h1>
+            <h1>
+              상선, 하선에 따라 큰{' '}
+              <strong className='first'>혼잡도 차이</strong>를 보입니다!
+            </h1>
           </ChartDescription>
           <CongestionByLine
             ref={congestionByLineRef}
             redraw={scrollPosition > 10550}
           ></CongestionByLine>
         </ChartContainer>
+        <p className='conclusion'>
+          위 데이터를 기반으로 더 낮은 혼잡도를 보이는 노선으로부터<br></br>{' '}
+          체감시간을 계산하여 사용자가 더 쾌적한 위치에서 출퇴근 할 수 있도록
+          도와줍니다.
+        </p>
       </InsightContainer3>
 
       <RealEstateContainer>
         <CartoonGrid>
           <CartoonCut
             className={`cut1 ${
-              scrollPosition > 12550 + 0 && scrollPosition < 12550 + 200
+              scrollPosition > 13050 + 0 && scrollPosition < 13050 + 200
                 ? 'focus'
                 : ''
             }`}
@@ -366,7 +391,7 @@ const AboutPage = () => {
           </CartoonCut>
           <CartoonCut
             className={`cut2 ${
-              scrollPosition > 12550 + 200 && scrollPosition < 12550 + 400
+              scrollPosition > 13050 + 200 && scrollPosition < 13050 + 400
                 ? 'focus'
                 : ''
             }`}
@@ -377,22 +402,32 @@ const AboutPage = () => {
           </CartoonCut>
           <CartoonCut
             className={`cut3 ${
-              scrollPosition > 12550 + 400
-                ? scrollPosition > 12550 + 600
+              scrollPosition > 13050 + 400
+                ? scrollPosition > 13050 + 600
                   ? 'focus none'
                   : 'focus'
                 : ''
             }`}
           >
             <CartoonSubtitle>
-              "이 두개를 접목해준 서비스 어디 없나?"
+              "적당한 역세권 찾기가 너무 힘드네..."
             </CartoonSubtitle>
           </CartoonCut>
           <CartoonCut
             className={`cut4 ${
-              scrollPosition > 12550 + 600 ? 'focus' : 'none'
+              scrollPosition > 13050 + 600 ? 'focus' : 'none'
             }`}
-          ></CartoonCut>
+          >
+            <CartoonSubtitle>"아? 이사가게가 있었지!!!"</CartoonSubtitle>
+          </CartoonCut>
+          <Logo
+            className={`cartoonLogo ${
+              scrollPosition > 13050 + 600 ? 'focus' : 'hidden'
+            }`}
+          >
+            <div>2</div>
+            <span>사가게?</span>
+          </Logo>
         </CartoonGrid>
       </RealEstateContainer>
       <InsightContainer4>
@@ -404,7 +439,7 @@ const AboutPage = () => {
           <ChartDescription>
             <h1>역마다 다른 가격차이에</h1>
             <h1>예산에 맞는 역세권을 선택하기 힘드시죠?</h1>
-            <p>
+            <p className='conclusion'>
               부동산 실거래 데이터를 바탕으로 단위 면적 당 가격을 계산하였고,
               사용자가 원하는 예산에 맞춰서 더욱 똑똑하게 역세권을 추천해줍니다
             </p>
@@ -414,13 +449,23 @@ const AboutPage = () => {
             redraw={scrollPosition > 13750}
           ></RealEstatePrice>
         </ChartContainer>
+        <h2>
+          체감시간 기반 역세권 추천 서비스인 "이사가게" 는 부동산 실거래 데이터
+          뿐만 아니라<br></br> 지하철에서의 혼잡도 데이터를 기반으로 체감시간을
+          계산하여 조금 더 쾌적한 역세권을 추천합니다. <br></br>이제 더이상
+          지하철에서 승객들의 숨소리를 들을 필요가 없습니다. <br></br>저희
+          "체감시간 기반 역세권 추천 서비스 - 이사가게"와 함께라면 <br></br>
+          비교적 널널한 출퇴근을 할 수 있는 역세권을 추천받을 수 있습니다.{' '}
+          <br></br>저희 "이사가게" 를 이용해 시간과 경비를 절약해 보세요.
+        </h2>
+        <img src={lastImg}></img>
       </InsightContainer4>
       <PleaseTakeMeUp
         onClick={() => {
           window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }}
       >
-        네, 잘알겠습니다.
+        👆
       </PleaseTakeMeUp>
     </AboutContainer>
   );
@@ -561,15 +606,22 @@ const InsightContainer1 = styled.div`
 `;
 
 const InsightContainer2 = styled.div`
-  height: 1500px;
+  height: 1900px;
   padding-top: 100px;
   h1 {
     position: sticky;
-    top: 10px;
+    top: 30px;
     font-size: 46px;
     strong {
       color: #33a23d;
     }
+  }
+  .conclusion {
+    position: absolute;
+    padding-top: 200px;
+    text-align: center;
+    font-size: 22px;
+    color: #7f917d;
   }
 `;
 const ArticleContainer = styled.div`
@@ -598,6 +650,11 @@ const InsightContainer3 = styled.div`
     margin-bottom: 200px;
     flex-direction: column;
   }
+  .conclusion {
+    font-size: 28px;
+    color: #7f917d;
+    text-align: center;
+  }
 `;
 
 const InsightContainer4 = styled.div`
@@ -608,6 +665,15 @@ const InsightContainer4 = styled.div`
       font-size: 18px;
       color: #7f917d;
     }
+  }
+  h2 {
+    text-align: center;
+    margin: 100px;
+    line-height: 40px;
+  }
+  img {
+    margin-top: 100px;
+    margin-right: 400px;
   }
 `;
 
@@ -633,9 +699,22 @@ const ChartDescription = styled.div`
   h1 {
     margin: 10px;
     font-size: 46px;
-    strong {
+    .first {
       color: #33a23d;
     }
+    .second {
+      color: #7bc745;
+    }
+    .full {
+      color: #707070;
+    }
+    .empty {
+      color: #33a23d;
+    }
+  }
+  .conclusion {
+    font-size: 18px;
+    color: #7f917d;
   }
 `;
 
@@ -756,12 +835,17 @@ const CartoonGrid = styled.div`
   .cut4 {
     background-image: url(${cut4});
     background-position: center;
-    span {
-      display: none;
-    }
   }
   .focus {
     filter: grayscale(0%);
+  }
+  .cartoonLogo {
+    position: absolute;
+    top: 510px;
+    right: 280px;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff,
+      0 0 40px #fff, 0 0 75px #fff, 0 0 105px #fff;
+    transform: scale(0.8);
   }
 `;
 const CartoonCut = styled.div`
@@ -783,12 +867,15 @@ const CartoonSubtitle = styled.span`
 `;
 
 const PleaseTakeMeUp = styled.div`
-  background-color: yellowgreen;
-  width: 100px;
-  height: 100px;
+  background-color: #eeeeee;
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+  line-height: 50px;
   position: fixed;
   left: 30px;
-  bottom: 200px;
+  bottom: 150px;
   z-index: 100;
   cursor: pointer;
 `;
