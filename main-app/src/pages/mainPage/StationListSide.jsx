@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useOutletContext, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import {
+  Link,
+  useOutletContext,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
 import FeelTimeMethod from './FeelTimeMethod';
@@ -8,6 +12,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 
 const StationListSide = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { sendRequest } = useHttpRequest();
   const { setMapOption, setMarkers } = useOutletContext();
@@ -98,7 +103,14 @@ const StationListSide = () => {
       <StationListContainer>
         {stationRank.length > 0
           ? stationRank.map((item, index) => (
-              <StationContainer key={index}>
+              <StationContainer
+                key={index}
+                onClick={() =>
+                  navigate(`/stationinfo/${item.id}/general`, {
+                    state: { item },
+                  })
+                }
+              >
                 {item.station.station_name}
               </StationContainer>
             ))
@@ -111,6 +123,8 @@ const StationListSide = () => {
 };
 
 const StationListContainer = styled.div``;
-const StationContainer = styled.div``;
+const StationContainer = styled.div`
+  cursor: pointer;
+`;
 
 export default StationListSide;

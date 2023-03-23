@@ -9,16 +9,15 @@ export const AuthProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoading, sendRequest } = useHttpRequest();
+  const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await sendRequest('/account', 'get');
-        console.log(response);
-        if (response && response.isAdmin) {
+        if (response) {
           setIsLoggedIn(true);
-          setIsAdmin(true);
+          setIsAdmin(response.isAdmin);
         }
       } catch (err) {
         console.log(err?.response.data);
@@ -31,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     try {
       await sendRequest('/login', 'post', { email, password });
       setIsLoggedIn(true);
-      console.log(location);
       if (location.state?.redirectUrl) {
         navigate(location.state.redirectUrl);
       } else {

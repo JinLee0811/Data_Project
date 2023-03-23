@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
-import Modal from "../../components/Modal";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+import Modal from '../../components/Modal';
 
 const NickChange = () => {
   const serverUrl = process.env.REACT_APP_API_URL;
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = (e) => {
@@ -21,7 +21,7 @@ const NickChange = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       try {
-        const response = await axios.get(serverUrl + "/account", {
+        const response = await axios.get(serverUrl + '/account', {
           withCredentials: true,
         });
         setNickname(response.data.nickname);
@@ -36,15 +36,14 @@ const NickChange = () => {
     setNickname(event.target.value);
   };
 
-  const hadleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     try {
       await axios.patch(
-        serverUrl + "/account",
+        serverUrl + '/account',
         { nickname },
         { withCredentials: true }
       );
-      console.log("Nickname updated successfully");
+      console.log('Nickname updated successfully');
       window.location.reload();
       setIsOpen(false);
     } catch (error) {
@@ -55,7 +54,7 @@ const NickChange = () => {
   return (
     <>
       <Greeting>변경하고자 하는 닉네임을 입력해 주세요.</Greeting>
-      <Form onSubmit={hadleSubmit}>
+      <Form>
         <ConfirmBox>중복되지 않는 본인만의 닉네임으로 변경해보세요.</ConfirmBox>
         <Input
           type='text'
@@ -65,7 +64,7 @@ const NickChange = () => {
           onChange={handleNicknameChange}
         />
         <Button onClick={openModal}>닉네임 변경하기</Button>
-        <Modal isOpen={isOpen} onClose={closeModal} type='submit'>
+        <Modal isOpen={isOpen} onClose={closeModal} onSubmit={handleSubmit}>
           <h2>닉네임 변경</h2>
           <p>닉네임을 변경하시겠습니까?</p>
         </Modal>
