@@ -131,8 +131,7 @@ const NavigationBar = styled.nav`
   align-items: center;
   justify-content: space-between;
   border-top: 34px solid white;
-
-  z-index: 20;
+  z-index: 200;
 
   ul {
     position: absolute;
