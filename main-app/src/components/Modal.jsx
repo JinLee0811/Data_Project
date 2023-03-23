@@ -1,33 +1,18 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import styled from 'styled-components';
 
 function Modal({ isOpen, onClose, children, onSubmit }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const handleModalClick = (e) => {
-    e.stopPropagation();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    await onSubmit();
-    setIsLoading(false);
-    onClose();
-  };
-
   if (!isOpen) return null;
-  return ReactDOM.createPortal(
-    <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={handleModalClick}>
+  return (
+    <ModalOverlay>
+      <ModalContent>
         {children}
         <div>
-          <ConfirmButton onClick={handleSubmit}>확인</ConfirmButton>
+          <ConfirmButton onClick={onSubmit}>확인</ConfirmButton>
           <CancelButton onClick={onClose}>취소</CancelButton>
         </div>
       </ModalContent>
-    </ModalOverlay>,
-    document.getElementById('modal-root')
+    </ModalOverlay>
   );
 }
 
