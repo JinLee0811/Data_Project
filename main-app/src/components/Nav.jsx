@@ -132,7 +132,7 @@ const NavigationBar = styled.nav`
   justify-content: space-between;
   border-top: 34px solid white;
 
-  z-index: 9999;
+  z-index: 20;
 
   ul {
     position: absolute;

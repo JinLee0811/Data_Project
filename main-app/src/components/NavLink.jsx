@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
-import { AuthContext } from "../utils/AuthContext";
-import { useContext } from "react";
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../utils/AuthContext';
+import { useContext } from 'react';
 
 export default function NavLink(props) {
   const { isLoggedIn, isAdmin, logout } = useContext(AuthContext);
-
   return (
     <>
       <ul>

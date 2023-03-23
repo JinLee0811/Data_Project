@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
 import ModalInput from '../../components/ModalInput';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../utils/AuthContext';
 import Card from '../../components/Card';
 import { ClipLoader } from 'react-spinners';
@@ -10,31 +10,38 @@ import { ClipLoader } from 'react-spinners';
 export default function StationInfoReview() {
   const { sendRequest, isLoading } = useHttpRequest();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
-  const station_id = '51b1e20e-7562-456c-8623-f67f6d09ed87';
   const [reviews, setReviews] = useState();
   const [numReviewsToShow, setNumReviewsToShow] = useState(7);
+  const { isLoggedIn } = useContext(AuthContext);
+  const { station_id } = useParams();
+
+  // post로 리뷰를 줄 때는 user의 name 정보가 없다.  따라서 setReviews를 해줘도 username이 들어가지 않는다.=> 렌더할 때 계속 유저네임이 공백으로 나옴.
+  // 따라서 post 후에 setReview 대신, 다시 get요청을 하도록 바꿈
+  // useContext에서 username받아와서 해도되지만 시간없서
 
   const handleModalSubmit = async (query) => {
     try {
-      const response = await sendRequest(`/review/${station_id}`, 'post', {
+      await sendRequest(`/review/${station_id}`, 'post', {
         body: query,
       });
-      setReviews((prev) =>
-        [...prev, response].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        )
-      );
+      fetchData();
     } catch (err) {
       console.log(err);
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await sendRequest(`/review/${station_id}`, 'get');
+      setReviews(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    sendRequest(`/review/${station_id}`, 'get')
-      .then((response) => setReviews(response))
-      .catch((err) => console.log(err));
-  }, [sendRequest]);
+    fetchData();
+  }, []);
 
   const handleShowMore = () => {
     setNumReviewsToShow(numReviewsToShow + 7);
@@ -58,13 +65,18 @@ export default function StationInfoReview() {
       ) : (
         <ReviewContainer>
           {reviews &&
+            reviews.length > 0 &&
             reviews
               .slice(0, numReviewsToShow)
               .map((review) => <Card key={review.id} review={review}></Card>)}
+
+          {/* 리뷰수가 numReviewsToShow 보다 많으면 더보기 버튼 */}
           {reviews && numReviewsToShow < reviews?.length && (
             <Box onClick={handleShowMore}>더 보기</Box>
-            // <Box onClick={() => setShowCount(showCount + 6)}>더 보기</Box>
           )}
+
+          {/* 리뷰가 없으면 메시지 출력 */}
+          {reviews?.length === 0 && <Div>작성된 리뷰가 없습니다.</Div>}
         </ReviewContainer>
       )}
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import axios from 'axios';
 
 function ModalInput({ isOpen, onClose, children, inputHeight = 45, onSubmit }) {
   const inputRef = useRef(null);

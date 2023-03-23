@@ -8,16 +8,8 @@ import { useOutletContext } from 'react-router-dom';
 const NickChange = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { sendRequest } = useHttpRequest();
-  const {
-    wish,
-    setWish,
-    review,
-    setReview,
-    userInfo,
-    setUserInfo,
-    isLoading,
-    setIsLoading,
-  } = useOutletContext();
+  const { userInfo, setUserInfo, isLoading } = useOutletContext();
+
   console.log(userInfo);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const openModal = (e) => {
