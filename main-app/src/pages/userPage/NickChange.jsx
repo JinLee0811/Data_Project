@@ -1,13 +1,25 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "axios";
-import Modal from "../../components/Modal";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import useHttpRequest from '../../utils/useHttp';
+import Modal from '../../components/Modal';
+import { ClipLoader } from 'react-spinners';
+import { useOutletContext } from 'react-router-dom';
 
 const NickChange = () => {
-  const serverUrl = process.env.REACT_APP_API_URL;
-  const [nickname, setNickname] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
+  const { sendRequest } = useHttpRequest();
+  const {
+    wish,
+    setWish,
+    review,
+    setReview,
+    userInfo,
+    setUserInfo,
+    isLoading,
+    setIsLoading,
+  } = useOutletContext();
+  console.log(userInfo);
+  const [nickname, setNickname] = useState(userInfo.nickname);
   const openModal = (e) => {
     e.preventDefault();
     setIsOpen(true);
@@ -17,45 +29,34 @@ const NickChange = () => {
     e.preventDefault();
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const response = await axios.get(serverUrl + "/account", {
-          withCredentials: true,
-        });
-        setNickname(response.data.nickname);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getUserInfo();
-  }, []);
-
   const handleNicknameChange = (event) => {
     setNickname(event.target.value);
   };
-
-  const hadleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setUserInfo((cur) => ({
+      ...cur,
+      nickname: nickname,
+    }));
     try {
-      await axios.patch(
-        serverUrl + "/account",
-        { nickname },
-        { withCredentials: true }
-      );
-      console.log("Nickname updated successfully");
-      window.location.reload();
+      await sendRequest('/account', 'patch', { nickname });
       setIsOpen(false);
     } catch (error) {
       console.error(error);
+      alert('닉네임이 중복됩니다.');
     }
   };
-
+  if (isLoading) {
+    return (
+      <Container>
+        <ClipLoader color='#33a23d' loading={isLoading} />
+      </Container>
+    );
+  }
   return (
     <>
       <Greeting>변경하고자 하는 닉네임을 입력해 주세요.</Greeting>
-      <Form onSubmit={hadleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <ConfirmBox>중복되지 않는 본인만의 닉네임으로 변경해보세요.</ConfirmBox>
         <Input
           type='text'
@@ -73,7 +74,13 @@ const NickChange = () => {
     </>
   );
 };
-
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  align-items: center;
+`;
 const Form = styled.form`
   display: flex;
   flex-direction: column;

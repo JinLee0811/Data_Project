@@ -1,21 +1,21 @@
-import React, { useState, useContext } from "react";
-import styled from "styled-components";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../utils/AuthContext";
-import Modal from "../../components/Modal";
+import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
+import useHttpRequest from '../../utils/useHttp';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../utils/AuthContext';
+import Modal from '../../components/Modal';
 
 const Withdrawl = (props) => {
-  const serverUrl = process.env.REACT_APP_API_URL;
+  const { sendRequest } = useHttpRequest();
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const { setIsLoggedIn } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const hadleopenModal = (e) => {
     e.preventDefault();
     if (!password) {
-      alert("비밀번호를 입력해주세요.");
+      alert('비밀번호를 입력해주세요.');
     } else {
       setIsOpen(true);
     }
@@ -33,17 +33,15 @@ const Withdrawl = (props) => {
   const hadleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(serverUrl + "/account", {
-        data: {
-          password: password,
-        },
-        withCredentials: true,
+      const response = await sendRequest('/account', 'delete', {
+        password: password,
       });
-      navigate("/login");
+      alert('정상적으로 탈퇴 되었습니다.');
+      navigate('/login');
       setIsLoggedIn(false);
     } catch (error) {
       console.error(error);
-      alert("비밀번호를 다시 확인하세요!");
+      alert('비밀번호를 다시 확인하세요!');
     }
   };
   return (
@@ -86,6 +84,7 @@ const Input = styled.input`
 const Greeting = styled.h2`
   white-space: pre-wrap;
   margin: 0px 0px 100px 0px;
+  font-family: 'NanumSquareNeoExtraBold';
 `;
 const ConfirmBox = styled.h4`
   color: gray;
@@ -96,19 +95,18 @@ const ConfirmBox = styled.h4`
 
 const Button = styled.button`
   background-color: #33a23d;
+  font-size: 16px;
+  font-weight: bold;
   color: #fff;
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
 
   &:hover {
     background-color: #7bc745;
-  }
-
-  &:focus {
-    outline: none;
   }
 `;
 
