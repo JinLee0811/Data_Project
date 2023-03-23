@@ -2,24 +2,31 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, Outlet } from 'react-router-dom';
 import useHttpRequest from '../../utils/useHttp';
+import { ClipLoader } from 'react-spinners';
 
 // 가져올 것 -> 고양이 이미지, 닉네임, 이메일, 찜 수, 리뷰 수
 function UserPage(props) {
   const [wish, setWish] = useState();
   const [review, setReview] = useState();
   const [userInfo, setUserInfo] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const { sendRequest } = useHttpRequest();
 
   useEffect(() => {
-    getUserInfo();
-    getUserWish();
-    getUserReview();
+    setIsLoading(true); // 데이터 로딩 중임을 표시
+
+    Promise.all([getUserInfo(), getUserWish(), getUserReview()])
+      .then(() => {
+        setIsLoading(false); // 모든 데이터가 로딩되었음을 표시
+      })
+      .catch((error) => console.error(error));
   }, []);
 
   const getUserInfo = async () => {
     try {
       const response = await sendRequest('/account', 'get');
       setUserInfo((cur) => response);
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -40,64 +47,103 @@ function UserPage(props) {
       console.error(error);
     }
   };
-
+  if (isLoading) {
+    return (
+      <Container>
+        <ClipLoader color='#33a23d' loading={isLoading} />
+      </Container>
+    );
+  }
   return (
     <>
-      {wish && review && userInfo && (
-        <UserPageContainer>
-          <LeftContainer>
-            <InsideLeftContainer>
+      <UserPageContainer>
+        <LeftContainer>
+          <InsideLeftContainer>
+            <UserBrief>
+              <ProfileImage
+                src={
+                  'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000'
+                }
+                alt='Profile Image'
+              />
               <UserBrief>
-                <ProfileImage
-                  src={
-                    'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000'
-                  }
-                  alt='Profile Image'
-                />
-                <UserBrief>
-                  <UserName>{userInfo.nickname}</UserName>
+                <UserName>
+                  {userInfo?.nickname}
                   <Link to='/user/nickchange'>
-                    <NickChange>✏️</NickChange>
+                    <NickChange>
+                      <span className='material-symbols-outlined'>edit</span>
+                    </NickChange>
                   </Link>
-                </UserBrief>
-                <UserEmail>{userInfo.email}</UserEmail>
-                <UserInfo>나의 찜:</UserInfo>
-                <Link to='/user/wishlist'>
-                  <StationCount>{wish.length}</StationCount>
-                </Link>
-                <UserInfo>나의 리뷰:</UserInfo>
-                <Link to='/user/review'>
-                  <StationCount>{review.length}</StationCount>
-                </Link>
-                <UserBrief>
-                  <Link to='/'>
-                    <UserButton>역 찾으러 가기</UserButton>
-                  </Link>
-                </UserBrief>
+                </UserName>
               </UserBrief>
-            </InsideLeftContainer>
-          </LeftContainer>
-          <MarginDiv></MarginDiv>
-          <RightContainer>
-            <MenuBar>
-              <ul>
-                <li>
-                  <Link to='/user'>마이페이지</Link>
-                </li>
-                <li>
-                  <Link to='/user/useredit'>프로필관리</Link>
-                </li>
-                <li>
-                  <Link to='/user/withdrawl'>회원탈퇴</Link>
-                </li>
-              </ul>
-            </MenuBar>
-            <RightSection>
-              <Outlet />
-            </RightSection>
-          </RightContainer>
-        </UserPageContainer>
-      )}
+              <UserEmail>{userInfo?.email}</UserEmail>
+              <LinkBox>
+                <LinkBox2>
+                  <Atag>
+                    <Link to={'/user/wishlist'}>
+                      <Emogi>
+                        <span class='material-symbols-outlined'>favorite</span>
+                      </Emogi>
+                      <UserInfo>나의 찜</UserInfo>
+                      <StationCount>
+                        {wish?.length > 0 ? wish.length : 0}
+                      </StationCount>
+                    </Link>
+                  </Atag>
+
+                  <Atag>
+                    <Link to={'/user/review'}>
+                      <Emogi>
+                        <span className='material-symbols-outlined'>chat</span>
+                      </Emogi>
+                      <UserInfo>나의 리뷰</UserInfo>
+
+                      <StationCount>
+                        {review?.length > 0 ? review.length : 0}
+                      </StationCount>
+                    </Link>
+                  </Atag>
+                </LinkBox2>
+              </LinkBox>
+              <UserBrief>
+                <Link to='/'>
+                  <UserButton>역 찾으러 가기</UserButton>
+                </Link>
+              </UserBrief>
+            </UserBrief>
+          </InsideLeftContainer>
+        </LeftContainer>
+        <MarginDiv></MarginDiv>
+        <RightContainer>
+          <MenuBar>
+            <ul>
+              <li>
+                <Link to='/user'>마이페이지</Link>
+              </li>
+              <li>
+                <Link to='/user/useredit'>프로필관리</Link>
+              </li>
+              <li>
+                <Link to='/user/withdrawl'>회원탈퇴</Link>
+              </li>
+            </ul>
+          </MenuBar>
+          <RightSection>
+            <Outlet
+              context={{
+                wish,
+                setWish,
+                review,
+                setReview,
+                userInfo,
+                setUserInfo,
+                isLoading,
+                setIsLoading,
+              }}
+            />
+          </RightSection>
+        </RightContainer>
+      </UserPageContainer>
       <Footer>
         <p>
           <a
@@ -131,6 +177,13 @@ function UserPage(props) {
     </>
   );
 }
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 380px;
+  align-items: center;
+`;
 const UserPageContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -156,7 +209,7 @@ const InsideLeftContainer = styled.div`
   min-height: 100px;
   position: relative;
   box-sizing: border-box;
-  margin: 70px 50px 0px 50px;
+  margin: 70px 20px 0px 20px;
   font-size: 15px;
 `;
 const ProfileImage = styled.img`
@@ -168,32 +221,44 @@ const ProfileImage = styled.img`
   margin-bottom: 10px;
 `;
 const UserBrief = styled.div`
+  width: 100%;
   text-align: center;
   margin: 0;
   padding: 0;
+  font-size: 1rem;
+  font-weight: bold;
 `;
 const UserName = styled.h2`
   background-color: #f4f4f4;
+  font-family: 'NanumSquareNeoExtraBold';
   border: 0px;
   display: inline;
+  text-align: center;
   font-size: 24px;
   margin-bottom: 10px;
   margin-left: 20px;
+  color: #292929;
 `;
-const NickChange = styled.button`
-  display: inline;
+const NickChange = styled.div`
   border: 0px;
+  margin: 5px;
+  display: inline;
   background-color: #f4f4f4;
   cursor: pointer;
+  &:hover {
+    opacity: 0.6;
+  }
 `;
 const UserEmail = styled.p`
   font-size: 16px;
+  color: #828c94;
 `;
-const UserInfo = styled.p`
+const UserInfo = styled.div`
   font-size: 16px;
-  margin-bottom: 50px;
-  display: inline-block;
-  margin-right: 5px;
+  line-height: 21px;
+  font-weight: normal;
+  text-align: center;
+  color: #828c94;
 `;
 const UserButton = styled.button`
   background-color: #33a23d;
@@ -201,22 +266,23 @@ const UserButton = styled.button`
   font-weight: bold;
   color: #fff;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 3rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
   &:hover {
     background-color: #7bc745;
   }
-  &:focus {
-    outline: none;
-  }
 `;
-const StationCount = styled.h4`
-  cursor: pointer;
-  color: red;
-  display: inline-block;
-  margin-right: 10px;
+const StationCount = styled.div`
+  color: #525b61;
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
 `;
 const MarginDiv = styled.p`
   padding-left: 30px;
@@ -287,4 +353,42 @@ const Footer = styled.div`
     margin-bottom: 10px;
   }
 `;
+
+const LinkBox = styled.div`
+  border-top: 1px solid rgb(234, 235, 239);
+  width: 250px;
+  margin-top: 30px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 30px;
+  display: block;
+  flex-direction: column;
+`;
+const LinkBox2 = styled.div`
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+`;
+
+const Emogi = styled.div`
+  margin: 0px auto 4px;
+  margin-top: 10px;
+`;
+const Atag = styled.a`
+  flex: 1 0 0px;
+  display: block;
+  min-width: 0px;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: opacity 0.1s ease 0s;
+
+  &:hover {
+    opacity: 0.6;
+  }
+`;
+
 export default UserPage;
