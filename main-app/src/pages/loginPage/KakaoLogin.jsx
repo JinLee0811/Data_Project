@@ -9,7 +9,6 @@ export default function KakaoLogin() {
   const { kakaologin } = useContext(AuthContext);
   const kakaocode = location.search.split('=')[1];
   const [isLoading, setIsLoading] = useState(false);
-  console.log('kakaocode', kakaocode);
 
   useEffect(() => {
     const getKakaoLogin = async () => {

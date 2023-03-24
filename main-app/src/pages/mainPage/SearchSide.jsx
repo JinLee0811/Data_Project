@@ -38,7 +38,7 @@ const SearchSide = () => {
     setIsModalOpen(false);
   };
 
-  //모달에게, 서브밋 시 사용되는 함수 전달
+  // 모달에게, 서브밋 시 사용되는 함수 전달
   // google geocoding 사용
 
   const handleModalSubmit = async (query) => {
@@ -48,7 +48,6 @@ const SearchSide = () => {
 
     try {
       const response = await axios.get(url);
-      console.log(response.data.results);
       const pos_x = response.data.results[0].geometry.location.lat;
       const pos_y = response.data.results[0].geometry.location.lng;
       setCoordinates({ pos_x, pos_y });
@@ -93,7 +92,7 @@ const SearchSide = () => {
   const fetchData = async () => {
     try {
       const response = await sendRequest('/main/station', 'post', coordinates);
-      console.log(response);
+
       setStartStation(response.station);
       setFetchLoading(false);
     } catch (err) {
