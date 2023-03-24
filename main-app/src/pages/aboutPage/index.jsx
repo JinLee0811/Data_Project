@@ -44,7 +44,6 @@ const AboutPage = () => {
 
   return (
     <AboutContainer>
-      {console.log(scrollPosition)}
       <IntroContainer>
         <h1 className={scrollPosition > 250 ? 'hidden' : ''}>이사가게?</h1>
         <h2 className={scrollPosition > 250 ? 'hidden' : ''}>

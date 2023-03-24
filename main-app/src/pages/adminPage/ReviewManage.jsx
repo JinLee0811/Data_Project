@@ -42,7 +42,7 @@ function ReviewManage() {
         (review) => review.id !== reviewIdToDelete
       );
       setReviews(newReview);
-      alert(response);
+      alert(response.message);
       setReviewIdToDelete(null);
     } catch (err) {
       console.log(err);
@@ -75,7 +75,6 @@ function ReviewManage() {
               <tr key={review.id}>
                 <TableData>{review.createdAt.split('T')[0]}</TableData>
                 <TableData>{review.user.name}</TableData>
-
                 <TableData>{review.station.station_line}</TableData>
                 <TableData>{review.station.station_name}</TableData>
                 <TableReviewData>{review.body}</TableReviewData>
@@ -133,6 +132,7 @@ const TableHeader = styled.th`
 
 const TableData = styled.td`
   border-bottom: 1px solid #ddd;
+  width: 10%;
 `;
 
 const TableReviewData = styled.td`

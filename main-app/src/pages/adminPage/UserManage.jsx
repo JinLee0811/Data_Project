@@ -21,7 +21,6 @@ function UserManage() {
     const fetchData = async () => {
       try {
         const response = await sendRequest('/admin/users', 'get');
-        console.log(response);
         setUsers(response);
       } catch (err) {
         console.log(err.message);
@@ -49,9 +48,8 @@ function UserManage() {
           return user;
         })
       );
-      alert(response);
+      alert(response.message);
       setUserIdToDelete(null);
-      // await fetchData();
     } catch (err) {
       console.log(err);
     }
@@ -80,7 +78,7 @@ function UserManage() {
         <Table>
           <thead>
             <tr>
-              <TableHeader>Created At</TableHeader>
+              <TableHeader>Created At'</TableHeader>
               <TableHeader>이메일</TableHeader>
               <TableHeader>이름</TableHeader>
               <TableHeader>닉네임</TableHeader>
@@ -172,6 +170,7 @@ const TableHeader = styled.th`
 const TableData = styled.td`
   border-bottom: 1px solid #ddd;
   height: 2rem;
+  width: 10%;
 `;
 
 const DeleteButton = styled.button`
