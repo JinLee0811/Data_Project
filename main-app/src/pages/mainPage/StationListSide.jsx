@@ -79,7 +79,7 @@ const StationListSide = () => {
       setTotalPage(Math.ceil(stationList.length / itemsPerPage));
       setStationRank(stationList.slice(page * 5, (page + 1) * 5));
     }
-  }, [stationList, page]);
+  }, [feelTimeMethod,stationList, page]);
 
   const handlePageClick = (e) => {
     setPage(e.selected);

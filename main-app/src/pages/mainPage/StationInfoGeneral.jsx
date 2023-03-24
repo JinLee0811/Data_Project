@@ -74,7 +74,7 @@ export default function StationfacilInfoGeneral() {
                 </MaterialSymbol>
                 <div>
                   {facilInfo?.mart.length === 0
-                    ? '주변에 마트가 없어요'
+                    ? '주변에 대형마트가 없어요'
                     : facilInfo.mart[0].name}
                 </div>
               </GridHead>
@@ -107,7 +107,7 @@ export default function StationfacilInfoGeneral() {
                 </MaterialSymbol>
                 <div>
                   {facilInfo?.hospitals?.length === 0
-                    ? '주변에 병원이 없어요'
+                    ? '주변에 대형병원이 없어요'
                     : facilInfo.hospitals[0].name}
                 </div>
               </GridHead>

@@ -65,8 +65,8 @@ const RegisterPage = () => {
 
     try {
       const response = await sendRequest('/register', 'post', inputs);
-      alert(response.data);
       navigate('/login');
+      alert('회원가입에 성공했습니다!')
     } catch (err) {
       console.log(err);
       alert(err.response.data.message);

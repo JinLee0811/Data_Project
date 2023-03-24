@@ -19,7 +19,7 @@ const useHttpRequest = () => {
         data: body,
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
-        signal,
+        signal
       });
       setIsLoading(false);
       return response.data;
