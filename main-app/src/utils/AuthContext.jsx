@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await sendRequest('/login', 'post', { email, password });
       setIsLoggedIn(true);
-      console.log(location?.state);
+
       if (location.state?.redirectUrl) {
         navigate(location.state.redirectUrl);
       } else {
@@ -38,17 +38,14 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       console.log(err);
-      alert(err.response.data.error);
+      alert(err.response.data.message);
     }
   };
 
   const kakaologin = async (kakaocode) => {
     try {
-      console.log('path', `/login/${kakaocode}`);
       const response = await sendRequest(`/login/${kakaocode}`, 'post', {});
-      console.log('kakao', response);
       setIsLoggedIn(true);
-      console.log(location?.state);
       if (location.state?.redirectUrl) {
         navigate(location.state.redirectUrl);
       } else {
