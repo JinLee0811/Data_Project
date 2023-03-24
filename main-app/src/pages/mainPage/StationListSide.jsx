@@ -149,7 +149,12 @@ const StationListSide = () => {
 
   return (
     <StationListSideContainer>
-      {isLoading && <LoadingScreen text={'딱 맞는 역세권을 계산중입니다'} />}
+      {isLoading && (
+        <LoadingScreen
+          text={'딱 맞는 역세권을 계산중입니다'}
+          isLoading={isLoading}
+        />
+      )}
       <FeelTimeMethod
         feelTimeMethod={feelTimeMethod}
         setFeelTimeMethod={setFeelTimeMethod}

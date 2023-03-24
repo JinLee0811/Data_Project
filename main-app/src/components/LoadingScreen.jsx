@@ -1,9 +1,11 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import loadingImg from './image/loading.png';
 
-const LoadingScreen = ({ text }) => {
-  return (
+const LoadingScreen = ({ text, isLoading }) => {
+  if (!isLoading) return null;
+  return ReactDOM.createPortal(
     <LoadingFullScreen>
       <LoadingImg>
         <div className='text'>
@@ -25,7 +27,8 @@ const LoadingScreen = ({ text }) => {
         </div>
         <img src={loadingImg} alt='loading'></img>
       </LoadingImg>
-    </LoadingFullScreen>
+    </LoadingFullScreen>,
+    document.getElementById('modal-root')
   );
 };
 
