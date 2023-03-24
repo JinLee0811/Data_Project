@@ -180,6 +180,7 @@ const Div = styled.div`
   .material-symbols-outlined {
     color: #999;
     font-size: 1.3rem;
+    padding: 2px;
   }
   h1 {
     padding: 5px;
@@ -194,21 +195,20 @@ const Div = styled.div`
   }
   .price {
     font-size: 0.9rem;
-    padding-left: 0.5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 5px;
   margin-top: 7px;
 `;
 
 const GridItem = styled.div`
-  padding: 5px;
+  margin: 5px;
   font-size: 0.9rem;
 `;
 const GridHead = styled.div`
@@ -262,6 +262,8 @@ const complex_level = {
 const Find = styled.div`
   display: flex;
   padding: 1.2rem 1rem;
+  margin-top: 1rem;
   font-size: 1rem;
   align-items: center;
+  justify-content: center;
 `;

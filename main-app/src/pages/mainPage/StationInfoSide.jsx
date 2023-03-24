@@ -119,10 +119,19 @@ const StationInfoSide = () => {
           </LikeCount>
         </LikeInfo>
         <TableList>
-          <NavLink exact to='' end state={{ station, rentPrice, leasePrice }}>
+          <NavLink
+            exact
+            to=''
+            end
+            state={{ station, redirectUrl, rentPrice, leasePrice }}
+          >
             <div>홈</div>
           </NavLink>
-          <NavLink exact to='review' state={{ station, rentPrice, leasePrice }}>
+          <NavLink
+            exact
+            to='review'
+            state={{ station, redirectUrl, rentPrice, leasePrice }}
+          >
             <div>리뷰</div>
           </NavLink>
         </TableList>
