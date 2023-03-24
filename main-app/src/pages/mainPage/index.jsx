@@ -102,7 +102,7 @@ const MainPage = () => {
                 </div>
                 <hr>
                 <div class='price'>
-                 <p><span>평균 가격</span><br></br> ${marker.price} 만원</p>
+                 <p><span>평균 가격</span><br> ${marker.price} 만원</p>
                 </div>                    
               </div>
             </div>
@@ -261,6 +261,9 @@ const MapContainer = styled.div`
             margin: 0px;
             font-size: 16px;
           }
+        }
+        .price {
+          width: 120px;
         }
       }
     }

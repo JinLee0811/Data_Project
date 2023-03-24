@@ -163,7 +163,9 @@ export default function StationfacilInfoGeneral() {
           </Complex>
         </Div>
         <Find>
-          <a href={naverUrl}>{station?.station_name}역 근처 부동산 매물 찾기</a>
+          <a href={naverUrl} target='_blank' rel='noreferrer'>
+            {station?.station_name}역 근처 부동산 매물 찾기
+          </a>
           <span class='material-icons'>arrow_forward</span>
         </Find>
       </>
