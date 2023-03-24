@@ -150,7 +150,10 @@ const SearchSide = () => {
   return (
     <SearchSideContainer>
       {fetchLoading && (
-        <LoadingScreen text={'가장 가까운 역을 계산중입니다.'} />
+        <LoadingScreen
+          text={'가장 가까운 역을 계산중입니다.'}
+          isLoading={fetchLoading}
+        />
       )}
       <SearchForm>
         <FieldContainer>
