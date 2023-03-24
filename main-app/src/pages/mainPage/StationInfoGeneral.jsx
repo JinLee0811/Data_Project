@@ -146,9 +146,11 @@ export default function StationfacilInfoGeneral() {
           <Complex>
             <div>퇴근(상행) -</div>
             <Circle
-              level={getLevel(station.StationCrowdedness[0].endTime_upbound)}
+              level={getLevel(station.StationCrowdedness[0]?.endTime_upbound)}
             ></Circle>
-            <div>{getLevel(station.StationCrowdedness[0].endTime_upbound)}</div>
+            <div>
+              {getLevel(station.StationCrowdedness[0]?.endTime_upbound)}
+            </div>
           </Complex>
           <Complex>
             <div>퇴근(하행) -</div>

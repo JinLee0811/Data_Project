@@ -37,17 +37,17 @@ function UserManage() {
         'delete',
         {}
       );
-      setUsers((prev) =>
-        prev.map((user) => {
-          if (user.id === userIdToDelete) {
-            return {
-              ...user,
-              deletedAt: new Date(),
-            };
-          }
-          return user;
-        })
-      );
+      const newUsers = users.map((user) => {
+        if (user.id === userIdToDelete) {
+          return {
+            ...user,
+            deletedAt: new Date(),
+          };
+        }
+        return user;
+      });
+
+      setUsers(newUsers);
       alert(response.message);
       setUserIdToDelete(null);
     } catch (err) {
@@ -78,7 +78,7 @@ function UserManage() {
         <Table>
           <thead>
             <tr>
-              <TableHeader>Created At'</TableHeader>
+              <TableHeader>Created At</TableHeader>
               <TableHeader>이메일</TableHeader>
               <TableHeader>이름</TableHeader>
               <TableHeader>닉네임</TableHeader>
