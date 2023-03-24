@@ -110,7 +110,7 @@ const LogoBox = styled.div`
     position: absolute;
     left: 50%;
     top: 0;
-    transform: translateX(-50%);
+    transform: translate(-50%, -40px);
     height: 2.5rem;
     width: 7rem;
     font-size: 1rem;
@@ -179,7 +179,10 @@ const NavigationBar = styled.nav`
   @media (max-width: 768px) {
     padding-left: 1.5rem;
     background-color: #fff;
-    position: static;
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    z-index: 99999;
   }
 `;
 
