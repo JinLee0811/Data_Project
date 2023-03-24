@@ -102,7 +102,7 @@ const MainPage = () => {
                 </div>
                 <hr>
                 <div class='price'>
-                 <p><span>평균 가격</span> ${marker.price} 만원</p>
+                 <p><span>평균 가격</span><br></br> ${marker.price} 만원</p>
                 </div>                    
               </div>
             </div>

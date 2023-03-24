@@ -313,9 +313,7 @@ const SearchSideContainer = styled.div`
   height: 100%;
 `;
 
-const SearchForm = styled.form`
-  height: 100%;
-`;
+const SearchForm = styled.form``;
 
 const FieldContainer = styled.div`
   display: flex;
@@ -373,6 +371,7 @@ const Fieldset = styled.fieldset`
   border: solid #33a23d13;
   border-width: 1px 0 0px 0;
   padding-top: 60px;
+  position: relative;
 
   legend {
     font-family: 'NanumSquareNeoExtraBold';
@@ -440,9 +439,10 @@ const SearchButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
+  padding-bottom: 50px;
   div {
-    position: absolute;
-    bottom: 20px;
+    position: relative;
     border-radius: 3px;
     line-height: 60px;
     text-align: center;

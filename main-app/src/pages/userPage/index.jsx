@@ -11,6 +11,26 @@ function UserPage(props) {
   const [userInfo, setUserInfo] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const { sendRequest } = useHttpRequest();
+  const [image, setImage] = useState(null);
+
+  const getRandomImage = () => {
+    let imagePath = '';
+    if (!localStorage.getItem('profileImg')) {
+      const randomIndex = Math.floor(Math.random() * 30 + 1);
+      imagePath = `./image/profile (${randomIndex}).png`;
+      localStorage.setItem('profileImg', JSON.stringify(imagePath));
+    } else {
+      imagePath = JSON.parse(localStorage.getItem('profileImg'));
+    }
+    userInfo.isAdmin ? setImage('./image/admin.png') : setImage(imagePath);
+  };
+
+  const changeProfileImage = () => {
+    const randomIndex = Math.floor(Math.random() * 30 + 1);
+    const imagePath = `./image/profile (${randomIndex}).png`;
+    localStorage.setItem('profileImg', JSON.stringify(imagePath));
+    setImage(imagePath);
+  };
 
   useEffect(() => {
     setIsLoading(true); // 데이터 로딩 중임을 표시
@@ -21,6 +41,12 @@ function UserPage(props) {
       })
       .catch((error) => console.error(error));
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      getRandomImage();
+    }
+  }, [userInfo]);
 
   const getUserInfo = async () => {
     try {
@@ -54,18 +80,19 @@ function UserPage(props) {
       </Container>
     );
   }
+
   return (
     <>
       <UserPageContainer>
         <LeftContainer>
           <InsideLeftContainer>
             <UserBrief>
-              <ProfileImage
-                src={
-                  'https://img.freepik.com/free-photo/adorable-kitty-looking-like-it-want-to-hunt_23-2149167099.jpg?w=2000'
-                }
-                alt='Profile Image'
-              />
+              {image && (
+                <ProfileImage src={require(`${image}`)} alt='Profile' />
+              )}
+              <ChangeImage onClick={changeProfileImage}>
+                <span class='material-symbols-outlined'>cached</span>
+              </ChangeImage>
               <UserBrief>
                 <UserName>
                   {userInfo?.nickname}
@@ -149,14 +176,16 @@ function UserPage(props) {
           <a
             href='https://www.notion.so/elice/3087fb6533044f71916c420d86213a6e?p=0d06a8c5921d4817b428bd9fac47ac87&pm=s'
             target='_blank'
-            rel='noreferrer'>
+            rel='noreferrer'
+          >
             Notion
           </a>{' '}
           |
           <a
             href='https://kdt-gitlab.elice.io/ai_track/class_06/data_project/team02/frontend-real'
             target='_blank'
-            rel='noreferrer'>
+            rel='noreferrer'
+          >
             GitLab
           </a>
           <br />
@@ -177,6 +206,20 @@ function UserPage(props) {
     </>
   );
 }
+const ChangeImage = styled.button`
+  border: 0px;
+  position: absolute;
+  background-color: #f4f4f4;
+  transform: scale(0.9);
+  right: 30px;
+  top: -10px;
+  opacity: 0.4;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.6;
+  }
+`;
+
 const Container = styled.section`
   display: flex;
   flex-direction: column;
@@ -219,6 +262,8 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   margin: 0px;
   margin-bottom: 10px;
+  object-position: top;
+  background-color: #33a23d;
 `;
 const UserBrief = styled.div`
   width: 100%;

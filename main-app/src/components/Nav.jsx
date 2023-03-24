@@ -126,6 +126,7 @@ const NavigationBar = styled.nav`
   position: relative;
   background-color: #33a23d;
   padding: 0rem 2rem;
+  padding-left: 70px;
   height: 14px;
   display: flex;
   align-items: center;
