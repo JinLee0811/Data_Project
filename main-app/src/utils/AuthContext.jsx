@@ -30,13 +30,32 @@ export const AuthProvider = ({ children }) => {
     try {
       await sendRequest('/login', 'post', { email, password });
       setIsLoggedIn(true);
+      console.log(location?.state);
       if (location.state?.redirectUrl) {
         navigate(location.state.redirectUrl);
       } else {
         navigate('/');
       }
     } catch (err) {
+      console.log(err);
       alert(err.response.data.error);
+    }
+  };
+
+  const kakaologin = async (kakaocode) => {
+    try {
+      console.log('path', `/login/${kakaocode}`);
+      const response = await sendRequest(`/login/${kakaocode}`, 'post', {});
+      console.log('kakao', response);
+      setIsLoggedIn(true);
+      console.log(location?.state);
+      if (location.state?.redirectUrl) {
+        navigate(location.state.redirectUrl);
+      } else {
+        navigate('/');
+      }
+    } catch (err) {
+      console.log('kakaoerror', err);
     }
   };
 
@@ -53,7 +72,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, isAdmin, setIsLoggedIn, logout, login }}
+      value={{ isLoggedIn, isAdmin, setIsLoggedIn, logout, login, kakaologin }}
     >
       {children}
     </AuthContext.Provider>

@@ -18,8 +18,7 @@ const StationInfoSide = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isToggleLoading, setIsToggleLoading] = useState(false);
   const { state } = location;
-  console.log(state);
-  const { redirectUrl = '/', rentPrice = 0, leasePrice = 0 } = state || {}; // StationListSide에서 보내온 variable => props로 child에 전달하기
+  const { redirectUrl = '/', rentPrice = 0, leasePrice = 0 } = state || {}; // StationListSide에서 보내온 variable => child에 전달하기
 
   useEffect(() => {
     setIsLoading(true);
@@ -110,11 +109,9 @@ const StationInfoSide = () => {
           <Like
             className='material-icons'
             onClick={handleToggleLike}
-            disable={isToggleLoading}
+            disabled={isToggleLoading}
           >
-            {isLoggedIn && wish && wish?.wish_id
-              ? 'favorite'
-              : 'favorite_border'}
+            {isLoggedIn && wish?.wish_id ? 'favorite' : 'favorite_border'}
           </Like>
 
           <LikeCount>
@@ -122,10 +119,10 @@ const StationInfoSide = () => {
           </LikeCount>
         </LikeInfo>
         <TableList>
-          <NavLink exact to='' end>
+          <NavLink exact to='' end state={{ station, rentPrice, leasePrice }}>
             <div>홈</div>
           </NavLink>
-          <NavLink exact to='review'>
+          <NavLink exact to='review' state={{ station, rentPrice, leasePrice }}>
             <div>리뷰</div>
           </NavLink>
         </TableList>
@@ -144,7 +141,7 @@ const LoadingContainer = styled.section`
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  padding-top: 70px;
+  padding-top: 40px;
   justify-content: center;
 `;
 
@@ -196,9 +193,11 @@ const LikeInfo = styled.div`
   margin-bottom: 1rem;
 `;
 
-const Like = styled.span`
+const Like = styled.button`
   text-align: center;
   cursor: pointer;
+  background-color: transparent;
+  border: none;
 `;
 
 const LikeCount = styled.span`
