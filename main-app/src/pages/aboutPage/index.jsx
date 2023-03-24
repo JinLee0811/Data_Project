@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 //image
 import searchingImg from './image/searching.png';
 import searchingImgAfter from './image/searchingAfter.png';
@@ -16,6 +16,7 @@ import article2 from './image/article2.png';
 import article3 from './image/article3.png';
 import article4 from './image/article4.png';
 import lastImg from './image/last.png';
+import lastBg from './image/1an.jpg';
 
 //chart
 import SelectionFactor from './chart/SelectionFactor';
@@ -23,6 +24,7 @@ import SelectionFactor2 from './chart/SelectionFactor2';
 import CongestionByStation from './chart/CongestionByStation';
 import CongestionByLine from './chart/CongestionByLine';
 import RealEstatePrice from './chart/RealEstatePrice';
+import { Link } from 'react-router-dom';
 
 const AboutPage = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -263,8 +265,8 @@ const AboutPage = () => {
             }`}
           ></img>
           <p className={`conclusion ${scrollPosition > 7850 ? '' : 'hidden'}`}>
-            그래서 저희는 거리순이 아닌 소요시간을 계산하였습니다.<br></br>
-            원하는 출발지점에서 소요되는 시간의 위치를 구할 수 있습니다.
+            그래서 저희는 거리순이 아닌 소요시간⏱으로 계산했어요!<br></br>
+            원하는 출발지점에서 소요되는 시간의 위치를 구할 수 있습니다!!
           </p>
         </ArticleContainer>
       </InsightContainer2>
@@ -336,7 +338,7 @@ const AboutPage = () => {
       <InsightContainer3>
         <ChartContainer
           className={`${
-            scrollPosition < 9800 ? 'hidden barChart' : 'barChart'
+            scrollPosition < 10000 ? 'hidden barChart' : 'barChart'
           }`}
         >
           <ChartDescription>
@@ -349,12 +351,12 @@ const AboutPage = () => {
           </ChartDescription>
           <CongestionByStation
             ref={congestionByStationRef}
-            redraw={scrollPosition > 9750}
+            redraw={scrollPosition > 10000}
           ></CongestionByStation>
         </ChartContainer>
         <ChartContainer
           className={`${
-            scrollPosition < 10600 ? 'hidden barChart' : 'barChart'
+            scrollPosition < 11000 ? 'hidden barChart' : 'barChart'
           }`}
         >
           <ChartDescription>
@@ -366,13 +368,13 @@ const AboutPage = () => {
           </ChartDescription>
           <CongestionByLine
             ref={congestionByLineRef}
-            redraw={scrollPosition > 10550}
+            redraw={scrollPosition > 11000}
           ></CongestionByLine>
         </ChartContainer>
         <p className='conclusion'>
           위 데이터를 기반으로 더 낮은 혼잡도를 보이는 노선으로부터<br></br>{' '}
           체감시간을 계산하여 사용자가 더 쾌적한 위치에서 출퇴근 할 수 있도록
-          도와줍니다.
+          도와드릴게요👍
         </p>
       </InsightContainer3>
 
@@ -441,7 +443,8 @@ const AboutPage = () => {
             <h1>예산에 맞는 역세권을 선택하기 힘드시죠?</h1>
             <p className='conclusion'>
               부동산 실거래 데이터를 바탕으로 단위 면적 당 가격을 계산하였고,
-              사용자가 원하는 예산에 맞춰서 더욱 똑똑하게 역세권을 추천해줍니다
+              사용자가 원하는 예산에 맞춰서 더욱 똑똑하게 역세권을
+              추천해드릴게요🧐
             </p>
           </ChartDescription>
           <RealEstatePrice
@@ -450,15 +453,32 @@ const AboutPage = () => {
           ></RealEstatePrice>
         </ChartContainer>
         <h2>
-          체감시간 기반 역세권 추천 서비스인 "이사가게" 는 부동산 실거래 데이터
-          뿐만 아니라<br></br> 지하철에서의 혼잡도 데이터를 기반으로 체감시간을
-          계산하여 조금 더 쾌적한 역세권을 추천합니다. <br></br>이제 더이상
-          지하철에서 승객들의 숨소리를 들을 필요가 없습니다. <br></br>저희
-          "체감시간 기반 역세권 추천 서비스 - 이사가게"와 함께라면 <br></br>
+          체감시간 기반 역세권 추천 서비스인 <strong>"이사가게"</strong>는
+          <br></br> 부동산 실거래 데이터뿐만 아니라 지하철에서의 혼잡도 데이터를
+          기반으로<br></br>
+          <strong className='back'>체감시간을 계산</strong>
+          하여 조금 더 쾌적한 <strong className='back'>
+            역세권을 추천
+          </strong>{' '}
+          합니다. <br></br>이제 더 이상 지하철에서 승객들의 숨소리를 들을 필요가
+          없습니다. <br></br>저희
+          <strong className='gradient'>
+            "체감시간 기반 역세권 추천 서비스 - 이사가게"
+          </strong>
+          와 함께라면 <br></br>
           비교적 널널한 출퇴근을 할 수 있는 역세권을 추천받을 수 있습니다.{' '}
-          <br></br>저희 "이사가게" 를 이용해 시간과 경비를 절약해 보세요.
+          <br></br>
+          <span>저희 "이사가게"를 이용해 시간⏳과 경비💸를 절약해 보세요.</span>
         </h2>
-        <img src={lastImg}></img>
+        <img src={lastImg} alt='lastImg'></img>
+        <Link to={'/'} className={scrollPosition > 15900 ? 'after' : 'before'}>
+          {' '}
+          <Logo>
+            <div>2</div>
+            <span>사가게?</span>
+          </Logo>
+        </Link>
+        <img src={lastBg} className='bg'></img>
       </InsightContainer4>
       <PleaseTakeMeUp
         onClick={() => {
@@ -620,8 +640,8 @@ const InsightContainer2 = styled.div`
     position: absolute;
     padding-top: 200px;
     text-align: center;
-    font-size: 22px;
-    color: #7f917d;
+    font-size: 24px;
+    color: #33a23d;
   }
 `;
 const ArticleContainer = styled.div`
@@ -652,7 +672,8 @@ const InsightContainer3 = styled.div`
   }
   .conclusion {
     font-size: 28px;
-    color: #7f917d;
+    color: #33a23d;
+    line-height: 40px;
     text-align: center;
   }
 `;
@@ -660,6 +681,8 @@ const InsightContainer3 = styled.div`
 const InsightContainer4 = styled.div`
   height: 2000px;
   padding-top: 140px;
+  position: relative;
+  overflow: hidden;
   div {
     p {
       font-size: 18px;
@@ -668,15 +691,59 @@ const InsightContainer4 = styled.div`
   }
   h2 {
     text-align: center;
-    margin: 100px;
+    margin: 80px;
     line-height: 40px;
+    strong {
+      color: #33a23d;
+    }
+
+    .back {
+      color: white;
+      background-color: #33a23d;
+    }
+
+    .gradient {
+      font-family: 'NanumSquareNeoHeavy';
+      background: linear-gradient(186deg, #058521, #32c2bb);
+      background-size: 100% 100%;
+      color: transparent;
+      -webkit-background-clip: text;
+    }
   }
+
   img {
-    margin-top: 100px;
+    margin-top: 162px;
     margin-right: 400px;
   }
+  a {
+    position: absolute;
+    bottom: 300px;
+    left: 48%;
+    font-size: 30px;
+    transition: transform 1s;
+    div {
+      transition: box-shadow 0.5s ease-out;
+    }
+    div:hover {
+      box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff,
+        0 0 40px #fff, 0 0 55px #fff, 0 0 75px #fff;
+    }
+  }
+  .before {
+    transform: translate(0, 400px);
+  }
+  .after {
+    transform: translate(0, 0);
+  }
+  .bg {
+    position: absolute;
+    z-index: -1;
+    bottom: 10px;
+    width: 860px;
+    border-radius: 50px;
+    margin: 0;
+  }
 `;
-
 const ChartContainer = styled.div`
   width: 100%;
   justify-content: center;
