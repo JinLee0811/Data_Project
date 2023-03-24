@@ -46,7 +46,7 @@ function UserManage() {
         }
         return user;
       });
-      console.log(newUsers);
+
       setUsers(newUsers);
       alert(response.message);
       setUserIdToDelete(null);
