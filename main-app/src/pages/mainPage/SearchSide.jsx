@@ -103,6 +103,7 @@ const SearchSide = () => {
 
   useEffect(() => {
     setClickEvent(true);
+    sessionStorage.removeItem('stationList');
   }, []);
 
   useEffect(() => {

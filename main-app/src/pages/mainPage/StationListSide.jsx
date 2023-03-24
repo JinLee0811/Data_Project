@@ -30,7 +30,9 @@ const StationListSide = () => {
   useEffect(() => {
     setClickEvent(false); //출발마커 클릭으로 옮기기 이벤트 제거
     setIsLoading(true);
-    getStationList();
+    sessionStorage.getItem('stationList')
+      ? setStationList(JSON.parse(sessionStorage.getItem('stationList')))
+      : getStationList();
   }, []);
 
   //지하철 목록 순위매기기
@@ -90,6 +92,11 @@ const StationListSide = () => {
         seen.add(obj.station.station_name);
         return true;
       });
+      //세션저장
+      sessionStorage.setItem(
+        'stationList',
+        JSON.stringify(newStationList.slice(0, 49))
+      );
       setStationList(newStationList.slice(0, 49));
     } catch (err) {
       console.log(err);
