@@ -18,7 +18,6 @@ const StationListSide = () => {
   const { naver } = window;
   const { sendRequest } = useHttpRequest();
   const { setMapOption, setMarkers, setClickEvent } = useOutletContext();
-  const inputs = location.state;
 
   const [feelTimeMethod, setFeelTimeMethod] = useState('dm');
   const [stationList, setStationList] = useState([]);
@@ -26,14 +25,23 @@ const StationListSide = () => {
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [inputs, setInputs] = useState();
 
   useEffect(() => {
     setClickEvent(false); //출발마커 클릭으로 옮기기 이벤트 제거
     setIsLoading(true);
-    sessionStorage.getItem('stationList')
-      ? setStationList(JSON.parse(sessionStorage.getItem('stationList')))
-      : getStationList();
+    setInputs(
+      sessionStorage.getItem('inputs')
+        ? JSON.parse(sessionStorage.getItem('inputs'))
+        : location.state
+    );
   }, []);
+  useEffect(() => {
+    if (inputs) {
+      sessionStorage.setItem('inputs', JSON.stringify(inputs));
+      getStationList();
+    }
+  }, [inputs]);
 
   //지하철 목록 순위매기기
   useEffect(() => {
@@ -92,11 +100,6 @@ const StationListSide = () => {
         seen.add(obj.station.station_name);
         return true;
       });
-      //세션저장
-      sessionStorage.setItem(
-        'stationList',
-        JSON.stringify(newStationList.slice(0, 49))
-      );
       setStationList(newStationList.slice(0, 49));
     } catch (err) {
       console.log(err);
