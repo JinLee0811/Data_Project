@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import useHttpRequest from '../../utils/useHttp';
 import ModalInput from '../../components/ModalInput';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../utils/AuthContext';
 import Card from '../../components/Card';
 import { ClipLoader } from 'react-spinners';
@@ -14,6 +14,8 @@ export default function StationInfoReview() {
   const [numReviewsToShow, setNumReviewsToShow] = useState(7);
   const { isLoggedIn } = useContext(AuthContext);
   const { station_id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // post로 리뷰를 줄 때는 user의 name 정보가 없다.  따라서 setReviews를 해줘도 username이 들어가지 않는다.=> 렌더할 때 계속 유저네임이 공백으로 나옴.
   // 따라서 post 후에 setReview 대신, 다시 get요청을 하도록 바꿈
@@ -51,6 +53,17 @@ export default function StationInfoReview() {
     <>
       <Div
         onClick={() => {
+          if (!isLoggedIn) {
+            alert('로그인이 필요한 서비스 입니다.');
+            navigate('/login', {
+              state: {
+                redirectUrl:
+                  location.pathname + location.search + location.hash,
+              },
+            });
+            return;
+          }
+
           setIsModalOpen(true);
         }}
       >
