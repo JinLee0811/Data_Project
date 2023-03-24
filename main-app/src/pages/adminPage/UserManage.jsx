@@ -50,6 +50,7 @@ function UserManage() {
       setUsers(newUsers);
       alert(response.message);
       setUserIdToDelete(null);
+      setIsModalOpen(false);
     } catch (err) {
       console.log(err);
     }
