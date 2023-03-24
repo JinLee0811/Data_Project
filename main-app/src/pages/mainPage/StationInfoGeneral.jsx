@@ -1,23 +1,15 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useOutletContext, useParams, useLocation } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import useHttpRequest from '../../utils/useHttp';
 import { ClipLoader } from 'react-spinners';
 
 export default function StationfacilInfoGeneral() {
-  const station = useOutletContext();
   const { station_id } = useParams();
   const [facilInfo, setFacilInfo] = useState();
   const { sendRequest, isLoading } = useHttpRequest();
-  const location = useLocation();
-  // const [leasePrice, setLeasePrice] = useState(location.state?.leasePrice || 0);
-  // const [rentPrice, setRentPrice] = useState(location.state?.rentPrice || 0);
-  // console.log(location.state);
-
-  const leasePrice = location.state?.leasePrice || 0; //state로 정의 안해도 되남..?
-  const rentPrice = location.state?.rentPrice || 0;
-
+  const { station, rentPrice, leasePrice } = useOutletContext();
   const getLevel = (level) => {
     if (level > 50) return '혼잡';
     if (level > 34) return '보통';

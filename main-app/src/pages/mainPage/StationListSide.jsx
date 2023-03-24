@@ -124,7 +124,7 @@ const StationListSide = () => {
       ...cur,
       center: new naver.maps.LatLng(item.station.pos_x, item.station.pos_y),
     }));
-    navigate(`/stationinfo/${item.id}/general`, {
+    navigate(`/stationinfo/${item.id}`, {
       state: {
         redirectUrl: location.pathname + location.search,
         leasePrice: `${Math.round(
@@ -145,7 +145,7 @@ const StationListSide = () => {
         setFeelTimeMethod={setFeelTimeMethod}
       ></FeelTimeMethod>
       <StartInfo>
-        {inputs.stationName}역 <span>&rarr;</span>
+        {inputs?.stationName}역 <span>&rarr;</span>
       </StartInfo>
       <StationListContainer>
         {stationRank.length > 0
