@@ -1,194 +1,140 @@
-## 프로젝트 주제 💈
+
+# **Where to Live?** 🏡  
+A Personalized Location Recommendation Service Based on Perceived Time and Subway Crowdedness  
 
 ---
 
-: 우리는 이번 프로젝트에서 청년들의 주거지 선정에 있어서 이동 거리와 체감시간을 고려한 서비스를 개발.****
+## **Project Overview** 💡  
+"Where to Live?" is a service designed to assist young adults in choosing an ideal residence by considering factors such as travel distance, perceived travel time, and subway crowdedness. By utilizing real estate transaction and subway crowdedness data, the platform calculates the perceived time for commuting and recommends the best neighborhoods for users.
 
-## 프로젝트 구성 💻
-
----
-
-### ▪️ 데이터 분석 명세
-
-**📊 [코랩 분석](https://colab.research.google.com/drive/1Zei6kqUlxsALN4Y4YKJ2MA9swnrbpgnS?usp=sharing)**
-
-[분석 명세서](https://www.notion.so/ebea5435584e4fb4bd7c73e21e5e1af5?pvs=21)
-
-### ▪️기능명세
-
-- [기능 명세서 (스프레드시트)](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit?usp=sharing)
-- 기능 명세 정리
-    
-    ### 서브 기능
-    
-    - 로그인
-        - 필요 정보 : 이메일, 비밀번호
-        - [소셜 로그인](https://tech.kakao.com/2023/01/19/social-login/) API (카카오, 구글, 네이버) 연동
-        - Cookie로 JWT 토큰 교환
-    - 회원가입
-        - 필요 정보 : 4개 
-        (실명제, 닉네임, 이메일, 비밀번호, 비밀번호 재확인)
-        - 소셜 로그인 API를 통해 받아오는 정보는 자동으로 채워지고,
-        - 나머지 입력하여 가입
-    - 마이페이지 사용자 권한 (진입시 모두 출력)
-        - 정보 조회
-        - 정보 수정 (닉네임, 비밀번호)
-        - 정보 삭제 (pw확인)
-        - 찜 목록 (수정, 삭제)
-    - 마이페이지 관리자 권한
-        - 사용자 정보 조회
-        - 사용자 게시글(리뷰) 삭제
-        - (후순위) 가중치 연산식 수정 ()
-    
-    - 회원기능 : 리뷰를 올릴때 : 별점으로 선택해서,  역세권 리뷰: 좋아요 싫어요, 관심 지하철역 찜, 몇 명이 그 역을 찜했는지 보여주기(숫자로만)
-    - 욕심리스트(서브기능) : 편의시설 리스트 및 현황
-    
-    ### 메인기능
-    
-    - 어디든 찍어서 가장 가까운 지하철역 찾기(단순 직선거리)
-    - 가중치 계산(지하철역)
-        - 혼잡도 가중치
-        - 거래금액 가중치
-    - 지하철 역간 소요시간 (api 지하철 길찾기)
-        - [서울시 역사마스터 정보](https://data.seoul.go.kr/dataList/OA-21232/S/1/datasetView.do)
-    - 편의시설 리스트 및 현황 (api)
-    - → 직방 다방 네이버 부동산 서비스로 링크해버리기
-    - 메인 기능 세부 명세
-        - 거점지 선정
-            - 거점지 기준에서 가까운 역을 찾아줌 (직선거리)
-            - 거점지 기준에서 모든 역의 체감시간을 계산하여 지도에 표시한다
-            - 사용자 필터 항목
-                - 최대 소요시간
-                - 체감 시간
-                - 최소 환승 필터
-                - // 부동산 금액
-        - 역별 정보 기능 (리뷰 기능)
-            - 사용자 리뷰 : 내가 쓴 글 뽑아보기 가능
-            - 찜 기능 (누계)
-            - 해당 지하철의 시간대별, 방향별(상행, 하행) 혼잡도 [혼잡 보통 여유]
-            - 편의시설
-            - 부동산 가격 (평당 가격만 제시)
-            - 역의 잡다한 정보들 골라서 출력
-    
-    ### DB 설계
-    
-    - 지하철 역별 정보
-    - 지하철역 추천 기능 (체감시간 도출)
-        - 체감시간 = 실 소요시간 * 환승 가중치 * 혼잡도 가중치
-        - 실 소요시간 = 지하철 가는 도보이동 거리 + 지하철 소요시간
-        - 환승 가중치 =
-        - 혼잡도 가중치(6.level) =
-    - 사용자
-        - 계정 정보
-            - 실명(소셜 로그인)
-            - 닉네임
-            - 이메일(소셜 로그인)
-            - 비밀번호
-        - 찜 목록 (R)
-        - 리뷰 목록 (R)
-    
-    ### 인사이트 페이지
-    
-    - 데이터 분석 : 정적 페이지(인싸이트),  탭으로 확정(스토리: 뻔한거 싫다 불편하다
-
-### ▪️ 와이어 프레임
-
-- 구글 파워포인트 명세서
-- DB ERD
-    
-    ![스크린샷 2023-03-23 04.19.48.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/acc35658-a8a9-49b9-ac9e-7a02e5f3908f/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-23_04.19.48.png)
-    
-
-### ▪️ API 명세
-
-- [API 명세서 (스프레드시트)](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit#gid=418297014)
-
-# 서비스 소개 🚀
+**Website**: [Demo Link](http://kdt-ai6-team02.elicecoding.com)  
+- **Admin Login**:  
+  - Email: admin@admin.com  
+  - Password: 1111  
+- **User Login**:  
+  - Email: user@user.com  
+  - Password: 1234  
 
 ---
 
-## 타이틀 및 한줄 소개 🔍
-
- " 체감시간 기반 역세권 추천 서비스 ”
-
-## **구성원 및 역할 🤝**
-
-- 팀장 : 이정진
-- FE: 이정진 최호열 안나연
-- BE: 이승은 정종열 강성훈
+## **Project Purpose** 🎯  
+In the current real estate market, many services provide price-related information, but there are few services that consider commuting distances and perceived travel times.  
+This project aims to provide a subway-station-based neighborhood recommendation service that takes into account subway crowdedness and perceived travel time, making the residence selection process easier and more accurate for young adults.
 
 ---
 
-# 서비스 설명 📝
+## **Key Features** 🚀  
 
-## **기획의도 🎯**
+### **Main Features**  
+1. **Location Recommendation**:  
+   - Recommends subway-accessible neighborhoods based on perceived travel time.  
+   - Factors include subway crowdedness and real estate price data.  
 
-: 청년들의 주거지 선정에 있어서 
-  현재 부동산 시장에서 가격 정보를 제공하는 서비스는 많은 반면, 
-  이동 거리와 체감 이동시간을 고려한 서비스는 없다는 점을 파악하여 
-  지하철 혼잡도와 체감 이동시간을 고려한 역세권 추천 서비스를 제공하고자 합니다.
+2. **Perceived Travel Time Calculation**:  
+   - Uses Dijkstra's algorithm to calculate perceived travel time based on user-selected filters.  
+   - Considers actual travel time, subway transfer time, and crowdedness weights.
 
-## **서비스의 메인 기능과 서브 기능 🚀**
+3. **Interactive Map**:  
+   - Visualizes nearby subway stations, facilities, and recommended areas.  
 
-### 메인 기능
+### **Additional Features**  
+- **User Reviews and Favorites**:  
+  - Allows users to write reviews, like subway stations, and track favorite areas.  
+- **Convenience Facilities**:  
+  - Displays nearby facilities (e.g., supermarkets, gyms, etc.).  
+- **Admin Dashboard**:  
+  - Admins can manage user accounts, reviews, and system parameters.  
 
-- 사용자가 지정한 위치를 바탕으로 실질적인 이동 거리와 체감시간에 따라 위치 선정에 도움을 주는 서비스 제공
-- 이동 시간과 지하철의 혼잡도를 고려하여 위치 추천
+---
 
-### 서브 기능
+## **Database Design** 📊  
 
-- 해당지역 사용자의 리뷰 및 댓글
-- 추천 위치 주변의 편의시설 및 위치정보 확인
+### **Key Tables**  
+1. **User Table**: Stores user profiles, preferences, and favorite stations.  
+2. **Station Table**: Contains information on subway stations, including crowdedness and real estate prices.  
+3. **Review Table**: Manages user reviews and station ratings.  
 
-### 사용법 📖
+### **Entity Relationship Diagram (ERD)**  
+![Database ERD](https://example.com/erd-diagram-link)  
 
-1. 홈페이지에 접속합니다.
-2. 원하는 위치(회사, 대학교등)와 원하는 체감 소요시간을 입력합니다.
-3. 조건을 고려한 역세권을 추천받습니다.
-4. 추천받은 정보를 토대로 주위의 편의시설 및 위치정보를 확인할 수 있습니다.1. 개인 작업 :
-   `add , commit`
-   로컬의 feature 브랜치에서 작업을 진행.
-   `git checkout dev`
-   dev 브랜치로 이동한다
-   `git merge feature`
-   로컬의 feature 브랜치를 dev 브랜치에 병합함
+---
 
-2. 팀 레포 병합 전 충돌 해결 :
-   `git fetch upstream`
-   팀 back 레포를 로컬 dev에 fetch한다.
-   `git merge upstream/dev`
-   그 후 팀 레포의 dev 브랜치를 로컬의 dev에 병합하여
-   발생하는 충돌을 해결한다
+## **Algorithms** 📐  
 
-3. 개인 레포에 로컬 dev 브랜치를 push한다
-   `git push origin dev`
+### **Dijkstra's Algorithm for Perceived Time**  
+- Treats subway stations as nodes and travel times as edges.  
+- Filters reachable nodes based on user-selected maximum travel time.  
+- Updates perceived time by applying crowdedness and transfer weights.  
+  ```javascript
+  const perceivedTime = travelTime * crowdednessWeight * transferWeight;
+  ```
 
-4. Merge Request 신청 : 깃랩
-   개인 레포 dev 브랜치 → 팀 back 레포 dev 브랜치에 merge request를 생성한다.
+---
 
-<br>
+## **API Documentation** 📄  
+Explore detailed API specifications in the **[API Spreadsheet](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit#gid=418297014)**.
 
-## Commit Guide
+---
 
-- 제목
-  - `Feat : 2023-01-31 member name Add Login`
-- 본문 내용
-  - `로그인 기능을 추가했습니다.`
+## **Team Members and Roles** 🤝  
 
-<br>
+- **Team Leader**: Jeongjin Lee  
+- **Frontend Developers**: Jeongjin Lee, Hoyoul Choi, Nayoun Ahn  
+- **Backend Developers**: Seung-eun Lee, Jongyeol Jung, Seonghun Kang  
 
-- **Commit Message Type**
+---
 
-  - Feat : 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정
-  - Fix : 기능에 대한 버그 수정
-  - Build : 빌드 관련 수정
-  - Chore : 패키지 매니저 수정, 그 외 기타 수정
-  - Ci : CI 관련 설정 수정
-  - Docs : 문서, 주석 수정
-  - Style : 코드 스타일, 포맷팅에 대한 수정
-  - Refactor : 기능의 변화가 아닌 코드 리팩터링
-  - Test : 테스트 코드 추가, 수정
-  - Release : 버전 릴리즈
+## **How to Use** 📖  
 
-- **Commit Message Guide** 1. **제목과 본문**은 **한 줄 띄고 구분**한다. → 한줄 띄면 제목과 본문이 구분된다. 2. **제목**은 **50글자 이내**로 작성한다. → 너무 길면 코드창이 지저분해진다. 3. **제목** 첫 글자는 **대문자로 표기**한다. 4. **제목 끝**에 **마침표는 찍지 않는다.** 5. **제목**은 **명령문**으로, **과거형으로 작성하지 않는다.** 6. **본문** 각행은 **72행 이내,** **줄바꿈**을 사용해 작성한다. 7. **본문**은 어떻게 보다는 **무엇을, 왜**에 대하여 설명한다. - 제목은 git GUI에서 bold로 표시되고, 터미널 여러 상황에서 자주 노출된다.
-  > > > > > > > upstream/dev
+1. **Access the Website**: Visit the platform at the provided demo link.  
+2. **Enter Your Details**: Input your starting location and desired maximum perceived travel time.  
+3. **Receive Recommendations**: View subway stations and neighborhoods that match your preferences.  
+4. **Explore Additional Features**:  
+   - View nearby facilities and user reviews.  
+   - Save and review your favorite locations.  
+
+---
+
+## **Technical Details** 🛠️  
+
+### **Frontend Technologies**  
+- **HTML5, CSS3, JavaScript**: For creating a responsive and interactive UI.  
+- **React**: For managing complex state and rendering components dynamically.  
+
+### **Backend Technologies**  
+- **Node.js (Express)**: To handle server requests and business logic.  
+- **MySQL**: As the relational database for storing user and location data.  
+- **Prisma**: For efficient database interactions.  
+
+### **APIs Used**  
+- **Kakao Social Login API**: Enables secure authentication via Kakao accounts.  
+- **Seoul Subway API**: Provides subway station information and travel time data.  
+
+---
+
+## **Commit Guidelines** 💾  
+
+### **Message Structure**  
+1. **Title**:  
+   - Format: `Type: YYYY-MM-DD Member Name - Summary`  
+   - Example: `Feat: 2023-01-31 Jeongjin Lee - Add Login`  
+2. **Body**:  
+   - A concise description of changes.  
+
+### **Commit Types**  
+- **Feat**: Add a new feature or enhance functionality.  
+- **Fix**: Fix a bug or error.  
+- **Docs**: Update documentation or comments.  
+- **Style**: Improve code formatting or styles.  
+- **Refactor**: Refactor code without changing its behavior.  
+- **Test**: Add or modify tests.  
+
+---
+
+## **Demo Video** 🎥  
+[Watch the Demo](https://example.com/demo-video-link)  
+
+---
+
+For more details, feel free to explore the **[API Documentation](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit)** or contribute to our repository. Feedback is always welcome!
+```
