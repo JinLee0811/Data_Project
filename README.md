@@ -1,140 +1,190 @@
+# 🏠 Where Should I Live?
+### A Full-Stack Web Service for Subway-Based Neighborhood Recommendations
 
-# **Where to Live?** 🏡  
-A Personalized Location Recommendation Service Based on Perceived Time and Subway Crowdedness  
+> Recommends the best neighborhoods in Seoul by calculating **perceived commute time** — combining real estate transaction data with live subway congestion weights.
 
----
-
-## **Project Overview** 💡  
-"Where to Live?" is a service designed to assist young adults in choosing an ideal residence by considering factors such as travel distance, perceived travel time, and subway crowdedness. By utilizing real estate transaction and subway crowdedness data, the platform calculates the perceived time for commuting and recommends the best neighborhoods for users.
-
-**Website**: [Demo Link](http://kdt-ai6-team02.elicecoding.com)  
-- **Admin Login**:  
-  - Email: admin@admin.com  
-  - Password: 1111  
-- **User Login**:  
-  - Email: user@user.com  
-  - Password: 1234  
+[![Demo](https://img.shields.io/badge/Live%20Demo-Available-02C39A?style=flat-square)](http://kdt-ai6-team02.elicecoding.com)
+[![Award](https://img.shields.io/badge/🏆%20Award%20of%20Excellence-Elice%20AI%20Track%206th-F9C74F?style=flat-square)](#-award)
 
 ---
 
-## **Project Purpose** 🎯  
-In the current real estate market, many services provide price-related information, but there are few services that consider commuting distances and perceived travel times.  
-This project aims to provide a subway-station-based neighborhood recommendation service that takes into account subway crowdedness and perceived travel time, making the residence selection process easier and more accurate for young adults.
+## 📎 Project Resources
+
+| Resource | Link |
+|---|---|
+| 🌐 Live Demo | [http://kdt-ai6-team02.elicecoding.com](http://kdt-ai6-team02.elicecoding.com) |
+| 📊 Original Slides (KR) | [Google Slides (Korean)](https://docs.google.com/presentation/d/1cdXpzReZPP-u3LL88jjQt4yrrxkILBKLJMLSab121ks/edit?usp=sharing) |
+| 🌍 Portfolio Page (EN) | [Google Slides (English)]([https://www.notion.so/329c73f3548f8191a344d39a18a4fb29](https://docs.google.com/presentation/d/1mwGey5Xk7QGv-g6pizgOYg8fIaPBAZtL/edit?usp=sharing&ouid=103284082716674627235&rtpof=true&sd=true)) |
+| 📋 API Spec | [Google Sheets](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit#gid=418297014) |
+
+<details>
+<summary>🔑 Demo Credentials</summary>
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@admin.com | 1111 |
+| User | user@user.com | 1234 |
+
+</details>
 
 ---
 
-## **Key Features** 🚀  
+## 🏆 Award
 
-### **Main Features**  
-1. **Location Recommendation**:  
-   - Recommends subway-accessible neighborhoods based on perceived travel time.  
-   - Factors include subway crowdedness and real estate price data.  
+> **Award of Excellence** — Elice AI Full-Stack Engineer Track 6th (2023.04.03)
+> Certified for achieving the **highest performance** in the Data Analysis Web Service Project, organized by the Ministry of Employment and Labor and operated by Elice Group Inc.
 
-2. **Perceived Travel Time Calculation**:  
-   - Uses Dijkstra's algorithm to calculate perceived travel time based on user-selected filters.  
-   - Considers actual travel time, subway transfer time, and crowdedness weights.
-
-3. **Interactive Map**:  
-   - Visualizes nearby subway stations, facilities, and recommended areas.  
-
-### **Additional Features**  
-- **User Reviews and Favorites**:  
-  - Allows users to write reviews, like subway stations, and track favorite areas.  
-- **Convenience Facilities**:  
-  - Displays nearby facilities (e.g., supermarkets, gyms, etc.).  
-- **Admin Dashboard**:  
-  - Admins can manage user accounts, reviews, and system parameters.  
+- 🥇 **Team Excellence Award** — 2사가게? team (Jeongjin Lee, Sunghun Kang, Nayeon Ahn, Seungeun Lee, Jongyeol Jung, Hoyeol Choi)
+- 👑 **Leadership Award** — Jeongjin Lee (2023.05.20)
 
 ---
 
-## **Database Design** 📊  
+## 💡 Overview
 
-### **Key Tables**  
-1. **User Table**: Stores user profiles, preferences, and favorite stations.  
-2. **Station Table**: Contains information on subway stations, including crowdedness and real estate prices.  
-3. **Review Table**: Manages user reviews and station ratings.  
+Most housing services in Seoul show price data or raw commute distances — but ignore the fact that a crowded subway makes the same trip *feel* much longer.
 
-### **Entity Relationship Diagram (ERD)**  
-![Database ERD](https://example.com/erd-diagram-link)  
-
----
-
-## **Algorithms** 📐  
-
-### **Dijkstra's Algorithm for Perceived Time**  
-- Treats subway stations as nodes and travel times as edges.  
-- Filters reachable nodes based on user-selected maximum travel time.  
-- Updates perceived time by applying crowdedness and transfer weights.  
-  ```javascript
-  const perceivedTime = travelTime * crowdednessWeight * transferWeight;
-  ```
+**Where Should I Live?** solves this by:
+1. Pulling **real estate transaction data** to surface actual rent/deposit/lease prices per subway station
+2. Analyzing **subway congestion data** by time, station, and direction to derive crowdedness weights
+3. Running **Dijkstra's algorithm** on the station graph to calculate both raw travel time and **perceived commute time**
+4. Ranking and recommending neighborhoods based on the commute you will actually experience
 
 ---
 
-## **API Documentation** 📄  
-Explore detailed API specifications in the **[API Spreadsheet](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit#gid=418297014)**.
+## 🚀 Key Features
+
+### Core
+| Feature | Description |
+|---|---|
+| 🗺️ Smart Recommendation | Drop a pin or search a workplace address — get ranked neighborhood suggestions |
+| ⏱️ Perceived Time | Dijkstra + congestion weights give a realistic commute estimate, not just distance |
+| 🕐 Time-of-Day Toggle | Recalculate rankings based on AM/PM rush hour congestion |
+| 📊 Station Detail Panel | Average rent, nearby facilities (1km), rush-hour heatmap, Naver Real Estate link |
+
+### User
+| Feature | Description |
+|---|---|
+| 🔐 Auth | JWT (HTTP-only cookie) + Kakao Social Login (OAuth 2.0) |
+| ❤️ Favorites | Save and manage favorite stations |
+| ✍️ Reviews | Write/read community reviews per station |
+| 👤 My Page | View saved stations, reviews, update profile |
+
+### Admin
+| Feature | Description |
+|---|---|
+| 🛠️ Admin Dashboard | Manage users and reviews with paginated tables |
 
 ---
 
-## **Team Members and Roles** 🤝  
+## 🧮 Algorithm
 
-- **Team Leader**: Jeongjin Lee  
-- **Frontend Developers**: Jeongjin Lee, Hoyoul Choi, Nayoun Ahn  
-- **Backend Developers**: Seung-eun Lee, Jongyeol Jung, Seonghun Kang  
-
----
-
-## **How to Use** 📖  
-
-1. **Access the Website**: Visit the platform at the provided demo link.  
-2. **Enter Your Details**: Input your starting location and desired maximum perceived travel time.  
-3. **Receive Recommendations**: View subway stations and neighborhoods that match your preferences.  
-4. **Explore Additional Features**:  
-   - View nearby facilities and user reviews.  
-   - Save and review your favorite locations.  
-
----
-
-## **Technical Details** 🛠️  
-
-### **Frontend Technologies**  
-- **HTML5, CSS3, JavaScript**: For creating a responsive and interactive UI.  
-- **React**: For managing complex state and rendering components dynamically.  
-
-### **Backend Technologies**  
-- **Node.js (Express)**: To handle server requests and business logic.  
-- **MySQL**: As the relational database for storing user and location data.  
-- **Prisma**: For efficient database interactions.  
-
-### **APIs Used**  
-- **Kakao Social Login API**: Enables secure authentication via Kakao accounts.  
-- **Seoul Subway API**: Provides subway station information and travel time data.  
-
----
-
-## **Commit Guidelines** 💾  
-
-### **Message Structure**  
-1. **Title**:  
-   - Format: `Type: YYYY-MM-DD Member Name - Summary`  
-   - Example: `Feat: 2023-01-31 Jeongjin Lee - Add Login`  
-2. **Body**:  
-   - A concise description of changes.  
-
-### **Commit Types**  
-- **Feat**: Add a new feature or enhance functionality.  
-- **Fix**: Fix a bug or error.  
-- **Docs**: Update documentation or comments.  
-- **Style**: Improve code formatting or styles.  
-- **Refactor**: Refactor code without changing its behavior.  
-- **Test**: Add or modify tests.  
-
----
-
-## **Demo Video** 🎥  
-[Watch the Demo](https://example.com/demo-video-link)  
-
----
-
-For more details, feel free to explore the **[API Documentation](https://docs.google.com/spreadsheets/d/1ClWtcq0ayfmQKbjAQk9e1KyxtVXRy8rUkJ_-awIyw1Y/edit)** or contribute to our repository. Feedback is always welcome!
+```js
+const perceivedTime = travelTime * congestionWeight;
 ```
+
+- **Data sources**: Inter-station travel times (official schedules + interpolation for gaps) · congestion by station, time slot, direction
+- **Pathfinding**: Dijkstra's algorithm — each station is a node, travel time is the edge weight
+- Traverses the graph tracking both raw time and perceived time per node
+- Stops when all nodes within the user's max time limit are explored
+- Returns a ranked list of reachable neighborhoods
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| **React** | Component-based UI, state management |
+| **Styled Components** | CSS-in-JS scoped styling |
+| **Chart.js** + **react-chartjs-2** | Interactive data visualizations |
+| **Naver Maps API** | Map canvas, marker placement |
+| **Google Geocoding API** | Address to lat/lng coordinate conversion |
+| **Kakao Social Login API** | OAuth 2.0 authentication |
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| **Node.js** + **Express** | REST API server, business logic |
+| **Prisma ORM** | Type-safe DB access + Prisma Studio GUI |
+| **AWS RDS (MySQL)** | Cloud-hosted relational database |
+| **JWT** (cookie-based) | Stateless authentication |
+
+### Data Analysis
+| Technology | Purpose |
+|---|---|
+| **Google Colab** | Exploratory data analysis, congestion weight derivation |
+
+---
+
+## 🗂️ Architecture
+
+### Frontend Structure
+```
+App
+├── SideBar          — search filters & ranked results list
+├── Map              — Naver Maps canvas
+├── Station Info     — station detail panel
+└── Station Review   — community reviews
+
+User Flows
+├── Login / Register
+├── My Page          — favorites, reviews, profile
+└── Admin Panel      — user & review management
+
+Info
+└── About            — data-driven project introduction
+```
+
+### Backend — 3-Layer Architecture
+```
+Presentation Layer  →  Routes
+  adminRouter / userRouter / mainRouter / stationRouter
+
+Application Layer   →  Services
+  adminService / userService / mainService / stationService
+
+Data Layer          →  Prisma + MySQL
+  Data modules: station · crowdedness · travel_time · facilities
+  Middlewares: errorHandler · isAdmin · isUser · checkPassword
+```
+
+---
+
+## 🗄️ Database Design
+
+| Table | Description |
+|---|---|
+| User | Profiles, preferences, favorite stations |
+| Station | Station info, congestion data, real estate prices |
+| Review | User reviews and station ratings |
+| Facilities | Nearby amenities per station |
+
+---
+
+## 🤝 Team
+
+| Role | Members |
+|---|---|
+| **Team Lead + FE** | Jeongjin Lee |
+| **Frontend** | Hoyeol Choi, Nayeon Ahn |
+| **Backend** | Seungeun Lee, Jongyeol Jung, Seonghun Kang |
+
+---
+
+## 📝 Commit Convention
+
+**Format**: `Type: YYYY-MM-DD Name - Summary`
+
+| Type | Usage |
+|---|---|
+| `Feat` | New feature or enhancement |
+| `Fix` | Bug fix |
+| `Docs` | Documentation update |
+| `Style` | Code formatting / styling |
+| `Refactor` | Code refactor (no behavior change) |
+| `Test` | Add or modify tests |
+
+---
+
+*Original presentation slides and all data/web image sources: [Google Slides (Korean)](https://docs.google.com/presentation/d/1cdXpzReZPP-u3LL88jjQt4yrrxkILBKLJMLSab121ks/edit?usp=sharing)*
